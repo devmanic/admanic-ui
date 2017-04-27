@@ -22,7 +22,6 @@ import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 
 import '../styles/styles.scss';
-import '../styles/headings.css';
 
 // App is our top level component
 import { AppComponent } from './app.component';
@@ -113,3 +112,5 @@ export class AdmanicUIModule {
     }
 
 }
+
+export {ZelectModule} from './zelect/zelect.module.ts';

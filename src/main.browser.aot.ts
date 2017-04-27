@@ -24,3 +24,5 @@ export function bootstrapDomReady() {
 }
 
 bootstrapDomReady();
+
+import {AdmanicUIModule} from '../dist/main.bundle.js';
