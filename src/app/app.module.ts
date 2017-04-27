@@ -69,7 +69,7 @@ type StoreType = {
         APP_PROVIDERS
     ]
 })
-export class AppModule {
+export class AdmanicUIModule {
 
     constructor(public appRef: ApplicationRef,
                 public appState: AppState) {
