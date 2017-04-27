@@ -33,6 +33,8 @@ const METADATA = webpackMerge(commonConfig({
     HMR: false
 });
 
+const deployConf = require('../deploy.json');
+
 module.exports = function (env) {
     return webpackMerge(commonConfig({
         env: ENV
@@ -161,7 +163,8 @@ module.exports = function (env) {
                     'ENV': JSON.stringify(METADATA.ENV),
                     'NODE_ENV': JSON.stringify(METADATA.ENV),
                     'HMR': METADATA.HMR
-                }
+                },
+                'SERVER': JSON.stringify(deployConf.server)
             }),
 
             /**

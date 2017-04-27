@@ -45,7 +45,7 @@ interface AjaxParams {
 export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
     public isOpen: boolean = false;
     public newItemPostfix: string;
-    public server = SERVER;
+    public server = SERVER || '';
 
     public _value = false;
     @Input() public options: OptionModel[] | any = [];

@@ -10,6 +10,10 @@ import {
 // Environment Providers
 let PROVIDERS: any[] = [
     // common env directives
+    {
+        provide: 'server',
+        useValue: SERVER + '' || 'http://138.201.16.233:8480'
+    },
 ];
 
 // Angular debug tools in the dev console

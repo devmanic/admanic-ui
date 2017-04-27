@@ -30,6 +30,7 @@ import { AppState, InternalStateType } from './app.service';
 
 import { PlaygroundModule } from './playground/playground.module';
 import { ZelectModule } from './zelect/zelect.module';
+import { SharedModule } from './shared/shared.module';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -58,6 +59,7 @@ type StoreType = {
         RouterModule.forRoot(ROUTES),
 
         PlaygroundModule,
+        SharedModule,
         ZelectModule,
     ],
     exports: [
@@ -112,5 +114,3 @@ export class AdmanicUIModule {
     }
 
 }
-
-export {ZelectModule} from './zelect/zelect.module.ts';

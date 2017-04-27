@@ -1,0 +1,8 @@
+<div [formGroup]="form">
+    <zelect [options]="options"
+            [placeholder]="'Select'"
+            [showAddNewBtn]="true"
+            formControlName="select"
+            (onAddClick)="onCreate($event)"
+    ></zelect>
+</div>

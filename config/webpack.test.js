@@ -17,6 +17,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
  */
 const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 
+const deployConf = require('../deploy.json');
 /**
  * Webpack configuration
  *
@@ -201,7 +202,8 @@ module.exports = function (options) {
                     'ENV': JSON.stringify(ENV),
                     'NODE_ENV': JSON.stringify(ENV),
                     'HMR': false
-                }
+                },
+                'SERVER': JSON.stringify(deployConf.server)
             }),
 
             /**

@@ -10,7 +10,7 @@ export class ClipboardService {
         this.getElement();
     }
 
-    copy(data: string) {
+    public copy(data: string) {
         this.el.value = data;
         this.el.select();
         ToastrService.clear();
@@ -23,13 +23,13 @@ export class ClipboardService {
         }
     }
 
-    getElement() {
-        let el = <HTMLInputElement>document.querySelector(`#${this.elID}`);
+    public getElement() {
+        let el = <HTMLInputElement> document.querySelector(`#${this.elID}`);
         !el ? this.createElement() : this.el = el;
     }
 
-    createElement() {
-        let el: HTMLInputElement = <HTMLInputElement>document.createElement('INPUT');
+    public createElement() {
+        let el: HTMLInputElement = <HTMLInputElement> document.createElement('INPUT');
         el.id = this.elID;
         el.type = 'text';
         document.body.appendChild(el);
