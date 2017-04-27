@@ -1,0 +1,52 @@
+<div class="zelect__wrapper">
+    <div class="zelect" [ngClass]="{'active':isOpen}">
+        <div class="zelect__input">
+            <div [formGroup]="form">
+                <input
+                    type="text"
+                    class="field"
+                    spellcheck="false"
+                    [placeholder]="placeholder"
+                    (click)="inputClick($event)"
+                    (focus)="startSearch($event)"
+                    (keyup)="onInputKeyUp($event)"
+                    formControlName="queryStr">
+            </div>
+            <button class="btn btn-transparent zelect__button" type="button"
+                    (click)="toggleOpen($event)">
+                <span class="caret"></span>
+            </button>
+        </div>
+
+        <div class="zelect__options">
+            <ul class="zelect__options__results">
+                <li *ngFor="let item of options"
+                    [ngClass]="{'hidden':item.hidden, 'is-selected':item.selected}"
+                    (click)="onSelect(item.value)">{{item.label}}
+                </li>
+
+                <li *ngIf="!allowCreateEntity && nothingNotFound && (options?.length || (!options?.length && queryStr?.value))">
+                    {{pendingRequest ? 'Searching...' : 'No results found'}}
+                </li>
+
+                <li *ngIf="allowCreateEntity && nothingNotFound && queryStr?.value.length>0"
+                    (click)="addNewOption($event);">{{queryStr.value}} <b>{{newItemPostfix}}</b>
+                </li>
+
+                <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No
+                    results found'}}
+                </li>
+            </ul>
+            <ul
+                *ngIf="allowClear && options.length && !nothingNotFound && value"
+                class="zelect__options__results clear-selection">
+                <li (click)="clearSelection($event)">None</li>
+            </ul>
+            <button *ngIf="showAddNewBtn" class="zelect__add-new-btn" type="button" (click)="onAddNewBtnClick($event)">
+                <i class="material-icons">add</i> Add new
+            </button>
+        </div>
+
+    </div>
+    <validator-messages *ngIf="allowCreateEntity" [field]="form.get('queryStr')"></validator-messages>
+</div>
