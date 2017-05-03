@@ -40,7 +40,8 @@ interface AjaxParams {
         }
     ],
     selector: 'zelect',
-    templateUrl: 'zelect.template.html'
+    styleUrls: ['./zelect.style.scss'],
+    templateUrl: './zelect.template.html'
 })
 export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
     public isOpen: boolean = false;

@@ -33,9 +33,7 @@
                     (click)="addNewOption($event);">{{queryStr.value}} <b>{{newItemPostfix}}</b>
                 </li>
 
-                <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No
-                    results found'}}
-                </li>
+                <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No results found'}}</li>
             </ul>
             <ul
                 *ngIf="allowClear && options.length && !nothingNotFound && value"
