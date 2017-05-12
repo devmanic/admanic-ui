@@ -1,1 +1,11 @@
-<h1>Welcome to Admanic UI</h1>
+<div class="pg__wrap">
+  <nav class="pg__menu">
+    <ul>
+      <li *ngFor="let item of memuItems"><a routerLinkActive="is-active" [routerLink]="['/'+item.path]">{{item.title}}</a></li>
+    </ul>
+  </nav>
+
+  <div class="pg__main">
+    <router-outlet></router-outlet>
+  </div>
+</div>
