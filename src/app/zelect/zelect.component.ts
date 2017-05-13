@@ -10,20 +10,20 @@ import {
   Output,
   OnChanges, SimpleChanges
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { CustomValidators } from '../validator/validator.service';
+import {ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {CustomValidators} from '../validator/validator.service';
 import uuid from 'uuid';
-import { Http, Response } from '@angular/http';
-import { ListRequestService } from '../shared/list-request.service';
-import { ErrorHandler } from '../shared/error-handler.service';
-import { ListRequest } from '../shared/list-request.model';
+import {Http, Response} from '@angular/http';
+import {ListRequest} from '../shared/list-request.model';
+import {ListRequestService} from '../shared/list-request.service';
+import {ErrorHandler} from '../shared/error-handler.service';
 
 interface OptionModel {
-  value: string | number;
-  label: string;
-  hidden?: boolean;
-  selected?: boolean;
+  value: string | number,
+  label: string,
+  hidden?: boolean,
+  selected?: boolean
 }
 
 interface OptionWithGroupModel {
@@ -103,7 +103,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   private _subscribers: Subscription[] = [];
 
   private isAjax: boolean = false;
-  public pendingRequest: boolean = false;
+  private pendingRequest: boolean = false;
   private ajaxTimeout: any = null;
 
   private baseAjaxOptions: ListRequest = {
