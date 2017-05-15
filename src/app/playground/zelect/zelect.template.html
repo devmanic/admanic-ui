@@ -1,10 +1,71 @@
-<div style="max-width: 300px;">
-  <div [formGroup]="form">
-    <zelect [options]="options"
-            [placeholder]="'Select'"
-            [showAddNewBtn]="true"
-            formControlName="select"
-            (onAddClick)="onCreate($event)"
-    ></zelect>
+<div [formGroup]="form">
+
+  <div class="row">
+    <div class="col-md-3">
+      <h3>Base select</h3>
+      <zelect [options]="options"
+              [placeholder]="'Select item'"
+              formControlName="select"
+      ></zelect>
+      <p>Value: {{form.get('select').value || 'not selected'}}</p>
+    </div>
+
+    <div class="col-md-3">
+      <h3>Select with 'Add new' button</h3>
+      <zelect [options]="options"
+              [placeholder]="'Select item'"
+              [showAddNewBtn]="true"
+              (onAddClick)="onCreate($event);"
+              formControlName="select_with_add_new"
+      ></zelect>
+      <p>Value: {{form.get('select_with_add_new').value || 'not selected'}}</p>
+    </div>
+
+    <div class="col-md-3">
+      <h3>Select with groups in list</h3>
+      <zelect [options]="options_with_groups"
+              [placeholder]="'Select item'"
+              formControlName="options_with_groups"
+      ></zelect>
+      <p>Value: {{form.get('options_with_groups').value || 'not selected'}}</p>
+    </div>
+
+    <div class="col-md-3">
+      <h3>with ability create new entity</h3>
+      <zelect [options]="select_with_new_entity"
+              [placeholder]="'Select item'"
+              [allowCreateEntity]="true"
+              (newEntityAdd)="newEntityAdd($event);"
+              formControlName="select_with_new_entity"
+      ></zelect>
+      <p>Value: {{form.get('select_with_new_entity').value || 'not selected'}}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+
+    <div class="col-md-3">
+      <h3>Select with allow clear</h3>
+      <zelect [options]="select_with_new_entity"
+              [placeholder]="'Select item'"
+              [allowClear]="true"
+              [allowCreateEntity]="true"
+              formControlName="select_with_allowClear"
+      ></zelect>
+      <p>Value: {{form.get('select_with_allowClear').value || 'not selected'}}</p>
+    </div>
+
+    <div class="col-md-3">
+      <h3>Select with icon</h3>
+      <zelect [options]="select_with_new_entity"
+              [placeholder]="'Select item'"
+              [allowCreateEntity]="true"
+              [addonIcon]="'person'"
+              formControlName="select_with_icon"
+      ></zelect>
+      <p>Value: {{form.get('select_with_icon').value || 'not selected'}}</p>
+    </div>
+
+
   </div>
 </div>

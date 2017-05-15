@@ -17,6 +17,29 @@ $caret-width: 30px;
   color: $text-color;
   font-size: $text-size;
   &__input {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    &-group {
+      display: table;
+      width: 100%;
+    }
+    &__addon {
+      margin: 0;
+      display: table-cell;
+      vertical-align: middle;
+      padding: 0 5px;
+      border-right: 1px solid $input-border-color;
+      background: $input-addon-bg;
+      border-radius: $input-border-radius 0 0 $input-border-radius;
+      color: $input-addon-color;
+      min-width: $input-addon-width;
+      text-align: center;
+      line-height: 1;
+      .material-icons {
+        font-size: inherit;
+      }
+    }
     &__field {
       display: block;
       width: 100%;
@@ -58,7 +81,7 @@ $caret-width: 30px;
     z-index: 102;
     overflow: hidden;
     &.with-addon {
-      left: 35px;
+      left: $input-addon-width - 1px;
     }
     &__results {
       max-height: 165px;
@@ -74,16 +97,17 @@ $caret-width: 30px;
         }
       }
       > p {
-        //padding: 5px 8px;
-        //font-weight: bold;
-        //font-size: 14px;
-        //border-top: 1px solid #cfcfcf;
-        //&:first-child {
-        //  border-top: none;
-        //}
-        //&.hidden {
-        //  display: none;
-        //}
+        margin: 0;
+        padding: $input-y-padding + 2px $input-x-padding / 2;
+        font-weight: bold;
+        border-top: 1px solid $input-border-color;
+        line-height: 1;
+        &:first-child {
+          border-top: none;
+        }
+        &.hidden {
+          display: none;
+        }
       }
       > li,
       > ol {
@@ -134,8 +158,8 @@ $caret-width: 30px;
 
   &__add-new-btn {
     @include resetBtn;
-    padding:$input-y-padding $input-x-padding*2;
-    border-top:1px solid $input-border-color;
+    padding: $input-y-padding $input-x-padding*2;
+    border-top: 1px solid $input-border-color;
     width: 100%;
     position: relative;
     text-align: left;
@@ -150,6 +174,9 @@ $caret-width: 30px;
 
   &.is-active {
     border-radius: $input-border-radius $input-border-radius 0 0;
+    &.with-addon {
+      border-bottom-left-radius: $input-border-radius;
+    }
     .zelect__options {
       display: block;
     }
