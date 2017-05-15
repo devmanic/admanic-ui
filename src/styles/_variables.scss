@@ -10,6 +10,10 @@ $input-bg:#fff;
 
 // end inputs
 
+$select-item-bg:#eee;
+$select-item-x-padding:$input-x-padding;
+$select-item-y-padding:10px;
+
 @mixin resetFont(){
   color:inherit;
   font-family:inherit;

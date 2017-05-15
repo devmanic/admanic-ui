@@ -89,7 +89,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   @Output() public selected = new EventEmitter();
   @Output() public onAddClick = new EventEmitter();
 
-  public queryStr: FormControl = new FormControl('', [
+  public queryStr: FormControl = new FormControl(null, [
     Validators.minLength(3),
     Validators.maxLength(100),
     CustomValidators.ZelectQueryValidator()
@@ -114,7 +114,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
 
 
   constructor(private http: Http, private errorHandler: ErrorHandler) {
-
+    this.subscribeToQueryStringChange();
   }
 
   public ngAfterViewInit() {
@@ -160,13 +160,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
 
   public clearSelection(e: Event = new Event('')) {
     e.preventDefault();
-    this.queryStr.setValue('');
-    this.value = undefined;
-    this._options = this._options.map((option: OptionModel) => {
-      option.selected = false;
-      option.hidden = false;
-      return option;
-    });
+    this.writeValue('');
     this.selected.emit(this.selectedItem);
   }
 
@@ -174,27 +168,14 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     if (value || value === null || value == '0') {
       this.value = value;
 
-      let array = this.hasGroups ? _.flatMap(this._options, (item: any) => item.values) : this._options;
+      let array = this.hasGroups ? _.flatMap(this.options, (item: any) => item.values) : this.options;
       let selectedOption: OptionModel = array.filter((option: OptionModel) => value == option.value)[0];
       this.selectedItem = selectedOption;
 
       if (!selectedOption || !selectedOption.label || !selectedOption.value) return;
 
-      let label = selectedOption.label.toString().split(this.newItemPostfix)[0];
+      let label = this.trimNewItemString(selectedOption.label);
       this.queryStr.setValue(label);
-
-      if (!this.hasGroups) {
-        this._options = this._options.map((option: OptionModel) =>
-          Object.assign(option, {selected: option.value == value ? true : false, hidden: false})
-        );
-      } else {
-        this._options = this._options.map((option: OptionWithGroupModel) => ({
-          name: option.name,
-          values: option.values.map((o: OptionModel) =>
-            Object.assign(o, {selected: o.value == value ? true : false, hidden: false})
-          )
-        }));
-      }
 
       if (isSelect) {
         this.selected.emit(selectedOption);
@@ -202,8 +183,9 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     } else {
       this.queryStr.setValue('');
       this.value = null;
+      this.selectedItem = null;
       this.options = this.options.map((option: OptionModel) => {
-        return Object.assign(option, {selected: false})
+        return Object.assign(option, {selected: false, hidden: false})
       });
     }
   }
@@ -226,10 +208,10 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     this.writeValue(value, true);
   }
 
-  public onInputKeyUp(e: Event | any = new Event('')) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.isAjax ? this.onAjaxFindOptions() : this.onFilterOptions();
+  private subscribeToQueryStringChange() {
+    this._subscribers.push(this.queryStr.valueChanges.filter(value => !!value || value === '').subscribe(() => {
+      this.isAjax ? this.onAjaxFindOptions() : this.filter();
+    }));
   }
 
   private onAjaxFindOptions(skipQuery: boolean = false) {
@@ -272,32 +254,29 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
       .finally(() => this.pendingRequest = false)
   }
 
-  private onFilterOptions() {
-    if (this.allowClear) {
-      if (this.queryStr.value === '') {
-        this.clearSelection();
-      } else {
-        this.filter();
-      }
+  private isElSelected(item: OptionModel): boolean {
+    if (this.selectedItem) {
+      return item.value == this.selectedItem.value;
     }
-    this.filter();
+    return false;
   }
 
-  private filter() {
-    if (!this.hasGroups) { // sort items without groups
-      this._options = this._options.map((option: OptionModel) =>
-        Object.assign(option, {
-          hidden: (option.label.toLowerCase().indexOf(this.queryStr.value.toLowerCase()) === -1)
-        })
-      );
-    } else { // sort items with groups
-      this._options = this._options.map((option: any) => (
+  private filter(value: string = this.queryStr.value) {
+    if (!this.hasGroups) {
+      this.options = this.options.map((item: OptionModel) => ({
+        ...item,
+        hidden: (item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
+        selected: this.isElSelected(item)
+      }));
+    } else {
+      this.options = this.options.map((option: any) => (
         {
           name: option.name,
-          hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(this.queryStr.value.toLowerCase()) === -1),
+          hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
           values: option.values.map((item: OptionModel) =>
             Object.assign(item, {
-              hidden: (item.label.toLowerCase().indexOf(this.queryStr.value.toLowerCase()) === -1)
+              hidden: (item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
+              selected: this.isElSelected(item)
             })
           )
         }
@@ -313,6 +292,8 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   public startSearch(e: Event) {
     e.preventDefault();
     e.stopPropagation();
+    (<HTMLInputElement>e.target).select();
+    this.filter('');
     this.isOpen = true;
     this.show.emit();
     if (this.isAjax) {
@@ -325,6 +306,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     this.inputClick(e);
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
+      this.filter('');
       this.show.emit();
     } else {
       this.showValueLabelOnEmptyQuery();
@@ -334,34 +316,39 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
 
   public addNewOption() {
     if (this.queryStr.valid) {
-      let newOption = {
+      let newOption: OptionModel = {
         value: '-2',
-        label: this.queryStr.value.split(this.newItemPostfix)[0] + this.newItemPostfix,
+        label: this.trimNewItemString(this.queryStr.value) + this.newItemPostfix,
         selected: true
       };
-      this._options = [].concat(
-        this._options.filter((option: OptionModel) => option.value != newOption.value),
+      this.options = [].concat(
+        this.options.filter((option: OptionModel) => option.value != newOption.value),
         [newOption]
       );
       this.writeValue(newOption.value);
-      this.newEntityAdd.emit(newOption.label.split(this.newItemPostfix)[0]);
+      this.newEntityAdd.emit(this.trimNewItemString(newOption.label));
     }
   }
 
   public get nothingNotFound(): boolean {
-    return this._options.every((option: OptionModel) => option.hidden)
+    return this.options.every((option: OptionModel) => option.hidden)
   }
 
   private showValueLabelOnEmptyQuery() {
-    if (this.queryStr.value === '') {
-      let option = _.find(this.options, (item: any) => item.value == this.value);
-      if (option) {
-        this.queryStr.setValue(option.label);
-      }
+    if (this.selectedItem && this.trimNewItemString(this.queryStr.value) !== this.trimNewItemString(this.selectedItem.label)) {
+      this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
     }
+  }
+
+  private trimNewItemString(str: string): string {
+    return str.split(this.newItemPostfix)[0].trim();
   }
 
   public onAddNewBtnClick(e: Event = new Event('')) {
     this.onAddClick.emit(e);
+  }
+
+  public trackListByFn(index: number, item: OptionModel) {
+    return item.value
   }
 }
