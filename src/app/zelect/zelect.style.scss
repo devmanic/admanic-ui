@@ -4,7 +4,7 @@
 *:before,
 *:after {
   box-sizing: border-box;
-  transition: all .1s ease;
+  //transition: all .1s ease;
 }
 
 $caret-width: 30px;
@@ -183,6 +183,18 @@ $caret-width: 30px;
     .zelect__button {
       &:before {
         transform: rotate(180deg) translateY(50%);
+      }
+    }
+  }
+}
+
+:host(.ng-invalid.ng-dirty){
+  .zelect{
+    border-color:$input-border-color-invalid;
+    &__input{
+      &__addon{
+        border-color: $input-border-color-invalid;
+        color:$input-border-color-invalid;
       }
     }
   }

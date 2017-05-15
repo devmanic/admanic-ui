@@ -66,6 +66,21 @@
       <p>Value: {{form.get('select_with_icon').value || 'not selected'}}</p>
     </div>
 
+    <div class="col-md-3">
+      <h3>Select with validators</h3>
+      <zelect [options]="select_with_new_entity"
+              [placeholder]="'Select item'"
+              [allowCreateEntity]="true"
+              [addonIcon]="'person'"
+              formControlName="select_with_validators"
+      ></zelect>
+      <div>
+        <button (click)="clearItem('select_with_validators')">Clear</button>
+      </div>
+      <p>Value: {{form.get('select_with_validators').value || 'not selected'}}</p>
+      <p>status: {{form.get('select_with_validators').status}}</p>
+    </div>
+
 
   </div>
 </div>

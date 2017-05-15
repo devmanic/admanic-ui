@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'zelect-playground',
@@ -18,6 +18,7 @@ export class ZelectPlaygroundComponent {
     select_with_new_entity: new FormControl(''),
     select_with_allowClear: new FormControl(''),
     select_with_icon: new FormControl(''),
+    select_with_validators: new FormControl('', [Validators.required]),
   });
 
   constructor() {
@@ -49,6 +50,10 @@ export class ZelectPlaygroundComponent {
 
   public newEntityAdd(e) {
     console.info(`add new entity, title: ${e}`);
+  }
+
+  public clearItem(key: string) {
+    this.form.get(key).setValue(null);
   }
 
   private generateSelectItem(i: number) {

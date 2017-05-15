@@ -153,7 +153,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
       this.hasGroups = changes._options.currentValue.every((el: any) => el.hasOwnProperty('name'));
       let selected = changes._options.currentValue.filter((el: OptionModel) => el.selected)[0];
       if (selected) {
-        this.writeValue(selected.value)
+        this.writeValue(selected.value);
       }
     }
   }
@@ -172,7 +172,10 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
       let selectedOption: OptionModel = array.filter((option: OptionModel) => value == option.value)[0];
       this.selectedItem = selectedOption;
 
-      if (!selectedOption || !selectedOption.label || !selectedOption.value) return;
+      if (!selectedOption || !selectedOption.label || !selectedOption.value){
+        this.queryStr.setValue('');
+        return;
+      }
 
       let label = this.trimNewItemString(selectedOption.label);
       this.queryStr.setValue(label);
@@ -349,6 +352,6 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   }
 
   public trackListByFn(index: number, item: OptionModel) {
-    return item.value
+    return item.value;
   }
 }
