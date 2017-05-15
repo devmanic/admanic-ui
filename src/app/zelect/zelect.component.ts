@@ -10,7 +10,9 @@ import {
   Output,
   OnChanges, SimpleChanges
 } from '@angular/core';
-import {ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
+import {
+  ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
+} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {CustomValidators} from '../validator/validator.service';
 import uuid from 'uuid';
@@ -20,10 +22,10 @@ import {ListRequestService} from '../shared/list-request.service';
 import {ErrorHandler} from '../shared/error-handler.service';
 
 interface OptionModel {
-  value: string | number,
-  label: string,
-  hidden?: boolean,
-  selected?: boolean
+  value: string | number;
+  label: string;
+  hidden?: boolean;
+  selected?: boolean;
 }
 
 interface OptionWithGroupModel {
@@ -36,6 +38,7 @@ interface AjaxParams {
   options?: ListRequest;
 }
 
+const newEntityLen: number = 3;
 @Component({
   providers: [
     {
@@ -53,6 +56,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   public newItemPostfix: string;
   public server = SERVER;
   public hasGroups: boolean = false;
+  public invalidQueryString: boolean = false;
 
   @Input('options') _options: Array<OptionModel | OptionWithGroupModel> = [];
   @Input('value') _value = false;
@@ -90,7 +94,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   @Output() public onAddClick = new EventEmitter();
 
   public queryStr: FormControl = new FormControl(null, [
-    Validators.minLength(3),
+    Validators.minLength(newEntityLen),
     Validators.maxLength(100),
     CustomValidators.ZelectQueryValidator()
   ]);
@@ -122,6 +126,16 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     this.originalPlaceholder = this.placeholder;
 
     this.initAjax(this.ajax);
+
+    if (this.allowCreateEntity) {
+      this.queryStr.statusChanges.subscribe((status: string) => {
+        if (this.queryStr.value.length + 1 > newEntityLen) {
+          this.invalidQueryString = (status === 'INVALID');
+        } else {
+          this.invalidQueryString = false;
+        }
+      });
+    }
   }
 
   private initAjax(params: AjaxParams) {
@@ -172,7 +186,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
       let selectedOption: OptionModel = array.filter((option: OptionModel) => value == option.value)[0];
       this.selectedItem = selectedOption;
 
-      if (!selectedOption || !selectedOption.label || !selectedOption.value){
+      if (!selectedOption || !selectedOption.label || !selectedOption.value) {
         this.queryStr.setValue('');
         return;
       }

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ZelectModule } from '../zelect/zelect.module';
 import { PlaygroundComponent } from './playground.component';
 import { ZelectPlaygroundComponent } from './zelect/zelect.component';
+import {ValidatorsModule} from "../validator/validator.module";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { ZelectPlaygroundComponent } from './zelect/zelect.component';
         FormsModule,
         RouterModule,
         ReactiveFormsModule,
-        ZelectModule
+        ZelectModule,
+      ValidatorsModule
     ],
     providers: []
 })

@@ -78,7 +78,17 @@
         <button (click)="clearItem('select_with_validators')">Clear</button>
       </div>
       <p>Value: {{form.get('select_with_validators').value || 'not selected'}}</p>
-      <p>status: {{form.get('select_with_validators').status}}</p>
+      <validator-messages [field]="form.get('select_with_validators')"></validator-messages>
+    </div>
+
+    <div class="col-md-3">
+      <h3>Select disabled</h3>
+      <zelect [options]="select_with_new_entity"
+              [placeholder]="'Select item'"
+              [allowCreateEntity]="true"
+              [addonIcon]="'person'"
+              [disabled]="true"
+      ></zelect>
     </div>
 
 

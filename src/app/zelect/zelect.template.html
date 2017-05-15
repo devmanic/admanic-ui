@@ -1,5 +1,5 @@
 <!-- el wrapper -->
-<div class="zelect__wrapper">
+<div class="zelect__wrapper" [ngClass]="{'invalid':invalidQueryString, 'is-disabled':disabled}">
   <!-- component -->
   <div class="zelect" [ngClass]="{'is-active':isOpen, 'with-addon': addonIcon}">
     <!-- search input -->
@@ -63,7 +63,8 @@
           {{pendingRequest ? 'Searching...' : 'No results found'}}
         </li>
 
-        <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No results found'}}
+        <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No results
+          found'}}
         </li>
         <!-- / results el -->
 
@@ -77,7 +78,8 @@
       <!-- / lists results -->
 
       <!-- clear selection btn -->
-      <ul *ngIf="allowClear && options.length && !nothingNotFound && value" class="zelect__options__results clear-selection">
+      <ul *ngIf="allowClear && options.length && !nothingNotFound && value"
+          class="zelect__options__results clear-selection">
         <li (click)="clearSelection($event)">None</li>
       </ul>
       <!-- / clear selection btn -->

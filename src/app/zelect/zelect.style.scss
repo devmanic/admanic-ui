@@ -16,6 +16,26 @@ $caret-width: 30px;
   border-radius: $input-border-radius;
   color: $text-color;
   font-size: $text-size;
+  &__wrapper {
+    position: relative;
+    &.is-disabled {
+      pointer-events: none;
+      &:after {
+        content: '';
+        display: inline-block;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background: #000;
+        position: absolute;
+        border-radius: $input-border-radius;
+        opacity: .1;
+        cursor: none;
+      }
+    }
+  }
   &__input {
     display: table-cell;
     vertical-align: middle;
@@ -45,9 +65,6 @@ $caret-width: 30px;
       width: 100%;
       @include resetInput;
       padding: $input-y-padding $caret-width $input-y-padding $input-x-padding;
-    }
-    .field {
-      //padding-right: 32px;
     }
   }
   &__button {
@@ -188,13 +205,14 @@ $caret-width: 30px;
   }
 }
 
-:host(.ng-invalid.ng-dirty){
-  .zelect{
-    border-color:$input-border-color-invalid;
-    &__input{
-      &__addon{
+:host(.ng-invalid.ng-dirty),
+.zelect__wrapper.invalid {
+  .zelect {
+    border-color: $input-border-color-invalid;
+    &__input {
+      &__addon {
         border-color: $input-border-color-invalid;
-        color:$input-border-color-invalid;
+        color: $input-border-color-invalid;
       }
     }
   }
