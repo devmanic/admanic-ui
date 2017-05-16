@@ -20,6 +20,7 @@ $caret-width: 30px;
     position: relative;
     &.is-disabled {
       pointer-events: none;
+      opacity: .7;
       &:after {
         content: '';
         display: inline-block;

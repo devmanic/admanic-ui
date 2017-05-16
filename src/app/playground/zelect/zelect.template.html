@@ -92,5 +92,19 @@
     </div>
 
 
+    <div class="col-md-3">
+      <h3>Select with dynamic data</h3>
+      <zelect [options]="select_with_dynamic_data"
+              [placeholder]="'Select item'"
+              [allowCreateEntity]="true"
+              formControlName="select_with_dynamic_data"
+      ></zelect>
+      <button type="button" (click)="addNewTo('select_with_dynamic_data');">add new</button>
+      <button type="button" (click)="clearArr('select_with_dynamic_data');">Clear items</button>
+      <button type="button" (click)="selectFirst('select_with_dynamic_data');">select first</button>
+      <p>Value: {{form.get('select_with_dynamic_data').value || 'not selected'}}</p>
+    </div>
+
+
   </div>
 </div>

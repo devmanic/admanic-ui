@@ -10,6 +10,7 @@ export class ZelectPlaygroundComponent {
   public select_with_add_new: any[] = [];
   public options_with_groups: any[] = [];
   public select_with_new_entity: any[] = [];
+  public select_with_dynamic_data: any[] = [];
 
   public form = new FormGroup({
     select: new FormControl(''),
@@ -18,6 +19,7 @@ export class ZelectPlaygroundComponent {
     select_with_new_entity: new FormControl(''),
     select_with_allowClear: new FormControl(''),
     select_with_icon: new FormControl(''),
+    select_with_dynamic_data: new FormControl(''),
     select_with_validators: new FormControl('', [Validators.required]),
   });
 
@@ -32,6 +34,7 @@ export class ZelectPlaygroundComponent {
 
     for (let i = 1; i < 5; i++) {
       this.select_with_new_entity.push(this.generateSelectItem(i));
+      this.select_with_dynamic_data.push(this.generateSelectItem(i));
     }
 
     for (let i = 1; i < 16; i++) {
@@ -42,6 +45,21 @@ export class ZelectPlaygroundComponent {
         values: generateItems(5)
       });
     }
+  }
+
+  public addNewTo(key: string) {
+    this[key] = this[key].concat([this.generateSelectItem(Math.floor(Math.random() * 10))]);
+  }
+
+  public clearArr(key: string) {
+    this[key] = [];
+  }
+
+  public selectFirst(key: string) {
+    if (!this[key].length || !!!this.form.get(key)) {
+      return;
+    }
+    this.form.get(key).setValue(this[key][0].value);
   }
 
   public onCreate(event) {
