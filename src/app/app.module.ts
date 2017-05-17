@@ -30,7 +30,7 @@ import { AppState, InternalStateType } from './app.service';
 
 import { PlaygroundModule } from './playground/playground.module';
 import { SharedModule } from './shared/shared.module';
-import { ZelectModule } from './components/index';
+import { ZelectModule, InputFieldModule } from './components/index';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -61,6 +61,7 @@ type StoreType = {
         PlaygroundModule,
         SharedModule,
         ZelectModule,
+        InputFieldModule
     ],
     exports: [
 

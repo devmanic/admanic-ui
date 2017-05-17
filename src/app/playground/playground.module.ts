@@ -5,12 +5,14 @@ import { RouterModule } from '@angular/router';
 import { PlaygroundComponent } from './playground.component';
 import { ZelectPlaygroundComponent } from './zelect/zelect.component';
 import { ValidatorsModule } from '../validator/validator.module';
-import { ZelectModule } from '../components/zelect/zelect.module';
+import { ZelectModule, InputFieldModule } from '../components/index';
+import { PGInputComponent } from './input/component';
 
 @NgModule({
   declarations: [
     PlaygroundComponent,
-    ZelectPlaygroundComponent
+    ZelectPlaygroundComponent,
+    PGInputComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +20,7 @@ import { ZelectModule } from '../components/zelect/zelect.module';
     RouterModule,
     ReactiveFormsModule,
     ZelectModule,
+    InputFieldModule,
     ValidatorsModule
   ],
   providers: []
