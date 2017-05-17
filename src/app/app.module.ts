@@ -29,8 +29,8 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 
 import { PlaygroundModule } from './playground/playground.module';
-import { ZelectModule } from './zelect/zelect.module';
 import { SharedModule } from './shared/shared.module';
+import { ZelectModule } from './components/index';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -63,7 +63,7 @@ type StoreType = {
         ZelectModule,
     ],
     exports: [
-        ZelectModule
+
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         ENV_PROVIDERS,

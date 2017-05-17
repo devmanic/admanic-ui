@@ -13,13 +13,13 @@ import {
 import {
   ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
 } from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {CustomValidators} from '../validator/validator.service';
+import { Subscription } from 'rxjs';
+import { CustomValidators } from '../../validator/validator.service';
 import uuid from 'uuid';
-import {Http, Response} from '@angular/http';
-import {ListRequest} from '../shared/list-request.model';
-import {ListRequestService} from '../shared/list-request.service';
-import {ErrorHandler} from '../shared/error-handler.service';
+import { Http, Response } from '@angular/http';
+import { ListRequest } from '../../shared/list-request.model';
+import { ListRequestService } from '../../shared/list-request.service';
+import { ErrorHandler } from '../../shared/error-handler.service';
 
 interface OptionModel {
   value: string | number;
@@ -48,7 +48,7 @@ const newEntityLen: number = 3;
     }
   ],
   selector: 'zelect',
-  styleUrls: ['./zelect.style.scss'],
+  styleUrls: ['zelect.style.scss'],
   templateUrl: 'zelect.template.html'
 })
 export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
