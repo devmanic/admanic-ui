@@ -1,2 +1,6 @@
 <h2>Input field</h2>
-<input-field></input-field>
+<div [formGroup]="form">
+  <adm-input-container>
+    <input adm type="text" formControlName="first_name" placeholder="First Name">
+  </adm-input-container>
+</div>

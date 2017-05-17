@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { InputFieldComponent } from './input-field.component';
+import { AdmInputContainer, AdmInputDirective } from './input-field.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [],
-  exports: [InputFieldComponent],
-  declarations: [InputFieldComponent],
-  providers: [],
+  imports: [CommonModule],
+  exports: [AdmInputContainer, AdmInputDirective],
+  declarations: [AdmInputContainer, AdmInputDirective],
+  providers: []
 })
 export class InputFieldModule {
 }
