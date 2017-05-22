@@ -1,6 +1,14 @@
 <h2>Input field</h2>
-<div [formGroup]="form">
-  <adm-input-container>
-    <input adm type="text" formControlName="first_name" placeholder="First Name">
-  </adm-input-container>
+<div class="row">
+  <div class="col-md-3">
+    <div [formGroup]="form">
+      <adm-input-container>
+        <input admanic formGroupName="first_name" type="text" formControlName="first_name" placeholder="First Name">
+      </adm-input-container>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <zelect [options]="[]"></zelect>
+  </div>
 </div>
+

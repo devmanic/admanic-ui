@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, Directive, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Directive, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 @Directive({
-  selector: 'input[adm], textarea[adm]',
-  host:{
-    '[class.bla]':'true'
+  selector: 'input[admanic], textarea[admanic]',
+  host: {
+    '[class.bla]': 'true'
   }
 })
 export class AdmInputDirective {
@@ -13,17 +13,16 @@ export class AdmInputDirective {
   }
 }
 
-
 @Component({
-  selector:'adm-input-container',
+  selector: 'adm-input-container',
   encapsulation: ViewEncapsulation.None,
-  template:`
-    input container
+  styleUrls: ['styles.scss'],
+  template: `
     <div>
       <ng-content></ng-content>
     </div>
   `
 })
-export class AdmInputContainer{
+export class AdmInputContainer {
 
 }

@@ -1,0 +1,16 @@
+@import '../../../styles/_variables.scss';
+
+input {
+  @include resetInput;
+  border: 1px solid $input-border-color;
+  border-radius: $input-border-radius;
+  padding: $input-y-padding $input-x-padding;
+  font-size: $text-size;
+  color: $text-color;
+  background: $input-bg;
+  width: 100%;
+  position: relative;
+  text-align: left;
+  resize: none;
+  transition: all .3s;
+}
