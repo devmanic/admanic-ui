@@ -5,12 +5,15 @@ import { RouterModule } from '@angular/router';
 import { ZelectModule } from '../zelect/zelect.module';
 import { PlaygroundComponent } from './playground.component';
 import { ZelectPlaygroundComponent } from './zelect/zelect.component';
-import {ValidatorsModule} from "../validator/validator.module";
+import { ValidatorsModule } from '../validator/validator.module';
+import { CheckboxPlaygroundComponent } from './checkbox/checkbox.component';
+import { CheckboxModule } from '../checkbox/checkbox.module';
 
 @NgModule({
     declarations: [
         PlaygroundComponent,
-        ZelectPlaygroundComponent
+        ZelectPlaygroundComponent,
+        CheckboxPlaygroundComponent
     ],
     imports: [
         CommonModule,
@@ -18,7 +21,8 @@ import {ValidatorsModule} from "../validator/validator.module";
         RouterModule,
         ReactiveFormsModule,
         ZelectModule,
-      ValidatorsModule
+        CheckboxModule,
+        ValidatorsModule
     ],
     providers: []
 })

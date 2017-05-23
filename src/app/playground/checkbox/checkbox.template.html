@@ -1,0 +1,43 @@
+<div [formGroup]="form">
+  <div class="row">
+    <div class="col-md-3">
+      <h3>Base checkbox</h3>
+      <ui-checkbox
+          formControlName="simple_checkbox"
+          aria-label="test"
+          aria-labelledby="test"
+          required="true">
+        Base checkbox
+      </ui-checkbox>
+      <p>Value: {{form.get('simple_checkbox').value || 'not selected'}}</p>
+    </div>
+    <div class="col-md-3">
+      <h3>Label position before checkbox</h3>
+      <ui-checkbox
+          formControlName="label_checkbox"
+          labelPosition="before">
+        Label position before checkbox
+      </ui-checkbox>
+      <p>Value: {{form.get('label_checkbox').value || 'not selected'}}</p>
+    </div>
+    <div class="col-md-3">
+      <h3>Required checkbox</h3>
+      <ui-checkbox
+          formControlName="required_checkbox"
+          required="true">
+        Required checkbox
+      </ui-checkbox>
+      <p>Value: {{form.get('required_checkbox').value || 'not selected'}}</p>
+      <validator-messages [field]="form.get('required_checkbox')"></validator-messages>
+    </div>
+    <div class="col-md-3">
+      <h3>Disabled checkbox</h3>
+      <ui-checkbox
+          formControlName="disabled_checkbox"
+          disabled="true">
+        Disabled checkbox
+      </ui-checkbox>
+      <p>Value: {{form.get('disabled_checkbox').value || 'not selected'}}</p>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
     styleUrls: [
         './app.component.css'
     ],
-    template: `<router-outlet></router-outlet>`
+    template: `
+        <router-outlet></router-outlet>`
 })
 export class AppComponent {
 

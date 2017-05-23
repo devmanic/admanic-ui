@@ -1,8 +1,8 @@
-<label class="mat-checkbox-layout" #label>
-    <div class="mat-checkbox-inner-container"
-         [class.mat-checkbox-inner-container-no-side-margin]="!_hasLabel()">
+<label class="ui-checkbox-layout" #label>
+    <div class="ui-checkbox-inner-container"
+         [class.ui-checkbox-inner-container-no-side-margin]="!_hasLabel()">
         <input #input
-               class="mat-checkbox-input cdk-visually-hidden" type="checkbox"
+               class="ui-checkbox-input cdk-visually-hidden" type="checkbox"
                [id]="inputId"
                [required]="required"
                [checked]="checked"
@@ -10,13 +10,12 @@
                [disabled]="disabled"
                [name]="name"
                [tabIndex]="tabIndex"
-               [indeterminate]="indeterminate"
                [attr.aria-label]="ariaLabel"
                [attr.aria-labelledby]="ariaLabelledby"
                (change)="_onInteractionEvent($event)"
                (click)="_onInputClick($event)">
     </div>
-    <span class="mat-checkbox-label" #labelWrapper>
+    <span class="ui-checkbox-label" #labelWrapper>
     <ng-content></ng-content>
   </span>
 </label>

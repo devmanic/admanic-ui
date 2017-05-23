@@ -1,20 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {
-    NgModule,
-    ApplicationRef
-} from '@angular/core';
-import {
-    removeNgStyles,
-    createNewHosts,
-    createInputTransfer
-} from '@angularclass/hmr';
-import {
-    RouterModule,
-    PreloadAllModules
-} from '@angular/router';
-
+import { ApplicationRef, NgModule } from '@angular/core';
+import { createInputTransfer, createNewHosts, removeNgStyles } from '@angularclass/hmr';
+import { RouterModule } from '@angular/router';
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -22,7 +11,6 @@ import { ENV_PROVIDERS } from './environment';
 import { ROUTES } from './app.routes';
 
 import '../styles/styles.scss';
-
 // App is our top level component
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
