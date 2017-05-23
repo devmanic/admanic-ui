@@ -1,18 +1,5 @@
-import { AfterViewInit, Component, Directive, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { Form, FormControl } from '@angular/forms';
-
-@Directive({
-  selector: 'input[admanic], textarea[admanic]',
-  host: {
-    '[class.bla]': 'true'
-  }
-})
-export class AdmInputDirective {
-
-  constructor() {
-    console.log('---AdmInputDirective----');
-  }
-}
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'adm-input-container',
