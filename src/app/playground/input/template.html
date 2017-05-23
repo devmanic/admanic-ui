@@ -31,12 +31,12 @@
   <br>
   <div class="row">
     <div class="col-md-3">
-      <adm-input-container label="Some label">
+      <adm-input-container label="Some label" description="Field with company must be filled">
         <input adm type="text" placeholder="Text">
       </adm-input-container>
     </div>
     <div class="col-md-3">
-      <adm-input-container label="Some required label" [control]="form.get('r')">
+      <adm-input-container label="Some required label" description="hui" [control]="form.get('r')">
         <input adm type="text" placeholder="Text" formControlName="r">
       </adm-input-container>
     </div>

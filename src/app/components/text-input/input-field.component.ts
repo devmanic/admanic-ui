@@ -12,6 +12,7 @@ export class DynamicTextAreaDirective implements OnDestroy {
   constructor(el: ElementRef) {
     let source = Observable.fromEvent(el.nativeElement, 'keyup');
     el.nativeElement.style.resize = 'none';
+    el.nativeElement.style.overflow = 'hidden';
     source.subscribe((e: Event) => {
       (<HTMLElement>e.target).style.height = 'auto';
       (<HTMLElement>e.target).style.height = `${(<HTMLElement>e.target).scrollHeight + 2}px`;
@@ -45,6 +46,7 @@ export class DynamicTextAreaDirective implements OnDestroy {
     <div *ngIf="control && invalid">
       <validator-messages [field]="control"></validator-messages>
     </div>
+    <div class="adm-input__description" *ngIf="description">{{ description }}</div>
   `
 })
 export class AdmInputContainer {
@@ -61,6 +63,7 @@ export class AdmInputContainer {
 
   @Input() addonIcon: string;
   @Input() label: string;
+  @Input() description: string;
 
   required: boolean = false;
 

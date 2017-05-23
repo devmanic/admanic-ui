@@ -1,6 +1,11 @@
 @import '../../../styles/_variables.scss';
 
 .adm-input {
+  &__description {
+    color: $input-description-color;
+    font-size: 12px;
+    margin-top: 7px;
+  }
   &__label {
     font-size: 13px;
     margin-bottom: 9px;
@@ -44,7 +49,7 @@
       transition: border-color .3s;
     }
     input[adm][type="text"],
-    textarea[adm]{
+    textarea[adm] {
       @include resetInput;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
@@ -71,7 +76,7 @@
         flex-direction: row;
         input[adm][type="text"],
         .zelect,
-        textarea[adm]{
+        textarea[adm] {
           border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
