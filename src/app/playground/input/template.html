@@ -1,0 +1,60 @@
+<h2>Input field</h2>
+<div style="padding: 30px; background: #fff;" [formGroup]="form">
+  <div class="row">
+    <div class="col-md-3">
+      <h3>With icon</h3>
+      <adm-input-container [control]="form.get('first_name')" addonIcon="person">
+        <input adm type="text" formControlName="first_name" placeholder="First Name">
+      </adm-input-container>
+    </div>
+    <div class="col-md-3">
+      <h3>Without icon</h3>
+      <adm-input-container [control]="form.get('last_name')">
+        <input adm type="text" formControlName="last_name" placeholder="Last Name">
+      </adm-input-container>
+    </div>
+    <div class="col-md-3">
+      <h3>E-mail</h3>
+      <adm-input-container [control]="form.get('email')" addonIcon="mail">
+        <input adm type="text" formControlName="email" placeholder="E-mail">
+      </adm-input-container>
+    </div>
+    <div class="col-md-3">
+      <h3>Without validator</h3>
+      <adm-input-container>
+        <input adm type="text" placeholder="Text">
+      </adm-input-container>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="row">
+    <div class="col-md-3">
+      <adm-input-container label="Some label">
+        <input adm type="text" placeholder="Text">
+      </adm-input-container>
+    </div>
+    <div class="col-md-3">
+      <adm-input-container label="Some required label" [control]="form.get('r')">
+        <input adm type="text" placeholder="Text" formControlName="r">
+      </adm-input-container>
+    </div>
+    <div class="col-md-3">
+      <adm-input-container label="Label for select">
+        <zelect [options]="[]"></zelect>
+      </adm-input-container>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="row">
+    <div class="col-md-6">
+      <adm-input-container addonIcon="person" [control]="form.get('a')" label="textarea label">
+        <textarea adm rows="5" formControlName="a" m></textarea>
+      </adm-input-container>
+    </div>
+  </div>
+
+</div>
