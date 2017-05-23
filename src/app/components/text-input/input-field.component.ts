@@ -1,5 +1,29 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Directive, ElementRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+@Directive({
+  selector: 'textarea[dynamic-height]'
+})
+export class DynamicTextAreaDirective implements OnDestroy {
+  _keyUpSubscriber: Subscription;
+
+  constructor(el: ElementRef) {
+    let source = Observable.fromEvent(el.nativeElement, 'keyup');
+    el.nativeElement.style.resize = 'none';
+    source.subscribe((e: Event) => {
+      (<HTMLElement>e.target).style.height = 'auto';
+      (<HTMLElement>e.target).style.height = `${(<HTMLElement>e.target).scrollHeight + 2}px`;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this._keyUpSubscriber) {
+      this._keyUpSubscriber.unsubscribe();
+    }
+  }
+}
 
 @Component({
   selector: 'adm-input-container',
