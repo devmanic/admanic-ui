@@ -11,6 +11,7 @@ export class PGInputComponent implements OnInit {
     last_name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     r: new FormControl('', [Validators.required]),
+    a: new FormControl('', [Validators.required]),
   });
 
   constructor() {

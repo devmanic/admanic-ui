@@ -37,13 +37,14 @@
     }
   }
   &__container {
-    input[adm], zelect {
+    input[adm][type="text"], zelect, textarea[adm] {
       width: 100%;
     }
-    input, .zelect {
-      transition: all .3s;
+    input[adm][type="text"], .zelect, textarea[adm] {
+      transition: border-color .3s;
     }
-    input[adm] {
+    input[adm][type="text"],
+    textarea[adm]{
       @include resetInput;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
@@ -53,10 +54,10 @@
       background: $input-bg;
       position: relative;
       text-align: left;
-      resize: none;
     }
     &.is-invalid {
-      input[adm],
+      input[adm][type="text"],
+      textarea[adm],
       .adm-input__addon,
       .zelect,
       .zelect__input__addon {
@@ -68,8 +69,9 @@
       .wrap {
         display: flex;
         flex-direction: row;
-        input[adm],
-        .zelect {
+        input[adm][type="text"],
+        .zelect,
+        textarea[adm]{
           border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
