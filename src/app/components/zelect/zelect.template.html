@@ -63,7 +63,8 @@
           {{pendingRequest ? 'Searching...' : 'No results found'}}
         </li>
 
-        <li *ngIf="!options?.length && queryStr?.value?.length==0">{{pendingRequest ? 'Searching...' : 'No results found'}}
+        <li *ngIf="!options?.length && queryStr?.value?.length==0">
+          {{pendingRequest ? 'Searching...' : 'No results found'}}
         </li>
         <!-- / results el -->
 

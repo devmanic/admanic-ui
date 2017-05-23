@@ -1,16 +1,55 @@
 @import '../../../styles/_variables.scss';
 
-input {
-  @include resetInput;
-  border: 1px solid $input-border-color;
-  border-radius: $input-border-radius;
-  padding: $input-y-padding $input-x-padding;
-  font-size: $text-size;
-  color: $text-color;
-  background: $input-bg;
-  width: 100%;
-  position: relative;
-  text-align: left;
-  resize: none;
-  transition: all .3s;
+.adm-input {
+  &__addon{
+    border:1px solid $input-border-color;
+    background: $input-addon-bg;
+    margin: 0;
+    border-radius: $input-border-radius 0 0 $input-border-radius;
+    transition: all .3s;
+    color: $input-addon-color;
+    min-width: $input-addon-width;
+    text-align: center;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .material-icons {
+      font-size: inherit;
+    }
+  }
+  &__container {
+    input {
+      @include resetInput;
+      border: 1px solid $input-border-color;
+      border-radius: $input-border-radius;
+      padding: $input-y-padding $input-x-padding;
+      font-size: $text-size;
+      color: $text-color;
+      background: $input-bg;
+      width: 100%;
+      position: relative;
+      text-align: left;
+      resize: none;
+      transition: all .3s;
+    }
+    &.is-invalid {
+      input,
+      .adm-input__addon{
+        border-color: $input-border-color-invalid;
+      }
+    }
+
+    &.with-addon{
+      .wrap{
+        display: flex;
+        flex-direction: row;
+        input{
+          border-left:0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+  }
 }

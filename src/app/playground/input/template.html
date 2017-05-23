@@ -1,14 +1,22 @@
 <h2>Input field</h2>
-<div class="row">
-  <div class="col-md-3">
-    <div [formGroup]="form">
-      <adm-input-container>
-        <input admanic formGroupName="first_name" type="text" formControlName="first_name" placeholder="First Name">
-      </adm-input-container>
+<div style="padding: 30px; background: #fff;">
+
+  <div class="row">
+    <div>
+
+      <div class="col-md-3">
+        <div [formGroup]="form">
+
+          <adm-input-container [control]="form.get('first_name')" [addonIcon]="'person'">
+            <input formGroupName="first_name" type="text" formControlName="first_name" placeholder="First Name">
+          </adm-input-container>
+
+        </div>
+      </div>
+      <div class="col-md-3">
+        <zelect [options]="[]"></zelect>
+      </div>
     </div>
   </div>
-  <div class="col-md-3">
-    <zelect [options]="[]"></zelect>
-  </div>
-</div>
 
+</div>
