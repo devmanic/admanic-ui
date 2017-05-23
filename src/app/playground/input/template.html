@@ -52,7 +52,12 @@
   <div class="row">
     <div class="col-md-6">
       <adm-input-container addonIcon="person" [control]="form.get('a')" label="textarea label">
-        <textarea adm rows="5" formControlName="a" m></textarea>
+        <textarea adm rows="5" formControlName="a"></textarea>
+      </adm-input-container>
+    </div>
+    <div class="col-md-6">
+      <adm-input-container addonIcon="mail" label="textarea label">
+        <textarea adm dynamic-height rows="5"></textarea>
       </adm-input-container>
     </div>
   </div>
