@@ -4,11 +4,6 @@
   <div class="zelect" [ngClass]="{'is-active':isOpen, 'with-addon': addonIcon}">
     <!-- search input -->
     <div class="zelect__input-group">
-      <!-- input addon -->
-      <span class="zelect__input__addon" *ngIf="!!addonIcon">
-            <i class="material-icons">{{addonIcon}}</i>
-        </span>
-      <!-- / input addon -->
       <!-- input wrapper -->
       <div class="zelect__input">
         <div [formGroup]="form">
@@ -32,7 +27,7 @@
     <!-- / search input -->
 
     <!-- options list wrapper -->
-    <div class="zelect__options" [ngClass]="{'with-addon' : addonIcon}">
+    <div class="zelect__options">
 
       <!-- lists results -->
       <ul class="zelect__options__results">

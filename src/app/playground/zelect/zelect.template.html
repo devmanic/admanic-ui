@@ -60,7 +60,6 @@
       <zelect [options]="select_with_new_entity"
               [placeholder]="'Select item'"
               [allowCreateEntity]="true"
-              [addonIcon]="'person'"
               formControlName="select_with_icon"
       ></zelect>
       <p>Value: {{form.get('select_with_icon').value || 'not selected'}}</p>
@@ -71,7 +70,6 @@
       <zelect [options]="select_with_new_entity"
               [placeholder]="'Select item'"
               [allowCreateEntity]="true"
-              [addonIcon]="'person'"
               formControlName="select_with_validators"
       ></zelect>
       <div>
@@ -86,7 +84,6 @@
       <zelect [options]="select_with_new_entity"
               [placeholder]="'Select item'"
               [allowCreateEntity]="true"
-              [addonIcon]="'person'"
               [disabled]="true"
       ></zelect>
     </div>
@@ -103,6 +100,20 @@
       <button type="button" (click)="clearArr('select_with_dynamic_data');">Clear items</button>
       <button type="button" (click)="selectFirst('select_with_dynamic_data');">select first</button>
       <p>Value: {{form.get('select_with_dynamic_data').value || 'not selected'}}</p>
+    </div>
+
+    <div class="col-md-3">
+      <zelect [options]="[]"></zelect>
+    </div>
+
+    <div class="col-md-3">
+      <adm-input-container label="Label for select" addonIcon="person" [control]="form.get('select_with_validators')">
+        <zelect [options]="select_with_new_entity"
+                [placeholder]="'Select item'"
+                [allowCreateEntity]="true"
+                formControlName="select_with_validators"
+        ></zelect>
+      </adm-input-container>
     </div>
 
 

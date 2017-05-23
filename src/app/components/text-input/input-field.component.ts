@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Directive, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Form, FormControl } from '@angular/forms';
 
 @Directive({
   selector: 'input[admanic], textarea[admanic]',
@@ -24,23 +24,34 @@ export class AdmInputDirective {
     '[class.with-addon]': '!!addonIcon'
   },
   template: `
-    <div>
-      <!--<pre>{{invalid}}</pre>-->
-      <div class="wrap">
-        <div *ngIf="!!addonIcon" class="adm-input__addon">
-          <i class="material-icons">{{addonIcon}}</i>
-        </div>
-        <ng-content></ng-content>
+    <label class="adm-input__label" [ngClass]="{'is-required':required}" *ngIf="!!label">{{label}}</label>
+    <div class="wrap">
+      <div *ngIf="!!addonIcon" class="adm-input__addon">
+        <i class="material-icons">{{addonIcon}}</i>
       </div>
-      <div *ngIf="control && invalid">
-        <validator-messages [field]="control"></validator-messages>
-      </div>
+      <ng-content></ng-content>
+    </div>
+    <div *ngIf="control && invalid">
+      <validator-messages [field]="control"></validator-messages>
     </div>
   `
 })
 export class AdmInputContainer {
-  @Input() control: FormControl;
-  @Input() addonIcon: string = '';
+  _ctrl: FormControl;
+
+  @Input() set control(ctrl: FormControl) {
+    this.required = ctrl.hasError('required');
+    this._ctrl = ctrl;
+  };
+
+  get control(): FormControl {
+    return this._ctrl;
+  }
+
+  @Input() addonIcon: string;
+  @Input() label: string;
+
+  required: boolean = false;
 
   get invalid(): boolean {
     if (this.control) {

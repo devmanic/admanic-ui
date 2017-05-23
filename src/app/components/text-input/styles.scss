@@ -1,8 +1,26 @@
 @import '../../../styles/_variables.scss';
 
 .adm-input {
-  &__addon{
-    border:1px solid $input-border-color;
+  &__label {
+    font-size: 13px;
+    margin-bottom: 9px;
+    font-weight: 600;
+    color: $text-color;
+    display: block;
+
+    &.is-required {
+      &:after {
+        content: "*";
+        color: #f78d00;
+        display: inline-block;
+        margin-left: 3px;
+        vertical-align: top;
+        margin-top: -2px;
+      }
+    }
+  }
+  &__addon {
+    border: 1px solid $input-border-color;
     background: $input-addon-bg;
     margin: 0;
     border-radius: $input-border-radius 0 0 $input-border-radius;
@@ -19,7 +37,13 @@
     }
   }
   &__container {
-    input {
+    input[adm], zelect {
+      width: 100%;
+    }
+    input, .zelect {
+      transition: all .3s;
+    }
+    input[adm] {
       @include resetInput;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
@@ -27,25 +51,26 @@
       font-size: $text-size;
       color: $text-color;
       background: $input-bg;
-      width: 100%;
       position: relative;
       text-align: left;
       resize: none;
-      transition: all .3s;
     }
     &.is-invalid {
-      input,
-      .adm-input__addon{
+      input[adm],
+      .adm-input__addon,
+      .zelect,
+      .zelect__input__addon {
         border-color: $input-border-color-invalid;
       }
     }
 
-    &.with-addon{
-      .wrap{
+    &.with-addon {
+      .wrap {
         display: flex;
         flex-direction: row;
-        input{
-          border-left:0;
+        input[adm],
+        .zelect {
+          border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }

@@ -67,7 +67,6 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   @Input() entityName: string = 'item';
   @Input() ajax: AjaxParams = null;
   @Input() showAddNewBtn: boolean = false;
-  @Input() addonIcon: string = '';
 
   public get options() {
     return this._options;

@@ -192,28 +192,12 @@ $caret-width: 30px;
 
   &.is-active {
     border-radius: $input-border-radius $input-border-radius 0 0;
-    &.with-addon {
-      border-bottom-left-radius: $input-border-radius;
-    }
     .zelect__options {
       display: block;
     }
     .zelect__button {
       &:before {
         transform: rotate(180deg) translateY(50%);
-      }
-    }
-  }
-}
-
-:host(.ng-invalid.ng-dirty),
-.zelect__wrapper.invalid {
-  .zelect {
-    border-color: $input-border-color-invalid;
-    &__input {
-      &__addon {
-        border-color: $input-border-color-invalid;
-        color: $input-border-color-invalid;
       }
     }
   }
