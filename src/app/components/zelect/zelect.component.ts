@@ -48,7 +48,7 @@ const newEntityLen: number = 3;
     }
   ],
   selector: 'zelect',
-  styleUrls: ['zelect.style.scss'],
+  styles: [require('./zelect.style.scss').toString()],
   templateUrl: 'zelect.template.html'
 })
 export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
@@ -201,7 +201,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
       this.value = null;
       this.selectedItem = null;
       this.options = this.options.map((option: OptionModel) => {
-        return Object.assign(option, {selected: false, hidden: false})
+        return Object.assign(option, {selected: false, hidden: false});
       });
     }
   }
@@ -261,13 +261,13 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     };
 
     if (skipQuery) {
-      delete params.query
+      delete params.query;
     }
 
     return this.http.get(this.server + `/${this.ajax.path}/list` + ListRequestService.parseRequestObject(params))
       .map((res: Response) => res.json().data)
       .catch((err, caught) => this.errorHandler.handle(err, caught))
-      .finally(() => this.pendingRequest = false)
+      .finally(() => this.pendingRequest = false);
   }
 
   private isElSelected(item: OptionModel): boolean {
@@ -347,7 +347,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
   }
 
   public get nothingNotFound(): boolean {
-    return this.options.every((option: OptionModel) => option.hidden)
+    return this.options.every((option: OptionModel) => option.hidden);
   }
 
   private showValueLabelOnEmptyQuery() {

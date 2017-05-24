@@ -29,7 +29,7 @@ export class DynamicTextAreaDirective implements OnDestroy {
 @Component({
   selector: 'adm-input-container',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['styles.scss'],
+  styles: [require('./styles.scss').toString()],
   host: {
     '[class.adm-input__container]': 'true',
     '[class.is-invalid]': 'invalid',
