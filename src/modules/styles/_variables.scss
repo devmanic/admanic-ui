@@ -1,0 +1,63 @@
+$text-color: #333;
+$text-size: 14px;
+
+// inputs
+$input-border-radius: 3px;
+$input-border-color: #cfd3d7;
+$input-border-color-invalid: #DB2828;
+$input-x-padding: 16px;
+$input-y-padding: 8px;
+$input-bg: #fff;
+$input-addon-bg: #fafafa;
+$input-addon-color: #8b97a2;
+$input-addon-width: 32px;
+$input-description-color: #8b97a2;
+// end inputs
+
+$select-item-bg: #eee;
+$select-item-x-padding: $input-x-padding;
+$select-item-y-padding: 10px;
+
+@mixin resetFont() {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@mixin resetInput() {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  outline: none !important;
+  border-radius: 0;
+  background: transparent;
+  @include resetFont;
+}
+
+@mixin resetBtn() {
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  outline: none !important;
+  background: transparent;
+  border-radius: 0;
+  @include resetFont;
+}
+
+@mixin caretIcon($color) {
+  content: "";
+  border-color: $color transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0;
+  height: 0;
+  width: 0;
+}
+
+@mixin centerAbsolut {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}

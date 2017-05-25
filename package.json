@@ -66,5 +66,10 @@
   },
   "engines": {
     "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "toastr": "^2.1.2",
+    "uuid": "^3.0.1"
   }
 }

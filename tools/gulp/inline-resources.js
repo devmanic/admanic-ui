@@ -124,6 +124,7 @@ function buildSass(content, sourceFile) {
     const result = sass.renderSync({data: content});
     return result.css.toString()
   } catch (e) {
+    console.log('here', e);
     console.error('\x1b[41m');
     console.error('at ' + sourceFile + ':' + e.line + ":" + e.column);
     console.error(e.formatted);

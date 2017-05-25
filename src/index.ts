@@ -1,35 +1,27 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SampleComponent } from './modules/sample.component';
-import { SampleDirective } from './modules/sample.directive';
-import { SamplePipe } from './modules/sample.pipe';
-import { SampleService } from './modules/sample.service';
 
-export * from './modules/sample.component';
-export * from './modules/sample.directive';
-export * from './modules/sample.pipe';
-export * from './modules/sample.service';
+import { ZelectModule } from './modules/components/zelect/zelect.module';
+import { InputFieldModule } from './modules/components/text-input/input-field.module';
+import { ValidatorsModule } from './modules/components/validator/validator.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
-  ],
-  exports: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        ZelectModule,
+        InputFieldModule,
+        ValidatorsModule
+    ],
+    declarations: [],
+    exports: []
 })
 export class AdmamicUiModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: AdmamicUiModule,
-      providers: [SampleService]
-    };
-  }
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: AdmamicUiModule,
+            providers: []
+        };
+    }
 }
