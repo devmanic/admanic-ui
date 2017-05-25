@@ -1,0 +1,26 @@
+{
+  "name": "admanic-ui",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devmanic/admanic-ui"
+  },
+  "author": {
+    "name": "Maks Zhitlov",
+    "email": "maks.zhitlov@gmail.com"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devmanic/admanic-ui/issues"
+  },
+  "module": "admanic-ui.js",
+  "typings": "admanic-ui.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^4.0.0",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.4"
+  }
+}
