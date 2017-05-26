@@ -1,2 +1,2 @@
-export * from './modules/components/zelect/zelect.module';
-export * from './modules/components/text-input/input-field.module';
+export * from './modules/components/single-select/module';
+export * from './modules/components/text-input/module';

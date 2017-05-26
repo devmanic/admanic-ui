@@ -42,10 +42,8 @@
     }
   }
   &__container {
-    input[adm][type="text"], zelect, textarea[adm] {
+    input[adm][type="text"], adm-select, textarea[adm] {
       width: 100%;
-    }
-    input[adm][type="text"], .zelect, textarea[adm] {
       transition: border-color .3s;
     }
     input[adm][type="text"],
@@ -64,7 +62,7 @@
       input[adm][type="text"],
       textarea[adm],
       .adm-input__addon,
-      .zelect,
+      adm-select,
       .zelect__input__addon {
         border-color: $input-border-color-invalid;
       }
@@ -75,7 +73,7 @@
         display: flex;
         flex-direction: row;
         input[adm][type="text"],
-        .zelect,
+        adm-select,
         textarea[adm] {
           border-left: 0;
           border-top-left-radius: 0;

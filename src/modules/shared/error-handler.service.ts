@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { ToastrService } from './toastr.service';
 
 @Injectable()
 export class ErrorHandler {
@@ -29,9 +28,7 @@ export class ErrorHandler {
         let errors = errorResponse.json().errors;
         if (errors) {
             let msg = errors[Object.keys(errors)[0]];
-            ToastrService.error('', msg);
         } else {
-            ToastrService.error('', 'Error occurred');
         }
 
     }

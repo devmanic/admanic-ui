@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomValidators } from './validator.service';
-import { ValidatorsMessagesComponent } from './validator-messages.component';
+import { CustomValidators } from './service';
+import { ValidatorsMessagesComponent } from './component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({

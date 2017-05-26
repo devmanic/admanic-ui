@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ToastrService } from './toastr.service';
 
 @Injectable()
 export class ClipboardService {
@@ -13,13 +12,13 @@ export class ClipboardService {
     public copy(data: string) {
         this.el.value = data;
         this.el.select();
-        ToastrService.clear();
+        // ToastrService.clear();
         try {
             document.execCommand('copy');
             this.el.blur();
-            ToastrService.success('', 'Copied to the clipboard');
+            // ToastrService.success('', 'Copied to the clipboard');
         } catch (err) {
-            ToastrService.error('', 'Your browser does not support the clipboard');
+            // ToastrService.error('', 'Your browser does not support the clipboard');
         }
     }
 

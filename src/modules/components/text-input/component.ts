@@ -44,12 +44,12 @@ export class DynamicTextAreaDirective implements OnDestroy {
             <ng-content></ng-content>
         </div>
         <div *ngIf="control && invalid">
-            <validator-messages [field]="control"></validator-messages>
+            <adm-validator-messages [field]="control"></adm-validator-messages>
         </div>
         <div class="adm-input__description" *ngIf="description">{{ description }}</div>
     `
 })
-export class AdmInputContainer {
+export class InputContainer {
     _ctrl: FormControl;
 
     @Input() set control(ctrl: FormControl) {

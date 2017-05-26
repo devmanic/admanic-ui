@@ -4,71 +4,30 @@
 *:before,
 *:after {
   box-sizing: border-box;
-  //transition: all .1s ease;
 }
 
 $caret-width: 30px;
 
-.zelect {
+.adm-select {
+  display: inline-block;
   position: relative;
+  width: 100%;
   background: $input-bg;
   border: 1px solid $input-border-color;
   border-radius: $input-border-radius;
   color: $text-color;
   font-size: $text-size;
-  &__wrapper {
-    position: relative;
-    &.is-disabled {
-      pointer-events: none;
-      opacity: .7;
-      &:after {
-        content: '';
-        display: inline-block;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        background: #000;
-        position: absolute;
-        border-radius: $input-border-radius;
-        opacity: .1;
-        cursor: none;
-      }
-    }
-  }
+
   &__input {
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-    &-group {
-      display: table;
-      width: 100%;
-    }
-    &__addon {
-      margin: 0;
-      display: table-cell;
-      vertical-align: middle;
-      padding: 0 5px;
-      border-right: 1px solid $input-border-color;
-      background: $input-addon-bg;
-      border-radius: $input-border-radius 0 0 $input-border-radius;
-      color: $input-addon-color;
-      min-width: $input-addon-width;
-      text-align: center;
-      line-height: 1;
-      .material-icons {
-        font-size: inherit;
-      }
-    }
-    &__field {
+    input[type='text'] {
       display: block;
       width: 100%;
       @include resetInput;
       padding: $input-y-padding $caret-width $input-y-padding $input-x-padding;
     }
   }
-  &__button {
+
+  &__caret {
     @include resetBtn;
     position: absolute;
     top: 0;
@@ -98,10 +57,7 @@ $caret-width: 30px;
     border-radius: 0 0 3px 3px;
     z-index: 102;
     overflow: hidden;
-    &.with-addon {
-      left: $input-addon-width - 1px;
-    }
-    &__results {
+    &__list {
       max-height: 165px;
       overflow: auto;
       margin: 0 !important;
@@ -190,12 +146,31 @@ $caret-width: 30px;
     }
   }
 
+  &.is-disabled {
+    pointer-events: none;
+    opacity: .7;
+    &:after {
+      content: '';
+      display: inline-block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      background: #000;
+      position: absolute;
+      border-radius: $input-border-radius;
+      opacity: .1;
+      cursor: none;
+    }
+  }
+
   &.is-active {
     border-radius: $input-border-radius $input-border-radius 0 0;
-    .zelect__options {
+    .adm-select__options {
       display: block;
     }
-    .zelect__button {
+    .adm-select__caret {
       &:before {
         transform: rotate(180deg) translateY(50%);
       }

@@ -1,10 +1,16 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALIDATORS } from '@angular/forms';
-import { CustomValidators } from './validator.service';
+import { CustomValidators } from './service';
 
 @Component({
-    selector: 'validator-messages',
-    template: `<div class="ui pointing red basic label" *ngIf="errorMessage !== null">{{errorMessage}}</div>`,
+    selector: 'adm-validator-messages',
+    template: `{{errorMessage}}`,
+    styleUrls: ['styles.scss'],
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        '[class.adm-validator-message]': 'true',
+        '[class.is-active]': 'errorMessage !== ""'
+    },
     providers: [
         {provide: NG_VALIDATORS, useExisting: forwardRef(() => ValidatorsMessagesComponent), multi: true}
     ]
@@ -13,7 +19,7 @@ export class ValidatorsMessagesComponent {
     @Input() public field: FormControl;
     @Input() public errorType: string;
 
-    public get errorMessage() {
+    public get errorMessage(): string {
         if (this.errorType) {
             if (this.field.errors.hasOwnProperty(this.errorType) && (this.field.dirty || this.field.touched)) {
                 return CustomValidators.getValidatorErrorMessage(this.errorType, this.field.errors[this.errorType]);
@@ -24,6 +30,6 @@ export class ValidatorsMessagesComponent {
                 return CustomValidators.getValidatorErrorMessage(propertyName, this.field.errors[propertyName]);
             }
         }
-        return null;
+        return '';
     }
 }

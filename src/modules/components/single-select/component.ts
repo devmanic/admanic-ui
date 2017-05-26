@@ -7,13 +7,13 @@ import {
     Input,
     OnDestroy,
     Output,
-    OnChanges, SimpleChanges
+    OnChanges, SimpleChanges, ViewEncapsulation
 } from '@angular/core';
 import {
     ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { CustomValidators } from '../validator/validator.service';
+import { CustomValidators } from '../validator/service';
 import { Http, Response } from '@angular/http';
 import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
@@ -43,15 +43,22 @@ export const newEntityLen: number = 3;
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => ZelectComponent),
+            useExisting: forwardRef(() => SingleSelectComponent),
             multi: true
         }
     ],
-    selector: 'zelect',
-    styleUrls: ['./zelect.style.scss'],
-    templateUrl: 'zelect.template.html'
+    selector: 'adm-single-select, adm-select[single]',
+    styleUrls: ['./style.scss'],
+    templateUrl: './template.html',
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        '[class.adm-select]': 'true',
+        '[class.disabled]': 'disabled',
+        '[class.invalid]': 'invalidQueryString',
+        '[class.is-active]': 'isOpen',
+    }
 })
-export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
+export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
     isOpen: boolean = false;
     newItemPostfix: string;
     server = '';
