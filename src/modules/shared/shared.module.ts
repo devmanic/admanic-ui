@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ErrorHandler } from './error-handler.service';
 import { ListRequestService } from './list-request.service';
 import { ClipboardService } from './clipboard.service';
-import { ToastrService } from './toastr.service';
 
 @NgModule({
     declarations: [],
@@ -11,8 +10,7 @@ import { ToastrService } from './toastr.service';
     providers: [
         ClipboardService,
         ErrorHandler,
-        ListRequestService,
-        ToastrService,
+        ListRequestService
     ]
 })
 export class SharedModule {}

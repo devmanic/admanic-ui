@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
     AfterViewInit,
     Component,
@@ -15,12 +14,12 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CustomValidators } from '../validator/validator.service';
-import uuid from 'uuid';
 import { Http, Response } from '@angular/http';
 import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
 import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
+import { ArrayUtils } from '../../shared/array.utlis';
 
 export interface OptionModel {
     value: string | number;
@@ -103,7 +102,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
     });
 
     originalPlaceholder;
-    id = uuid.v4();
+    id = Date.now();
     _subscribers: Subscription[] = [];
 
     isAjax: boolean = false;
@@ -182,7 +181,7 @@ export class ZelectComponent implements ControlValueAccessor, OnDestroy, AfterVi
         if (value || value === null || value == '0') {
             this.value = value;
 
-            let array = this.hasGroups ? _.flatMap(this.options, (item: any) => item.values) : this.options;
+            let array = this.hasGroups ? ArrayUtils.flatMap(this.options, (item: any) => item.values) : this.options;
             let selectedOption: OptionModel = array.filter((option: OptionModel) => value == option.value)[0];
             this.selectedItem = selectedOption;
 

@@ -1,6 +1,6 @@
 {
   "name": "admanic-ui",
-  "version": "0.0.16",
+  "version": "0.0.29",
   "repository": {
     "type": "git",
     "url": "https://github.com/devmanic/admanic-ui"
@@ -19,13 +19,14 @@
   "module": "admanic-ui.js",
   "typings": "admanic-ui.d.ts",
   "peerDependencies": {
-    "@angular/core": "^4.0.0",
+    "@angular/core": "2.4.10",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "0.8.5"
   },
   "dependencies": {
     "lodash": "^4.17.4",
     "toastr": "^2.1.2",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "jquery": "^3.2.1"
   }
 }
