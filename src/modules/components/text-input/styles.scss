@@ -42,7 +42,7 @@
     }
   }
   &__container {
-    input[adm][type="text"], adm-select, textarea[adm] {
+    input[adm][type="text"], adm-single-select, adm-select[single], textarea[adm] {
       width: 100%;
       transition: border-color .3s;
     }
@@ -62,7 +62,8 @@
       input[adm][type="text"],
       textarea[adm],
       .adm-input__addon,
-      adm-select,
+      adm-single-select,
+      adm-select[single],
       .zelect__input__addon {
         border-color: $input-border-color-invalid;
       }
@@ -73,7 +74,8 @@
         display: flex;
         flex-direction: row;
         input[adm][type="text"],
-        adm-select,
+        adm-single-select,
+        adm-select[single],
         textarea[adm] {
           border-left: 0;
           border-top-left-radius: 0;

@@ -55,7 +55,7 @@ export const newEntityLen: number = 3;
         '[class.adm-select]': 'true',
         '[class.disabled]': 'disabled',
         '[class.invalid]': 'invalidQueryString',
-        '[class.is-active]': 'isOpen',
+        '[class.is-active]': 'isOpen'
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
@@ -285,10 +285,13 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     filter(value: string = this.queryStr.value) {
+        if (value === null) {
+            return;
+        }
         if (!this.hasGroups) {
             this.options = this.options.map((item: OptionModel) => ({
                 ...item,
-                hidden: (item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
+                hidden: (item.label !== null ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false),
                 selected: this.isElSelected(item)
             }));
         } else {
@@ -298,7 +301,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                     hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
                     values: option.values.map((item: OptionModel) =>
                         Object.assign(item, {
-                            hidden: (item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
+                            hidden: (item.label !== null ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false),
                             selected: this.isElSelected(item)
                         })
                     )
@@ -364,7 +367,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     trimNewItemString(str: string): string {
-        return str.split(this.newItemPostfix)[0].trim();
+        if (str !== null) {
+            return str.split(this.newItemPostfix)[0].trim();
+        }
+        return '';
     }
 
     onAddNewBtnClick(e: Event = new Event('')) {
