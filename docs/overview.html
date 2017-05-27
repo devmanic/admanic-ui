@@ -1,0 +1,662 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>admanic-ui</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	    <link rel="stylesheet" href="./styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="./" class="navbar-brand">admanic-ui</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="./index.html">admanic-ui</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="./index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                         href="./overview.html" 
+                                        
+                                         href="./overview.html" 
+                                         class="active" >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./modules.html" >
+                            <span class="fa fa-archive"></span>
+                            <span>Modules</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            ></span>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="./modules/InputModule.html" >InputModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/SharedModule.html" >SharedModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/SingleSelectModule.html" >SingleSelectModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./modules/ValidatorsModule.html" >ValidatorsModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-components-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="./components/InputContainer.html" >InputContainer</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/SampleComponent.html" >SampleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/SingleSelectComponent.html" >SingleSelectComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./components/ValidatorsMessagesComponent.html" >ValidatorsMessagesComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-directives-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="./directives/DynamicTextAreaDirective.html" >DynamicTextAreaDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./directives/SampleDirective.html" >SampleDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-injectables-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="./injectables/ArrayUtils.html" >ArrayUtils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/ClipboardService.html" >ClipboardService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/CustomValidators.html" >CustomValidators</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/ErrorHandler.html" >ErrorHandler</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/ListRequestService.html" >ListRequestService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/SamplePipe.html" >SamplePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/SamplePipe.html" >SamplePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="./injectables/SampleService.html" >SampleService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="./index.html">admanic-ui</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="./index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                                href="./overview.html" 
+                                               
+                                                href="./overview.html" 
+                                                class="active" >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./modules.html" >
+                                   <span class="fa fa-archive"></span>
+                                   <span>Modules</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   ></span>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="./modules/InputModule.html" >InputModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/SharedModule.html" >SharedModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/SingleSelectModule.html" >SingleSelectModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./modules/ValidatorsModule.html" >ValidatorsModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#components-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="./components/InputContainer.html" >InputContainer</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/SampleComponent.html" >SampleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/SingleSelectComponent.html" >SingleSelectComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./components/ValidatorsMessagesComponent.html" >ValidatorsMessagesComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#directives-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="./directives/DynamicTextAreaDirective.html" >DynamicTextAreaDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./directives/SampleDirective.html" >SampleDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#injectables-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="./injectables/ArrayUtils.html" >ArrayUtils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/ClipboardService.html" >ClipboardService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/CustomValidators.html" >CustomValidators</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/ErrorHandler.html" >ErrorHandler</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/ListRequestService.html" >ListRequestService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/SamplePipe.html" >SamplePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/SamplePipe.html" >SamplePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="./injectables/SampleService.html" >SampleService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="./coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content overview">
+                   <div class="content-data">
+<h3>Overview</h3>
+<div class="text-center">
+    <div id="module-graph-svg">
+        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: dependencies Pages: 1 -->
+<svg width="1006pt" height="355pt"
+ viewBox="0.00 0.00 1006.00 355.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 351)">
+<title>dependencies</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-351 1002,-351 1002,4 -4,4"/>
+<text text-anchor="start" x="478.0091" y="-42.4" font-family="sans-serif" font-weight="bold" font-size="14.00" fill="#000000">Legend</text>
+<polygon fill="#ffffb3" stroke="transparent" points="265,-10 265,-30 285,-30 285,-10 265,-10"/>
+<text text-anchor="start" x="288.629" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Declarations</text>
+<polygon fill="#8dd3c7" stroke="transparent" points="378,-10 378,-30 398,-30 398,-10 378,-10"/>
+<text text-anchor="start" x="401.7251" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Module</text>
+<polygon fill="#80b1d3" stroke="transparent" points="464,-10 464,-30 484,-30 484,-10 464,-10"/>
+<text text-anchor="start" x="487.7812" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Bootstrap</text>
+<polygon fill="#fdb462" stroke="transparent" points="561,-10 561,-30 581,-30 581,-10 561,-10"/>
+<text text-anchor="start" x="584.6732" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Providers</text>
+<polygon fill="#fb8072" stroke="transparent" points="657,-10 657,-30 677,-30 677,-10 657,-10"/>
+<text text-anchor="start" x="680.7258" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Exports</text>
+<g id="clust1" class="cluster">
+<title>cluster_InputModule</title>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="246,-70 246,-339 576,-339 576,-70 246,-70"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_InputModule_imports</title>
+<polygon fill="none" stroke="#000000" points="434,-78 434,-195 568,-195 568,-78 434,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_InputModule_exports</title>
+<polygon fill="none" stroke="#000000" points="254,-279 254,-331 568,-331 568,-279 254,-279"/>
+</g>
+<g id="clust13" class="cluster">
+<title>cluster_SingleSelectModule</title>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="584,-70 584,-271 990,-271 990,-70 584,-70"/>
+</g>
+<g id="clust15" class="cluster">
+<title>cluster_SingleSelectModule_imports</title>
+<polygon fill="none" stroke="#000000" points="592,-78 592,-130 982,-130 982,-78 592,-78"/>
+</g>
+<g id="clust16" class="cluster">
+<title>cluster_SingleSelectModule_exports</title>
+<polygon fill="none" stroke="#000000" points="602,-211 602,-263 892,-263 892,-211 602,-211"/>
+</g>
+<g id="clust19" class="cluster">
+<title>cluster_ValidatorsModule</title>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="8,-203 8,-271 238,-271 238,-203 8,-203"/>
+</g>
+<g id="clust22" class="cluster">
+<title>cluster_ValidatorsModule_exports</title>
+<polygon fill="none" stroke="#000000" points="16,-211 16,-263 230,-263 230,-211 16,-211"/>
+</g>
+<!-- CommonModule -->
+<g id="node1" class="node">
+<title>CommonModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="556.6681,-122 553.6681,-126 532.6681,-126 529.6681,-122 445.3319,-122 445.3319,-86 556.6681,-86 556.6681,-122"/>
+<text text-anchor="middle" x="501" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">CommonModule</text>
+</g>
+<!-- ValidatorsModule -->
+<g id="node2" class="node">
+<title>ValidatorsModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="559.8627,-187 556.8627,-191 535.8627,-191 532.8627,-187 442.1373,-187 442.1373,-151 559.8627,-151 559.8627,-187"/>
+<text text-anchor="middle" x="501" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">ValidatorsModule</text>
+</g>
+<!-- CommonModule&#45;&gt;ValidatorsModule -->
+<g id="edge12" class="edge">
+<title>CommonModule&#45;&gt;ValidatorsModule</title>
+<path fill="none" stroke="#000000" d="M482.3887,-122.1061C482.3887,-122.1061 482.3887,-140.991 482.3887,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="478.8888,-140.9909 482.3887,-150.991 485.8888,-140.991 478.8888,-140.9909"/>
+</g>
+<!-- InputModule -->
+<g id="node3" class="node">
+<title>InputModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="506.6011,-255 503.6011,-259 482.6011,-259 479.6011,-255 417.3989,-255 417.3989,-219 506.6011,-219 506.6011,-255"/>
+<text text-anchor="middle" x="462" y="-232.8" font-family="Times,serif" font-size="14.00" fill="#000000">InputModule</text>
+</g>
+<!-- CommonModule&#45;&gt;InputModule -->
+<g id="edge1" class="edge">
+<title>CommonModule&#45;&gt;InputModule</title>
+<path fill="none" stroke="#000000" d="M445.2173,-104C436.2042,-104 429.7591,-104 429.7591,-104 429.7591,-104 429.7591,-208.7858 429.7591,-208.7858"/>
+<polygon fill="#000000" stroke="#000000" points="426.2592,-208.7858 429.7591,-218.7858 433.2592,-208.7858 426.2592,-208.7858"/>
+</g>
+<!-- SingleSelectModule -->
+<g id="node9" class="node">
+<title>SingleSelectModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="736.5366,-187 733.5366,-191 712.5366,-191 709.5366,-187 607.4634,-187 607.4634,-151 736.5366,-151 736.5366,-187"/>
+<text text-anchor="middle" x="672" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">SingleSelectModule</text>
+</g>
+<!-- CommonModule&#45;&gt;SingleSelectModule -->
+<g id="edge5" class="edge">
+<title>CommonModule&#45;&gt;SingleSelectModule</title>
+<path fill="none" stroke="#000000" d="M556.7166,-104C569.7872,-104 579.9886,-104 579.9886,-104 579.9886,-104 579.9886,-160 579.9886,-160 579.9886,-160 597.0974,-160 597.0974,-160"/>
+<polygon fill="#000000" stroke="#000000" points="597.0974,-163.5001 607.0974,-160 597.0974,-156.5001 597.0974,-163.5001"/>
+</g>
+<!-- ValidatorsModule&#45;&gt;InputModule -->
+<g id="edge2" class="edge">
+<title>ValidatorsModule&#45;&gt;InputModule</title>
+<path fill="none" stroke="#000000" d="M474.3096,-187.2228C474.3096,-187.2228 474.3096,-208.7269 474.3096,-208.7269"/>
+<polygon fill="#000000" stroke="#000000" points="470.8097,-208.7269 474.3096,-218.7269 477.8097,-208.727 470.8097,-208.7269"/>
+</g>
+<!-- ValidatorsModule&#45;&gt;SingleSelectModule -->
+<g id="edge8" class="edge">
+<title>ValidatorsModule&#45;&gt;SingleSelectModule</title>
+<path fill="none" stroke="#000000" d="M560.3276,-178C560.3276,-178 597.2313,-178 597.2313,-178"/>
+<polygon fill="#000000" stroke="#000000" points="597.2313,-181.5001 607.2313,-178 597.2313,-174.5001 597.2313,-181.5001"/>
+</g>
+<!-- ValidatorsMessagesComponent  -->
+<g id="node12" class="node">
+<title>ValidatorsMessagesComponent </title>
+<polygon fill="#fb8072" stroke="#000000" points="221.5679,-255 24.4321,-255 24.4321,-219 221.5679,-219 221.5679,-255"/>
+<text text-anchor="middle" x="123" y="-232.8" font-family="Times,serif" font-size="14.00" fill="#000000">ValidatorsMessagesComponent </text>
+</g>
+<!-- ValidatorsModule&#45;&gt;ValidatorsMessagesComponent  -->
+<g id="edge15" class="edge">
+<title>ValidatorsModule&#45;&gt;ValidatorsMessagesComponent </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M441.9375,-169C335.625,-169 123,-169 123,-169 123,-169 123,-208.7772 123,-208.7772"/>
+<polygon fill="#000000" stroke="#000000" points="119.5001,-208.7772 123,-218.7772 126.5001,-208.7773 119.5001,-208.7772"/>
+</g>
+<!-- InputContainer  -->
+<g id="node4" class="node">
+<title>InputContainer </title>
+<polygon fill="#fb8072" stroke="#000000" points="560.2591,-323 455.7409,-323 455.7409,-287 560.2591,-287 560.2591,-323"/>
+<text text-anchor="middle" x="508" y="-300.8" font-family="Times,serif" font-size="14.00" fill="#000000">InputContainer </text>
+</g>
+<!-- InputModule&#45;&gt;InputContainer  -->
+<g id="edge3" class="edge">
+<title>InputModule&#45;&gt;InputContainer </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M481.2106,-255.2228C481.2106,-255.2228 481.2106,-276.7269 481.2106,-276.7269"/>
+<polygon fill="#000000" stroke="#000000" points="477.7106,-276.7269 481.2106,-286.7269 484.7106,-276.727 477.7106,-276.7269"/>
+</g>
+<!-- DynamicTextAreaDirective  -->
+<g id="node5" class="node">
+<title>DynamicTextAreaDirective </title>
+<polygon fill="#fb8072" stroke="#000000" points="437.7542,-323 262.2458,-323 262.2458,-287 437.7542,-287 437.7542,-323"/>
+<text text-anchor="middle" x="350" y="-300.8" font-family="Times,serif" font-size="14.00" fill="#000000">DynamicTextAreaDirective </text>
+</g>
+<!-- InputModule&#45;&gt;DynamicTextAreaDirective  -->
+<g id="edge4" class="edge">
+<title>InputModule&#45;&gt;DynamicTextAreaDirective </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M427.6633,-255.2228C427.6633,-255.2228 427.6633,-276.7269 427.6633,-276.7269"/>
+<polygon fill="#000000" stroke="#000000" points="424.1633,-276.7269 427.6633,-286.7269 431.1633,-276.727 424.1633,-276.7269"/>
+</g>
+<!-- FormsModule -->
+<g id="node6" class="node">
+<title>FormsModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="857.8288,-122 854.8288,-126 833.8288,-126 830.8288,-122 762.1712,-122 762.1712,-86 857.8288,-86 857.8288,-122"/>
+<text text-anchor="middle" x="810" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">FormsModule</text>
+</g>
+<!-- FormsModule&#45;&gt;ValidatorsModule -->
+<g id="edge13" class="edge">
+<title>FormsModule&#45;&gt;ValidatorsModule</title>
+<path fill="none" stroke="#000000" d="M794.112,-122.0449C794.112,-129.749 794.112,-137 794.112,-137 794.112,-137 519.6113,-137 519.6113,-137 519.6113,-137 519.6113,-140.7566 519.6113,-140.7566"/>
+<polygon fill="#000000" stroke="#000000" points="516.1114,-140.7566 519.6113,-150.7566 523.1114,-140.7566 516.1114,-140.7566"/>
+</g>
+<!-- FormsModule&#45;&gt;SingleSelectModule -->
+<g id="edge6" class="edge">
+<title>FormsModule&#45;&gt;SingleSelectModule</title>
+<path fill="none" stroke="#000000" d="M825.888,-122.0225C825.888,-139.3734 825.888,-163 825.888,-163 825.888,-163 746.8164,-163 746.8164,-163"/>
+<polygon fill="#000000" stroke="#000000" points="746.8164,-159.5001 736.8164,-163 746.8163,-166.5001 746.8164,-159.5001"/>
+</g>
+<!-- ReactiveFormsModule -->
+<g id="node7" class="node">
+<title>ReactiveFormsModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="744.3047,-122 741.3047,-126 720.3047,-126 717.3047,-122 599.6953,-122 599.6953,-86 744.3047,-86 744.3047,-122"/>
+<text text-anchor="middle" x="672" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">ReactiveFormsModule</text>
+</g>
+<!-- ReactiveFormsModule&#45;&gt;ValidatorsModule -->
+<g id="edge14" class="edge">
+<title>ReactiveFormsModule&#45;&gt;ValidatorsModule</title>
+<path fill="none" stroke="#000000" d="M603.54,-122.1061C603.54,-141.3391 603.54,-169 603.54,-169 603.54,-169 570.0538,-169 570.0538,-169"/>
+<polygon fill="#000000" stroke="#000000" points="570.0538,-165.5001 560.0538,-169 570.0537,-172.5001 570.0538,-165.5001"/>
+</g>
+<!-- ReactiveFormsModule&#45;&gt;SingleSelectModule -->
+<g id="edge7" class="edge">
+<title>ReactiveFormsModule&#45;&gt;SingleSelectModule</title>
+<path fill="none" stroke="#000000" d="M672,-122.1061C672,-122.1061 672,-140.991 672,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="668.5001,-140.9909 672,-150.991 675.5001,-140.991 668.5001,-140.9909"/>
+</g>
+<!-- SharedModule -->
+<g id="node8" class="node">
+<title>SharedModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="974.4231,-122 971.4231,-126 950.4231,-126 947.4231,-122 875.5769,-122 875.5769,-86 974.4231,-86 974.4231,-122"/>
+<text text-anchor="middle" x="925" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">SharedModule</text>
+</g>
+<!-- SharedModule&#45;&gt;SingleSelectModule -->
+<g id="edge9" class="edge">
+<title>SharedModule&#45;&gt;SingleSelectModule</title>
+<path fill="none" stroke="#000000" d="M880.0991,-122.2843C880.0991,-143.3211 880.0991,-175 880.0991,-175 880.0991,-175 746.7031,-175 746.7031,-175"/>
+<polygon fill="#000000" stroke="#000000" points="746.7032,-171.5001 736.7031,-175 746.7031,-178.5001 746.7032,-171.5001"/>
+</g>
+<!-- SingleSelectComponent  -->
+<g id="node10" class="node">
+<title>SingleSelectComponent </title>
+<polygon fill="#fb8072" stroke="#000000" points="884.3185,-255 729.6815,-255 729.6815,-219 884.3185,-219 884.3185,-255"/>
+<text text-anchor="middle" x="807" y="-232.8" font-family="Times,serif" font-size="14.00" fill="#000000">SingleSelectComponent </text>
+</g>
+<!-- SingleSelectModule&#45;&gt;SingleSelectComponent  -->
+<g id="edge10" class="edge">
+<title>SingleSelectModule&#45;&gt;SingleSelectComponent </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M733.1794,-187.2228C733.1794,-187.2228 733.1794,-208.7269 733.1794,-208.7269"/>
+<polygon fill="#000000" stroke="#000000" points="729.6794,-208.7269 733.1794,-218.7269 736.6794,-208.727 729.6794,-208.7269"/>
+</g>
+<!-- RouterModule  -->
+<g id="node11" class="node">
+<title>RouterModule </title>
+<polygon fill="#fb8072" stroke="#000000" points="711.6523,-255 610.3477,-255 610.3477,-219 711.6523,-219 711.6523,-255"/>
+<text text-anchor="middle" x="661" y="-232.8" font-family="Times,serif" font-size="14.00" fill="#000000">RouterModule </text>
+</g>
+<!-- SingleSelectModule&#45;&gt;RouterModule  -->
+<g id="edge11" class="edge">
+<title>SingleSelectModule&#45;&gt;RouterModule </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M661,-187.2228C661,-187.2228 661,-208.7269 661,-208.7269"/>
+<polygon fill="#000000" stroke="#000000" points="657.5001,-208.7269 661,-218.7269 664.5001,-208.727 657.5001,-208.7269"/>
+</g>
+</g>
+</svg>
+
+    </div>
+    <div class="btn-group">
+        <button id="zoom-in" class="btn btn-default btn-sm">Zoom in</button>
+        <button id="reset" class="btn btn-default btn-sm">Reset</button>
+        <button id="zoom-out" class="btn btn-default btn-sm">Zoom out</button>
+    </div>
+</div>
+<div class="container-fluid overview">
+    <div class="row">
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <div class="card-block">
+                        <h4 class="card-title"><span class="fa fa-archive"></span></h4>
+                        <p class="card-text">
+                            <a href="./modules.html">4 modules</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <div class="card-block">
+                        <h4 class="card-title"><span class="fa fa-cogs"></span></h4>
+                        <p class="card-text">4 components</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <div class="card-block">
+                        <h4 class="card-title"><span class="fa fa-code"></span></h4>
+                        <p class="card-text">2 directives</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card text-center">
+                    <div class="card-block">
+                        <h4 class="card-title"><span class="fa fa-code-fork"></span></h4>
+                        <p class="card-text">8 injectables</p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<script src="js/libs/svg-pan-zoom.min.js"></script>
+<script src="js/svg-pan-zoom.controls.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+       <script src="./js/libs/zepto.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 0;</script>
+
+       <script src="./js/search/search.js"></script>
+       <script src="./js/search/lunr.min.js"></script>
+       <script src="./js/search/search-lunr.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+       <script src="./js/search/search_index.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,2525 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>admanic-ui</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">admanic-ui</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../index.html">admanic-ui</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../modules.html" >
+                            <span class="fa fa-archive"></span>
+                            <span>Modules</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            ></span>
+                        </a>
+                        <ul class="links collapse in"
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/InputModule.html" >InputModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/SharedModule.html" >SharedModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/SingleSelectModule.html" >SingleSelectModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/ValidatorsModule.html" >ValidatorsModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-components-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/InputContainer.html" >InputContainer</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/SampleComponent.html" >SampleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/SingleSelectComponent.html"  data-type="entity-link" class="active" >SingleSelectComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ValidatorsMessagesComponent.html" >ValidatorsMessagesComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-directives-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="../directives/DynamicTextAreaDirective.html" >DynamicTextAreaDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/SampleDirective.html" >SampleDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-injectables-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/ArrayUtils.html" >ArrayUtils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ClipboardService.html" >ClipboardService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/CustomValidators.html" >CustomValidators</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ErrorHandler.html" >ErrorHandler</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ListRequestService.html" >ListRequestService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/SamplePipe.html" >SamplePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/SamplePipe.html" >SamplePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/SampleService.html" >SampleService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../index.html">admanic-ui</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../modules.html" >
+                                   <span class="fa fa-archive"></span>
+                                   <span>Modules</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   ></span>
+                               </a>
+                               <ul class="links collapse in"
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/InputModule.html" >InputModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/SharedModule.html" >SharedModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/SingleSelectModule.html" >SingleSelectModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/ValidatorsModule.html" >ValidatorsModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#components-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/InputContainer.html" >InputContainer</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/SampleComponent.html" >SampleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/SingleSelectComponent.html"  data-type="entity-link" class="active" >SingleSelectComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ValidatorsMessagesComponent.html" >ValidatorsMessagesComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#directives-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="../directives/DynamicTextAreaDirective.html" >DynamicTextAreaDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/SampleDirective.html" >SampleDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#injectables-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/ArrayUtils.html" >ArrayUtils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ClipboardService.html" >ClipboardService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/CustomValidators.html" >CustomValidators</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ErrorHandler.html" >ErrorHandler</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ListRequestService.html" >ListRequestService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/SamplePipe.html" >SamplePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/SamplePipe.html" >SamplePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/SampleService.html" >SampleService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../miscellaneous.html" ><span class="fa fa-cubes"></span>Miscellaneous</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content component">
+                   <div class="content-data">
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>SingleSelectComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab" data-link="infos">Infos</a>
+    </li>
+
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+    </li>
+
+    <li>
+        <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+    </li>
+    <li>
+        <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="infos"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/modules/components/single-select/component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code><a href="https://angular.io/docs/ts/latest/api/forms/index/ControlValueAccessor-interface.html" target="_blank" >ControlValueAccessor</a></code>
+                <code><a href="https://angular.io/docs/ts/latest/api/core/index/OnDestroy-interface.html" target="_blank" >OnDestroy</a></code>
+                <code><a href="https://angular.io/docs/ts/latest/api/core/index/AfterViewInit-interface.html" target="_blank" >AfterViewInit</a></code>
+                <code><a href="https://angular.io/docs/ts/latest/api/core/index/OnChanges-interface.html" target="_blank" >OnChanges</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+            <tr>
+                <td class="col-md-3">encapsulation</td>
+                <td class="col-md-9"><code>ViewEncapsulation.None</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;"[class.adm-select]":"true",<br>&nbsp;&nbsp;&nbsp;&nbsp;"[class.disabled]":"disabled","[class.invalid]":"invalidQueryString","[class.is-active]":"isOpen"<br>}</code></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">providers</td>
+                <td class="col-md-9">
+                    <code>
+                        { provide: NG_VALUE_ACCESSOR, useExisting: , multi:  }
+                    </code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>adm-single-select, adm-select[single]</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>style.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./template.html</code></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+        <h3 id="inputs">Inputs</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>ajax</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>AjaxParams</code>
+
+                              </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/modules/components/single-select/component.ts:75</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>allowClear</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>boolean</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>false</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/components/single-select/component.ts:71</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>allowCreateEntity</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>boolean</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>false</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/components/single-select/component.ts:72</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>disabled</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>boolean</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>false</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/components/single-select/component.ts:73</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>entityName</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>string</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>item</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/modules/components/single-select/component.ts:74</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>options</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>(OptionModel | OptionWithGroupModel)[]</code>
+
+                              </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/components/single-select/component.ts:68</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>placeholder</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>string</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>Select option</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/components/single-select/component.ts:70</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>showAddNewBtn</code>
+                        </td>
+                        <td class="col-md-10">
+                              <p>
+                                <em>Type:</em>    <code>boolean</code>
+
+                              </p>
+                            <p>
+                              <em>Default value: </em><code>false</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/modules/components/single-select/component.ts:76</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>value</code>
+                        </td>
+                        <td class="col-md-10">
+                            <p>
+                              <em>Default value: </em><code>false</code>
+                            </p>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/components/single-select/component.ts:69</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        <h3 id="outputs">Outputs</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>hide</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/modules/components/single-select/component.ts:98</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>newEntityAdd</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/modules/components/single-select/component.ts:96</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>onAddClick</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/components/single-select/component.ts:100</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>selected</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/components/single-select/component.ts:99</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-2">
+                            <code>show</code>
+                        </td>
+                        <td class="col-md-10">
+                            <em><code>$event</code> type:</em>    <code><a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/components/single-select/component.ts:97</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor(http: <a href="https://angular.io/docs/ts/latest/api/http/index/Http-class.html" target="_blank">Http</a>, errorHandler: <a href="../injectables/ErrorHandler.html">ErrorHandler</a>)</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/components/single-select/component.ts:123</a></div>
+                            </td>
+                        </tr>
+    
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        
+            <h3 id="methods">
+                Methods
+            </h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> ngAfterViewInit</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>ngAfterViewInit()</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/modules/components/single-select/component.ts:130</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> initAjax</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>initAjax(params: AjaxParams)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/components/single-select/component.ts:147</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> ngOnDestroy</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>ngOnDestroy()</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/modules/components/single-select/component.ts:153</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> registerOnChange</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>registerOnChange(fn: any)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="163" class="link-to-prism">src/modules/components/single-select/component.ts:163</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> registerOnTouched</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>registerOnTouched(fn: any)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="167" class="link-to-prism">src/modules/components/single-select/component.ts:167</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> ngOnChanges</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>ngOnChanges(changes: <a href="https://angular.io/docs/ts/latest/api/core/index/SimpleChanges-interface.html" target="_blank">SimpleChanges</a>)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="171" class="link-to-prism">src/modules/components/single-select/component.ts:171</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> clearSelection</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>clearSelection(e: <a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank">Event</a>)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="181" class="link-to-prism">src/modules/components/single-select/component.ts:181</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> writeValue</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>writeValue(value: any, isSelect: boolean)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="187" class="link-to-prism">src/modules/components/single-select/component.ts:187</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onClickOnDocument</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>onClickOnDocument(e: any)</code>
+                        </td>
+                    </tr>
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Decorators : </i><code>HostListener</code>
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="217" class="link-to-prism">src/modules/components/single-select/component.ts:217</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onSelect</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>onSelect(value: any)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="225" class="link-to-prism">src/modules/components/single-select/component.ts:225</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> subscribeToQueryStringChange</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>subscribeToQueryStringChange()</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="234" class="link-to-prism">src/modules/components/single-select/component.ts:234</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onAjaxFindOptions</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>onAjaxFindOptions(skipQuery: boolean)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="240" class="link-to-prism">src/modules/components/single-select/component.ts:240</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> mapAjaxToOptions</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>mapAjaxToOptions(data: any[])</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="251" class="link-to-prism">src/modules/components/single-select/component.ts:251</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>OptionModel[]</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> sendAjax</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>sendAjax(skipQuery: boolean)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="262" class="link-to-prism">src/modules/components/single-select/component.ts:262</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> isElSelected</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>isElSelected(item: OptionModel)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/modules/components/single-select/component.ts:280</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>boolean</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> filter</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>filter(value: string)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="287" class="link-to-prism">src/modules/components/single-select/component.ts:287</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> inputClick</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>inputClick(e: any)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="313" class="link-to-prism">src/modules/components/single-select/component.ts:313</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> startSearch</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>startSearch(e: <a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank">Event</a>)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="318" class="link-to-prism">src/modules/components/single-select/component.ts:318</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> toggleOpen</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>toggleOpen(e: <a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank">Event</a>)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="330" class="link-to-prism">src/modules/components/single-select/component.ts:330</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> addNewOption</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>addNewOption()</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="343" class="link-to-prism">src/modules/components/single-select/component.ts:343</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> showValueLabelOnEmptyQuery</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>showValueLabelOnEmptyQuery()</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="363" class="link-to-prism">src/modules/components/single-select/component.ts:363</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> trimNewItemString</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>trimNewItemString(str: string)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="369" class="link-to-prism">src/modules/components/single-select/component.ts:369</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>string</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onAddNewBtnClick</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>onAddNewBtnClick(e: <a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank">Event</a>)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="376" class="link-to-prism">src/modules/components/single-select/component.ts:376</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> trackListByFn</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+    <code>trackListByFn(index: number, item: OptionModel)</code>
+                        </td>
+                    </tr>
+    
+    
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="380" class="link-to-prism">src/modules/components/single-select/component.ts:380</a></div>
+                            </td>
+                        </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
+
+    <section>
+        
+            <h3 id="inputs">
+                Properties
+            </h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> _subscribers</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>_subscribers:     <code>Subscription[]</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/modules/components/single-select/component.ts:113</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> ajaxTimeout</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>ajaxTimeout:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/components/single-select/component.ts:117</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> baseAjaxOptions</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>baseAjaxOptions:     <code>ListRequest</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/modules/components/single-select/component.ts:119</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> errorHandler</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>errorHandler:     <code><a href="../injectables/ErrorHandler.html" target="_self" >ErrorHandler</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> form</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>form:     <code><a href="https://angular.io/docs/ts/latest/api/forms/index/FormGroup-class.html" target="_blank" >FormGroup</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/components/single-select/component.ts:107</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> hasGroups</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>hasGroups:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value : </i><code>false</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/components/single-select/component.ts:65</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> http</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>http:     <code><a href="https://angular.io/docs/ts/latest/api/http/index/Http-class.html" target="_blank" >Http</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> id</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>id:     <code>number</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/modules/components/single-select/component.ts:112</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> invalidQueryString</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>invalidQueryString:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value : </i><code>false</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/components/single-select/component.ts:66</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> isAjax</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>isAjax:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value : </i><code>false</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/modules/components/single-select/component.ts:115</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> isOpen</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>isOpen:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value : </i><code>false</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/components/single-select/component.ts:62</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> newItemPostfix</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>newItemPostfix:     <code>string</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/modules/components/single-select/component.ts:63</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> nothingNotFound</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>nothingNotFound:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="359" class="link-to-prism">src/modules/components/single-select/component.ts:359</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onChange</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>onChange:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/modules/components/single-select/component.ts:157</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> onTouched</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>onTouched:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/modules/components/single-select/component.ts:160</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> options</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>options:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/components/single-select/component.ts:78</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> originalPlaceholder</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>originalPlaceholder:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/modules/components/single-select/component.ts:111</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> pendingRequest</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>pendingRequest:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Default value : </i><code>false</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/modules/components/single-select/component.ts:116</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> queryStr</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>queryStr:     <code><a href="https://angular.io/docs/ts/latest/api/forms/index/FormControl-class.html" target="_blank" >FormControl</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/modules/components/single-select/component.ts:102</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> selectedItem</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>selectedItem:     <code>OptionModel</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/components/single-select/component.ts:123</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> server</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>server:     <code>string</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/modules/components/single-select/component.ts:64</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> value</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>value:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/modules/components/single-select/component.ts:86</a></div>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+    </section>
+</div>
+
+
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre class="line-numbers"><code class="language-typescript">import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    forwardRef,
+    HostListener,
+    Input,
+    OnDestroy,
+    Output,
+    OnChanges, SimpleChanges, ViewEncapsulation
+} from &#x27;@angular/core&#x27;;
+import {
+    ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
+} from &#x27;@angular/forms&#x27;;
+import { Subscription } from &#x27;rxjs&#x27;;
+import { CustomValidators } from &#x27;../validator/service&#x27;;
+import { Http, Response } from &#x27;@angular/http&#x27;;
+import { ListRequest } from &#x27;../../shared/list-request.model&#x27;;
+import { ListRequestService } from &#x27;../../shared/list-request.service&#x27;;
+import { ErrorHandler } from &#x27;../../shared/error-handler.service&#x27;;
+import { Observable } from &#x27;rxjs/Observable&#x27;;
+import { ArrayUtils } from &#x27;../../shared/array.utlis&#x27;;
+
+export interface OptionModel {
+    value: string | number;
+    label: string;
+    hidden?: boolean;
+    selected?: boolean;
+}
+
+export interface OptionWithGroupModel {
+    name: string;
+    values: OptionModel[];
+}
+
+export interface AjaxParams {
+    path: string;
+    options?: ListRequest;
+}
+
+export const newEntityLen: number &#x3D; 3;
+@Component({
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() &#x3D;&gt; SingleSelectComponent),
+            multi: true
+        }
+    ],
+    selector: &#x27;adm-single-select, adm-select[single]&#x27;,
+    styleUrls: [&#x27;./style.scss&#x27;],
+    templateUrl: &#x27;./template.html&#x27;,
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        &#x27;[class.adm-select]&#x27;: &#x27;true&#x27;,
+        &#x27;[class.disabled]&#x27;: &#x27;disabled&#x27;,
+        &#x27;[class.invalid]&#x27;: &#x27;invalidQueryString&#x27;,
+        &#x27;[class.is-active]&#x27;: &#x27;isOpen&#x27;
+    }
+})
+export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
+    isOpen: boolean &#x3D; false;
+    newItemPostfix: string;
+    server &#x3D; &#x27;&#x27;;
+    hasGroups: boolean &#x3D; false;
+    invalidQueryString: boolean &#x3D; false;
+
+    @Input(&#x27;options&#x27;) _options: Array&lt;OptionModel | OptionWithGroupModel&gt; &#x3D; [];
+    @Input(&#x27;value&#x27;) _value &#x3D; false;
+    @Input() placeholder: string &#x3D; &#x27;Select option&#x27;;
+    @Input() allowClear: boolean &#x3D; false;
+    @Input() allowCreateEntity: boolean &#x3D; false;
+    @Input() disabled: boolean &#x3D; false;
+    @Input() entityName: string &#x3D; &#x27;item&#x27;;
+    @Input() ajax: AjaxParams &#x3D; null;
+    @Input() showAddNewBtn: boolean &#x3D; false;
+
+    get options() {
+        return this._options;
+    }
+
+    set options(options: OptionModel[] | any) {
+        this._options &#x3D; options;
+    }
+
+    get value() {
+        return this._value;
+    }
+
+    set value(val) {
+        this._value &#x3D; val;
+        this.onChange(val);
+        this.onTouched();
+    }
+
+    @Output() newEntityAdd &#x3D; new EventEmitter();
+    @Output() show &#x3D; new EventEmitter();
+    @Output() hide &#x3D; new EventEmitter();
+    @Output() selected &#x3D; new EventEmitter();
+    @Output() onAddClick &#x3D; new EventEmitter();
+
+    queryStr: FormControl &#x3D; new FormControl(null, [
+        Validators.minLength(newEntityLen),
+        Validators.maxLength(100),
+        CustomValidators.ZelectQueryValidator()
+    ]);
+    form: FormGroup &#x3D; new FormGroup({
+        queryStr: this.queryStr
+    });
+
+    originalPlaceholder;
+    id &#x3D; Date.now();
+    _subscribers: Subscription[] &#x3D; [];
+
+    isAjax: boolean &#x3D; false;
+    pendingRequest: boolean &#x3D; false;
+    ajaxTimeout: any &#x3D; null;
+
+    baseAjaxOptions: ListRequest &#x3D; {
+        filter: &#x27;active&#x27;
+    };
+
+    selectedItem: OptionModel &#x3D; null;
+
+
+    constructor(public http: Http, public errorHandler: ErrorHandler) {
+        this.subscribeToQueryStringChange();
+    }
+
+    ngAfterViewInit() {
+        this.newItemPostfix &#x3D; &#x60; (New ${this.entityName} will be created)&#x60;;
+        this.originalPlaceholder &#x3D; this.placeholder;
+
+        this.initAjax(this.ajax);
+
+        if (this.allowCreateEntity) {
+            this.queryStr.statusChanges.subscribe((status: string) &#x3D;&gt; {
+                if (this.queryStr.value.length + 1 &gt; newEntityLen) {
+                    this.invalidQueryString &#x3D; (status &#x3D;&#x3D;&#x3D; &#x27;INVALID&#x27;);
+                } else {
+                    this.invalidQueryString &#x3D; false;
+                }
+            });
+        }
+    }
+
+    initAjax(params: AjaxParams) {
+        if (params) {
+            this.isAjax &#x3D; true;
+        }
+    }
+
+    ngOnDestroy() {
+        this._subscribers.forEach(s &#x3D;&gt; s.unsubscribe());
+    }
+
+    onChange: any &#x3D; () &#x3D;&gt; {
+    };
+
+    onTouched: any &#x3D; () &#x3D;&gt; {
+    };
+
+    registerOnChange(fn) {
+        this.onChange &#x3D; fn;
+    }
+
+    registerOnTouched(fn) {
+        this.onTouched &#x3D; fn;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes._options &amp;&amp; changes._options.currentValue &amp;&amp; changes._options.currentValue.length) {
+            this.hasGroups &#x3D; changes._options.currentValue.every((el: any) &#x3D;&gt; el.hasOwnProperty(&#x27;name&#x27;));
+            let selected &#x3D; changes._options.currentValue.filter((el: OptionModel) &#x3D;&gt; el.selected)[0];
+            if (selected) {
+                this.writeValue(selected.value);
+            }
+        }
+    }
+
+    clearSelection(e: Event &#x3D; new Event(&#x27;&#x27;)) {
+        e.preventDefault();
+        this.writeValue(&#x27;&#x27;);
+        this.selected.emit(this.selectedItem);
+    }
+
+    writeValue(value, isSelect &#x3D; false) {
+        if (value || value &#x3D;&#x3D;&#x3D; null || value &#x3D;&#x3D; &#x27;0&#x27;) {
+            this.value &#x3D; value;
+
+            let array &#x3D; this.hasGroups ? ArrayUtils.flatMap(this.options, (item: any) &#x3D;&gt; item.values) : this.options;
+            let selectedOption: OptionModel &#x3D; array.filter((option: OptionModel) &#x3D;&gt; value &#x3D;&#x3D; option.value)[0];
+            this.selectedItem &#x3D; selectedOption;
+
+            if (!selectedOption || !selectedOption.label || !selectedOption.value) {
+                this.queryStr.setValue(&#x27;&#x27;);
+                return;
+            }
+
+            let label &#x3D; this.trimNewItemString(selectedOption.label);
+            this.queryStr.setValue(label);
+
+            if (isSelect) {
+                this.selected.emit(selectedOption);
+            }
+        } else {
+            this.queryStr.setValue(&#x27;&#x27;);
+            this.value &#x3D; null;
+            this.selectedItem &#x3D; null;
+            this.options &#x3D; this.options.map((option: OptionModel) &#x3D;&gt; {
+                return Object.assign(option, {selected: false, hidden: false});
+            });
+        }
+    }
+
+    @HostListener(&#x27;document: click&#x27;, [&#x27;$event&#x27;])
+    onClickOnDocument(e: Event | any) {
+        if (!e.isInputClick || (e.isInputClick &amp;&amp; e.inputId !&#x3D; this.id)) {
+            this.showValueLabelOnEmptyQuery();
+            this.isOpen &#x3D; false;
+            this.hide.emit();
+        }
+    }
+
+    onSelect(value: any) {
+        if (this.isOpen) {
+            this.showValueLabelOnEmptyQuery();
+            this.isOpen &#x3D; false;
+            this.hide.emit();
+        }
+        this.writeValue(value, true);
+    }
+
+    subscribeToQueryStringChange() {
+        this._subscribers.push(this.queryStr.valueChanges.filter(value &#x3D;&gt; !!value || value &#x3D;&#x3D;&#x3D; &#x27;&#x27;).subscribe(() &#x3D;&gt; {
+            this.isAjax ? this.onAjaxFindOptions() : this.filter();
+        }));
+    }
+
+    onAjaxFindOptions(skipQuery: boolean &#x3D; false) {
+        clearTimeout(this.ajaxTimeout);
+        this.ajaxTimeout &#x3D; setTimeout(() &#x3D;&gt; {
+            this.options &#x3D; [];
+            this.sendAjax(skipQuery).toPromise().then(
+                (res: any) &#x3D;&gt; this.options &#x3D; this.mapAjaxToOptions(res),
+                (err: any) &#x3D;&gt; this.options &#x3D; []
+            );
+        }, 300);
+    }
+
+    mapAjaxToOptions(data: any[] &#x3D; []): OptionModel[] {
+        if (this.allowClear &amp;&amp; this.queryStr.value &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+            this.value &#x3D; undefined;
+        }
+        return data.map((el: any) &#x3D;&gt; ({
+            label: el.title,
+            value: el.id,
+            selected: this.queryStr.value &#x3D;&#x3D;&#x3D; &#x27;&#x27; &amp;&amp; this.allowClear ? false : el.id &#x3D;&#x3D; this.value
+        }));
+    }
+
+    sendAjax(skipQuery: boolean &#x3D; false) {
+        this.pendingRequest &#x3D; true;
+        let params &#x3D; {
+            ...this.baseAjaxOptions,
+            ...this.ajax.options,
+            query: this.queryStr.value
+        };
+
+        if (skipQuery) {
+            delete params.query;
+        }
+
+        return this.http.get(this.server + &#x60;/${this.ajax.path}/list&#x60; + ListRequestService.parseRequestObject(params))
+            .map((res: Response) &#x3D;&gt; res.json().data)
+            .catch((err, caught) &#x3D;&gt; this.errorHandler.handle(err, caught))
+            .finally(() &#x3D;&gt; this.pendingRequest &#x3D; false);
+    }
+
+    isElSelected(item: OptionModel): boolean {
+        if (this.selectedItem) {
+            return item.value &#x3D;&#x3D; this.selectedItem.value;
+        }
+        return false;
+    }
+
+    filter(value: string &#x3D; this.queryStr.value) {
+        if (value &#x3D;&#x3D;&#x3D; null) {
+            return;
+        }
+        if (!this.hasGroups) {
+            this.options &#x3D; this.options.map((item: OptionModel) &#x3D;&gt; ({
+                ...item,
+                hidden: (item.label !&#x3D;&#x3D; null ? item.label.toLowerCase().indexOf(value.toLowerCase()) &#x3D;&#x3D;&#x3D; -1 : false),
+                selected: this.isElSelected(item)
+            }));
+        } else {
+            this.options &#x3D; this.options.map((option: any) &#x3D;&gt; (
+                {
+                    name: option.name,
+                    hidden: option.values.every((item: OptionModel) &#x3D;&gt; item.label.toLowerCase().indexOf(value.toLowerCase()) &#x3D;&#x3D;&#x3D; -1),
+                    values: option.values.map((item: OptionModel) &#x3D;&gt;
+                        Object.assign(item, {
+                            hidden: (item.label !&#x3D;&#x3D; null ? item.label.toLowerCase().indexOf(value.toLowerCase()) &#x3D;&#x3D;&#x3D; -1 : false),
+                            selected: this.isElSelected(item)
+                        })
+                    )
+                }
+            ));
+        }
+    }
+
+    inputClick(e: Event | any) {
+        e.isInputClick &#x3D; true;
+        e.inputId &#x3D; this.id;
+    }
+
+    startSearch(e: Event) {
+        e.preventDefault();
+        e.stopPropagation();
+        (&lt;HTMLInputElement&gt;e.target).select();
+        this.filter(&#x27;&#x27;);
+        this.isOpen &#x3D; true;
+        this.show.emit();
+        if (this.isAjax) {
+            this.onAjaxFindOptions(true);
+        }
+    }
+
+    toggleOpen(e: Event &#x3D; new Event(&#x27;&#x27;)) {
+        e.preventDefault();
+        this.inputClick(e);
+        this.isOpen &#x3D; !this.isOpen;
+        if (this.isOpen) {
+            this.filter(&#x27;&#x27;);
+            this.show.emit();
+        } else {
+            this.showValueLabelOnEmptyQuery();
+            this.hide.emit();
+        }
+    }
+
+    addNewOption() {
+        if (this.queryStr.valid) {
+            let newOption: OptionModel &#x3D; {
+                value: &#x27;-2&#x27;,
+                label: this.trimNewItemString(this.queryStr.value) + this.newItemPostfix,
+                selected: true
+            };
+            this.options &#x3D; [].concat(
+                this.options.filter((option: OptionModel) &#x3D;&gt; option.value !&#x3D; newOption.value),
+                [newOption]
+            );
+            this.writeValue(newOption.value);
+            this.newEntityAdd.emit(this.trimNewItemString(newOption.label));
+        }
+    }
+
+    get nothingNotFound(): boolean {
+        return this.options.every((option: OptionModel) &#x3D;&gt; option.hidden);
+    }
+
+    showValueLabelOnEmptyQuery() {
+        if (this.selectedItem &amp;&amp; this.trimNewItemString(this.queryStr.value) !&#x3D;&#x3D; this.trimNewItemString(this.selectedItem.label)) {
+            this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
+        }
+    }
+
+    trimNewItemString(str: string): string {
+        if (str !&#x3D;&#x3D; null) {
+            return str.split(this.newItemPostfix)[0].trim();
+        }
+        return &#x27;&#x27;;
+    }
+
+    onAddNewBtnClick(e: Event &#x3D; new Event(&#x27;&#x27;)) {
+        this.onAddClick.emit(e);
+    }
+
+    trackListByFn(index: number, item: OptionModel) {
+        return item.value;
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade" id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;!-- search input --&gt;
+&lt;div class&#x3D;&quot;adm-select__input&quot; [formGroup]&#x3D;&quot;form&quot;&gt;
+    &lt;input type&#x3D;&quot;text&quot;
+           spellcheck&#x3D;&quot;false&quot;
+           [placeholder]&#x3D;&quot;placeholder&quot;
+           (click)&#x3D;&quot;inputClick($event)&quot;
+           (focus)&#x3D;&quot;startSearch($event)&quot;
+           formControlName&#x3D;&quot;queryStr&quot;&gt;
+
+    &lt;!-- toggle button --&gt;
+    &lt;button class&#x3D;&quot;adm-select__caret&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;toggleOpen($event)&quot;&gt;
+        toggle
+    &lt;/button&gt;
+    &lt;!-- / toggle button --&gt;
+&lt;/div&gt;
+&lt;!-- / search input --&gt;
+
+&lt;!-- options list wrapper --&gt;
+&lt;div class&#x3D;&quot;adm-select__options&quot;&gt;
+    &lt;!-- lists results --&gt;
+    &lt;ul class&#x3D;&quot;adm-select__options__list&quot;&gt;
+        &lt;!-- template for list without groups --&gt;
+        &lt;template [ngIf]&#x3D;&quot;!hasGroups&quot;&gt;
+            &lt;li *ngFor&#x3D;&quot;let item of options; trackBy: trackListByFn;&quot;
+                [ngClass]&#x3D;&quot;{&#x27;hidden&#x27;:item.hidden, &#x27;is-selected&#x27;:item.selected}&quot;
+                (click)&#x3D;&quot;onSelect(item.value)&quot;&gt;{{item.label}}
+            &lt;/li&gt;
+        &lt;/template&gt;
+        &lt;!-- / template for list without groups --&gt;
+
+
+        &lt;!-- template for list with groups --&gt;
+        &lt;template [ngIf]&#x3D;&quot;hasGroups&quot;&gt;
+            &lt;template ngFor let-group [ngForOf]&#x3D;&quot;options&quot; let-i&#x3D;&quot;index&quot;&gt;
+                &lt;p [ngClass]&#x3D;&quot;{&#x27;hidden&#x27;:group.hidden}&quot;&gt;{{group.name}}&lt;/p&gt;
+                &lt;li *ngFor&#x3D;&quot;let item of group?.values; trackBy: trackListByFn;&quot;
+                    [ngClass]&#x3D;&quot;{&#x27;hidden&#x27;:item.hidden, &#x27;is-selected&#x27;:item.selected}&quot;
+                    (click)&#x3D;&quot;onSelect(item.value)&quot;&gt;{{item.label}}
+                &lt;/li&gt;
+            &lt;/template&gt;
+        &lt;/template&gt;
+        &lt;!-- / template for list with groups --&gt;
+
+        &lt;!-- results el --&gt;
+        &lt;li *ngIf&#x3D;&quot;!allowCreateEntity &amp;&amp; nothingNotFound &amp;&amp; (options?.length || (!options?.length &amp;&amp; queryStr?.value))&quot;&gt;
+            {{pendingRequest ? &#x27;Searching...&#x27; : &#x27;No results found&#x27;}}
+        &lt;/li&gt;
+
+        &lt;li *ngIf&#x3D;&quot;!options?.length &amp;&amp; queryStr?.value?.length&#x3D;&#x3D;0&quot;&gt;
+            {{pendingRequest ? &#x27;Searching...&#x27; : &#x27;No results found&#x27;}}
+        &lt;/li&gt;
+        &lt;!-- / results el --&gt;
+
+        &lt;!-- add new entity btn --&gt;
+        &lt;li *ngIf&#x3D;&quot;allowCreateEntity &amp;&amp; nothingNotFound &amp;&amp; queryStr?.value.length&gt;0&quot; (click)&#x3D;&quot;addNewOption($event);&quot;&gt;
+            {{queryStr.value}} &lt;b&gt;{{newItemPostfix}}&lt;/b&gt;
+        &lt;/li&gt;
+        &lt;!-- / add new entity btn --&gt;
+
+    &lt;/ul&gt;
+    &lt;!-- / lists results --&gt;
+
+    &lt;!-- clear selection btn --&gt;
+    &lt;ul *ngIf&#x3D;&quot;allowClear &amp;&amp; options.length &amp;&amp; !nothingNotFound &amp;&amp; value&quot;
+        class&#x3D;&quot;adm-select__options__list clear-selection&quot;&gt;
+        &lt;li (click)&#x3D;&quot;clearSelection($event)&quot;&gt;None&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;!-- / clear selection btn --&gt;
+
+    &lt;!-- add new btn --&gt;
+    &lt;button *ngIf&#x3D;&quot;showAddNewBtn&quot; class&#x3D;&quot;adm-select__add-new-btn&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;onAddNewBtnClick($event)&quot;&gt;
+        &lt;i class&#x3D;&quot;material-icons&quot;&gt;add&lt;/i&gt; Add new
+    &lt;/button&gt;
+    &lt;!-- / add new btn --&gt;
+&lt;/div&gt;
+&lt;!-- / options list wrapper --&gt;
+
+&lt;!-- validators --&gt;
+&lt;adm-validator-messages *ngIf&#x3D;&quot;allowCreateEntity&quot; [field]&#x3D;&quot;form.get(&#x27;queryStr&#x27;)&quot;&gt;&lt;/adm-validator-messages&gt;
+&lt;!-- / validators --&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade" id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><!-- search input --><div class="adm-select__input" [formGroup]="form">    <input type="text"           spellcheck="false"           [placeholder]="placeholder"           (click)="inputClick($event)"           (focus)="startSearch($event)"           formControlName="queryStr">    <!-- toggle button -->    <button class="adm-select__caret" type="button" (click)="toggleOpen($event)">        toggle    </button>    <!-- / toggle button --></div><!-- / search input --><!-- options list wrapper --><div class="adm-select__options">    <!-- lists results -->    <ul class="adm-select__options__list">        <!-- template for list without groups -->        <template [ngIf]="!hasGroups">            <li *ngFor="let item of options; trackBy: trackListByFn;"                [ngClass]="{\'hidden\':item.hidden, \'is-selected\':item.selected}"                (click)="onSelect(item.value)">{{item.label}}            </li>        </template>        <!-- / template for list without groups -->        <!-- template for list with groups -->        <template [ngIf]="hasGroups">            <template ngFor let-group [ngForOf]="options" let-i="index">                <p [ngClass]="{\'hidden\':group.hidden}">{{group.name}}</p>                <li *ngFor="let item of group?.values; trackBy: trackListByFn;"                    [ngClass]="{\'hidden\':item.hidden, \'is-selected\':item.selected}"                    (click)="onSelect(item.value)">{{item.label}}                </li>            </template>        </template>        <!-- / template for list with groups -->        <!-- results el -->        <li *ngIf="!allowCreateEntity && nothingNotFound && (options?.length || (!options?.length && queryStr?.value))">            {{pendingRequest ? \'Searching...\' : \'No results found\'}}        </li>        <li *ngIf="!options?.length && queryStr?.value?.length==0">            {{pendingRequest ? \'Searching...\' : \'No results found\'}}        </li>        <!-- / results el -->        <!-- add new entity btn -->        <li *ngIf="allowCreateEntity && nothingNotFound && queryStr?.value.length>0" (click)="addNewOption($event);">            {{queryStr.value}} <b>{{newItemPostfix}}</b>        </li>        <!-- / add new entity btn -->    </ul>    <!-- / lists results -->    <!-- clear selection btn -->    <ul *ngIf="allowClear && options.length && !nothingNotFound && value"        class="adm-select__options__list clear-selection">        <li (click)="clearSelection($event)">None</li>    </ul>    <!-- / clear selection btn -->    <!-- add new btn -->    <button *ngIf="showAddNewBtn" class="adm-select__add-new-btn" type="button" (click)="onAddNewBtnClick($event)">        <i class="material-icons">add</i> Add new    </button>    <!-- / add new btn --></div><!-- / options list wrapper --><!-- validators --><adm-validator-messages *ngIf="allowCreateEntity" [field]="form.get(\'queryStr\')"></adm-validator-messages><!-- / validators --></div>'
+    var COMPONENTS = [{'name': 'InputContainer', 'selector': 'adm-input-container'},{'name': 'SampleComponent', 'selector': 'sample-component'},{'name': 'SingleSelectComponent', 'selector': 'adm-single-select, adm-select[single]'},{'name': 'ValidatorsMessagesComponent', 'selector': 'adm-validator-messages'}];
+    var DIRECTIVES = [{'name': 'DynamicTextAreaDirective', 'selector': 'textarea[dynamic-height]'},{'name': 'SampleDirective', 'selector': '[sampleDirective]'}];
+    var ACTUAL_COMPONENT = {'name': 'SingleSelectComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 1;</script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/search/search_index.js"></script>
+
+    </body>
+</html>
