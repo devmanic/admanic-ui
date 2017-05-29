@@ -147,22 +147,7 @@ $caret-width: 30px;
   }
 
   &.is-disabled {
-    pointer-events: none;
-    opacity: .7;
-    &:after {
-      content: '';
-      display: inline-block;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin: auto;
-      background: #000;
-      position: absolute;
-      border-radius: $input-border-radius;
-      opacity: .1;
-      cursor: none;
-    }
+    @include disableInput;
   }
 
   &.is-active {
@@ -175,5 +160,15 @@ $caret-width: 30px;
         transform: rotate(180deg) translateY(50%);
       }
     }
+  }
+
+  &.is-drop-up {
+    .adm-select__options {
+      top: auto;
+      bottom: 100%;
+      border-radius: $input-border-radius $input-border-radius 0 0;
+      border-top-width: 1px;
+    }
+    border-radius: 0 0 $input-border-radius $input-border-radius;
   }
 }

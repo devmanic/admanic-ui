@@ -7,7 +7,7 @@ import {
     Input,
     OnDestroy,
     Output,
-    OnChanges, SimpleChanges, ViewEncapsulation
+    OnChanges, SimpleChanges, ViewEncapsulation, ElementRef
 } from '@angular/core';
 import {
     ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
@@ -55,7 +55,8 @@ export const newEntityLen: number = 3;
         '[class.adm-select]': 'true',
         '[class.disabled]': 'disabled',
         '[class.invalid]': 'invalidQueryString',
-        '[class.is-active]': 'isOpen'
+        '[class.is-active]': 'isOpen',
+        '[class.is-drop-up]': 'showToTop'
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
@@ -64,6 +65,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     server = '';
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
+    showToTop:boolean = false;
 
     @Input('options') _options: Array<OptionModel | OptionWithGroupModel> = [];
     @Input('value') _value = false;
@@ -123,7 +125,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     selectedItem: OptionModel = null;
 
 
-    constructor(public http: Http, public errorHandler: ErrorHandler) {
+    constructor(public http: Http, public errorHandler: ErrorHandler, private el: ElementRef) {
         this.subscribeToQueryStringChange();
     }
 
@@ -315,11 +317,16 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         e.inputId = this.id;
     }
 
+    private calculatePosition() {
+        this.showToTop = this.el.nativeElement.getBoundingClientRect().top + 165 > window.innerHeight;
+    }
+
     startSearch(e: Event) {
         e.preventDefault();
         e.stopPropagation();
         (<HTMLInputElement>e.target).select();
         this.filter('');
+        this.calculatePosition();
         this.isOpen = true;
         this.show.emit();
         if (this.isAjax) {
@@ -333,6 +340,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.isOpen = !this.isOpen;
         if (this.isOpen) {
             this.filter('');
+            this.calculatePosition();
             this.show.emit();
         } else {
             this.showValueLabelOnEmptyQuery();

@@ -33,7 +33,8 @@ export class DynamicTextAreaDirective implements OnDestroy {
     host: {
         '[class.adm-input__container]': 'true',
         '[class.is-invalid]': 'invalid',
-        '[class.with-addon]': '!!addonIcon'
+        '[class.with-addon]': '!!addonIcon',
+        '[class.is-disabled]': 'disabled'
     },
     template: `
         <label class="adm-input__label" [ngClass]="{'is-required':required}" *ngIf="!!label">{{label}}</label>
@@ -64,12 +65,13 @@ export class InputContainer {
     @Input() addonIcon: string;
     @Input() label: string;
     @Input() description: string;
+    @Input() disabled: boolean;
 
     required: boolean = false;
 
     get invalid(): boolean {
         if (this.control) {
-            if (this.control.touched) {
+            if (this.control.dirty) {
                 return this.control.invalid;
             }
         }

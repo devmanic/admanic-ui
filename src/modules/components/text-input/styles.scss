@@ -42,6 +42,7 @@
     }
   }
   &__container {
+    display: block;
     input[adm][type="text"], adm-single-select, adm-select[single], textarea[adm] {
       width: 100%;
       transition: border-color .3s;
@@ -59,14 +60,20 @@
       text-align: left;
     }
     &.is-invalid {
-      input[adm][type="text"],
-      textarea[adm],
-      .adm-input__addon,
-      adm-single-select,
-      adm-select[single],
-      .zelect__input__addon {
-        border-color: $input-border-color-invalid;
+      > .wrap {
+        > input[adm][type="text"],
+        > textarea[adm],
+        > .adm-input__addon,
+        > adm-single-select,
+        > adm-select[single],
+        > .zelect__input__addon {
+          border-color: $input-border-color-invalid;
+        }
       }
+    }
+
+    .wrap {
+      position: relative;
     }
 
     &.with-addon {
@@ -81,6 +88,11 @@
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }
+      }
+    }
+    &.is-disabled {
+      .wrap {
+        @include disableInput;
       }
     }
   }
