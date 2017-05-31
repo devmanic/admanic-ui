@@ -10,7 +10,24 @@
   -webkit-user-select: none;
 
   &__dropdown {
-    position: relative;
+    z-index: 1051;
+    position: absolute;
+    top:100%;
+    left: 0;
+    right: 0;
+    &-wrap{
+      position: relative;
+      .select2-container {
+        position: static !important;
+      }
+    }
+  }
+  &__add-new-btn {
+    @include selectAddNewBtn;
+    border: 1px solid $input-border-color;
+    border-top: 0;
+    border-radius: 0 0 $input-border-radius $input-border-radius;
+    display: none;
   }
 
   .select2-container {
@@ -74,7 +91,6 @@
 
   @import "./src/modules/components/multi-select/select2/scss/layout.scss";
 
-
   .select2-selection__rendered {
     > .select2-selection__clear {
       display: none !important;
@@ -97,6 +113,19 @@
     .adm-multi-select__dropdown {
       .select2-results__option[aria-selected=true] {
         display: none;
+      }
+    }
+  }
+
+  &.with-add-new-btn {
+
+    &.is-open {
+      .select2-dropdown {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .adm-multi-select__add-new-btn {
+        display: block;
       }
     }
   }

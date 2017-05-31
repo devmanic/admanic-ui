@@ -1,32 +1,34 @@
-///<reference path="../../../../node_modules/@types/jquery/index.d.ts"/>
 import {
-    AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output,
+    AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef
 } from '@angular/core';
 import { Select2File } from './select2/index';
-import * as _ from 'lodash';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+declare const $: any;
 
-export interface Select2 {
-    placeholder?: string,
-    allowClear?: boolean,
-    tags?: boolean,
-    ajax?: any,
-    data?: Array<{ value: number | string, label: string, disabled?: boolean }>,
-    disabled?: boolean,
-    maximumSelectionLength?: number,
-    minimumResultsForSearch?: string,
-    tokenSeparators?: Array<string>,
-    matcher?: Function,
-    language?: string,
-    dir?: string,
-    theme?: string,
-    templateResult?: Function,
-    showSelectedCount?: number
+export interface MultiselectParams {
+    placeholder?: string;
+    allowClear?: boolean;
+    tags?: boolean;
+    ajax?: any;
+    data?: Array<{ value?: number | string, label?: string, disabled?: boolean, id?: number | string, text?: string }>;
+    disabled?: boolean;
+    maximumSelectionLength?: number;
+    minimumResultsForSearch?: string;
+    tokenSeparators?: Array<string>;
+    matcher?: Function;
+    language?: string;
+    dir?: string;
+    templateResult?: Function;
+    showSelectedCount?: number;
+    multiple?: boolean;
+    dropdownParent?: any;
+    showAddNewBtn?: boolean;
+    orderByInput?: boolean;
 }
 
 
-const SELECT2_VALUE_ACCESSOR: any = {
+const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => MultiSelectComponent),
     multi: true
@@ -37,27 +39,42 @@ const SELECT2_VALUE_ACCESSOR: any = {
     encapsulation: ViewEncapsulation.None,
     host: {
         '[class.adm-multi-select]': 'true',
-        '[class.is-hide-selected]': 'isHideSelected',
-        '[class.is-show-count]': 'isShowSelectedCount'
+        '[class.is-hide-selected]': '_isHideSelected',
+        '[class.is-show-count]': '_isShowSelectedCount',
+        '[class.with-add-new-btn]': '_showAddNewBtn',
+        '[class.is-open]': '_isOpen',
     },
     styleUrls: ['styles.scss'],
-    providers: [SELECT2_VALUE_ACCESSOR],
+    providers: [MULTISELECT_VALUE_ACCESSOR],
     template: `
         <select></select>
-        <div class="adm-multi-select__dropdown"></div>
+        <div class="adm-multi-select__dropdown">
+            <div class="adm-multi-select__dropdown-wrap"></div>
+            <button *ngIf="_showAddNewBtn" class="adm-multi-select__add-new-btn" type="button">
+                <i class="material-icons">add</i> Add new
+            </button>
+        </div>
     `
 })
 export class MultiSelectComponent implements AfterViewInit {
     _selectEl: any;
-    isHideSelected: boolean;
+    _defaultParams: MultiselectParams = {};
+    _params: MultiselectParams = this._defaultParams;
+    _model: string[] = [];
+    _isShowSelectedCount: boolean;
+    _isHideSelected: boolean;
+    _showAddNewBtn: boolean;
+    _isOpen: boolean;
 
     @Input()
-    public set params(params: Select2 | any) {
-        if (this._selectEl) {
+    set params(params: MultiselectParams) {
+        if (this._selectEl && this._selectEl.hasClass('select2-hidden-accessible')) {
             this._selectEl.select2('destroy');
         }
 
         this._params = {
+            ...this._defaultParams,
+            ...this._params,
             ...params,
             data: params.data ? params.data.map(opt => {
                 return {
@@ -65,60 +82,58 @@ export class MultiSelectComponent implements AfterViewInit {
                     text: opt.label || opt.text
                 };
             }) : [],
-            multiple: true,
-            allowClear: !!this._params.showSelectedCount,
-            dropdownParent: jQuery(this.el.nativeElement).find('.adm-multi-select__dropdown')
+            allowClear: !!this._params.showSelectedCount
         };
-
+        setTimeout(() => {
+            this._showAddNewBtn = params.showAddNewBtn;
+        }, 1)
         if (this._selectEl) {
             this._selectEl.select2(this._params);
         }
     };
 
     @Input()
-    public set options(defaults: { value: string, label: string }[]) {
-        if (defaults && Array.isArray(defaults)) {
-            this.params = {...this._params, data: defaults};
-        }
+    set options(defaults: { value: string, label: string }[]) {
+        setTimeout(() => {
+            if (defaults && Array.isArray(defaults)) {
+                this.params = {...this._params, data: defaults};
+            }
+        }, 1);
     };
 
-    @Input() orderByInput: boolean = false;
+    @Output() change = new EventEmitter();
+    @Output() open = new EventEmitter();
+    @Output() opening = new EventEmitter();
+    @Output() close = new EventEmitter();
+    @Output() closing = new EventEmitter();
+    @Output() select = new EventEmitter();
+    @Output() selecting = new EventEmitter();
+    @Output() unselect = new EventEmitter();
+    @Output() unselecting = new EventEmitter();
+    @Output() onAddClick = new EventEmitter();
 
-    @Output() public change = new EventEmitter();
-    @Output() public open = new EventEmitter();
-    @Output() public opening = new EventEmitter();
-    @Output() public close = new EventEmitter();
-    @Output() public closing = new EventEmitter();
-    @Output() public select = new EventEmitter();
-    @Output() public selecting = new EventEmitter();
-    @Output() public unselect = new EventEmitter();
-    @Output() public unselecting = new EventEmitter();
-    @Output() public onAddClick = new EventEmitter();
 
-    public _options: any[] = [];
-    private _params: any = {};
-
-    private model = [];
-
-    public onChange: Function = (_: any) => {
+    onChange: Function = (_: any) => {
     };
-    public onTouched: Function = () => {
+    onTouched: Function = () => {
     };
 
     constructor(private el: ElementRef) {
-        Select2File.load();
+
+    }
+
+    init() {
+        this._selectEl = $(this.el.nativeElement.querySelector('select'));
+        this._defaultParams = {
+            multiple: true,
+            dropdownParent: $(this.el.nativeElement).find('.adm-multi-select__dropdown-wrap'),
+            placeholder: 'Select'
+        };
+        this.params = this._defaultParams;
     }
 
     ngAfterViewInit() {
-        this._selectEl = jQuery(this.el.nativeElement.querySelector('select'));
-
-        this._selectEl.select2(this._params);
-        this._selectEl.val(this.model).trigger('change');
-
-        if (!!this._params.showSelectedCount) {
-            // this.select2Element.parents('.field-wrapper').addClass('hide-clear-btn');
-        }
-
+        this.init();
         this.bindEvents();
     }
 
@@ -133,67 +148,49 @@ export class MultiSelectComponent implements AfterViewInit {
         });
         this._selectEl.on('select2:open', (event) => {
             this.open.emit(event);
-            if (this._params.showAddNewBtn === true) {
-                this.createBtn.append();
-            }
+            this._isOpen = true;
         });
         this._selectEl.on('select2:opening', (event) => {
             this.opening.emit(event);
         });
         this._selectEl.on('select2:close', (event) => {
             this.close.emit(event);
+            this._isOpen = false;
         });
         this._selectEl.on('select2:closing', (event) => {
             this.closing.emit(event);
         });
         this._selectEl.on('select2:select', (event) => {
-            if (this.orderByInput) {
+            if (this._params.orderByInput) {
                 let $element = $(event.params.data.element);
                 $element.detach();
                 $(event.currentTarget).append($element);
                 $(event.currentTarget).trigger('change');
             }
 
-            this.select.emit([event, this.model]);
+            this.select.emit([event, this._model]);
         });
         this._selectEl.on('select2:selecting', (event) => {
             this.selecting.emit(event);
         });
         this._selectEl.on('select2:unselect', (event) => {
-            this.unselect.emit([event, this.model]);
+            this.unselect.emit([event, this._model]);
         });
         this._selectEl.on('select2:unselecting', (event) => {
             this.unselecting.emit(event);
         });
     }
 
-    get createBtn() {
-        let containerSelector: string = '.select2-results';
-        let containerEl: any = $(containerSelector);
-        let addBtnClassName: string = 'select2__add-new-btn';
-        return {
-            append: () => {
-                containerEl.find(`.${addBtnClassName}`).remove();
-                containerEl.append(`<button class="${addBtnClassName}"><i class="material-icons">add</i> Add new</button>`);
-                containerEl.find(`.${addBtnClassName}`).on('click', (event) => {
-                    this.onAddClick.emit(event);
-                });
-            }
-        };
-    }
-
-    isShowSelectedCount: boolean = false;
-
     showSelectedCountFn(e: Event) {
         $(e.currentTarget).parent().find('.select2-search.select2-search--inline .select2-selection__choice').remove();
-        if (this.model && this.model.length > this._params.showSelectedCount) {
-            this.isShowSelectedCount = true;
+        if (this._model && this._model.length > this._params.showSelectedCount) {
+            this._isShowSelectedCount = true;
             $(e.currentTarget)
                 .parent()
                 .find('.select2-search.select2-search--inline')
-                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__choice__remove select2-selection__clear'>×</span> ${this.model.length} items selected </span>`);
+                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__choice__remove select2-selection__clear'>×</span> ${this._model.length} items selected </span>`);
         } else {
-            this.isShowSelectedCount = false;
+            this._isShowSelectedCount = false;
         }
     }
 
@@ -206,11 +203,11 @@ export class MultiSelectComponent implements AfterViewInit {
     writeValue(value: any, trigger: boolean = true): Promise<any> {
         return new Promise((resolve) => {
             setTimeout(() => {
-                this.model = value;
-                this.onChange(this.model);
+                this._model = value;
+                this.onChange(this._model);
 
                 if (value !== undefined && this._selectEl !== undefined && trigger) {
-                    this._selectEl.val(this.model).trigger('change');
+                    this._selectEl.val(this._model).trigger('change');
                 }
                 resolve();
             }, 1);
@@ -223,5 +220,9 @@ export class MultiSelectComponent implements AfterViewInit {
 
     registerOnTouched(fn: Function): void {
         this.onTouched = fn;
+    }
+
+    onAddNewBtnClick(e: Event) {
+        this.onAddClick.emit(e);
     }
 }

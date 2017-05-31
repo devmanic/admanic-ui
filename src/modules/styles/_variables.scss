@@ -102,3 +102,19 @@ $select-item-y-padding: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@mixin selectAddNewBtn {
+  @include resetBtn;
+  padding: $input-y-padding $input-x-padding*2;
+  border-top: 1px solid $input-border-color;
+  width: 100%;
+  position: relative;
+  text-align: left;
+  cursor: pointer;
+  i {
+    font-size: 16px;
+    position: absolute;
+    top: 8px;
+    left: $input-x-padding - 5px;
+  }
+}
