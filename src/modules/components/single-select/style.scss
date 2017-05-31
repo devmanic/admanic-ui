@@ -85,22 +85,7 @@ $caret-width: 30px;
       }
       > li,
       > ol {
-        position: relative;
-        cursor: pointer;
-        display: block;
-        border: none;
-        height: auto;
-        text-align: left;
-        border-top: none;
-        line-height: 1em;
-        padding: $select-item-y-padding $select-item-x-padding;
-        font-size: $text-size - 1px;
-        text-transform: none;
-        font-weight: normal;
-        box-shadow: none;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+       @include dropdownItemEl;
         &.is-selected {
           font-weight: 600;
         }
@@ -157,7 +142,7 @@ $caret-width: 30px;
     }
     .adm-select__caret {
       &:before {
-        transform: rotate(180deg) translateY(50%);
+        transform: rotate(180deg);
       }
     }
   }

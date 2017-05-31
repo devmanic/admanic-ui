@@ -1,31 +1,64 @@
+@import './src/modules/styles/_variables.scss';
+
 .select2-selection--multiple {
-  box-sizing: border-box;
-
-  cursor: pointer;
-  display: block;
-
-  min-height: 32px;
-
-  user-select: none;
-  -webkit-user-select: none;
 
   .select2-selection__rendered {
     display: inline-block;
     overflow: hidden;
-    padding-left: 8px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    box-sizing: border-box;
+    list-style: none;
+    margin: 0;
+    padding: 0 $input-x-padding;
+    width: 100%;
+    vertical-align: middle;
+    li {
+      list-style: none;
+    }
   }
+
+  .select2-selection__placeholder {
+    color: $text-color;
+    float: left;
+  }
+
+  .select2-selection__choice {
+    background-color: darken($input-addon-bg, 10%);
+    border-radius: $input-border-radius / 2;
+    cursor: default;
+    float: left;
+    margin: 1px 3px 1px 0;
+    padding: 5px 9px;
+    width: auto;
+    color: lighten($text-color, 20%);
+    font-size: $text-size - 2px;
+    line-height: 1;
+  }
+
+  .select2-selection__choice__remove {
+    color: #999;
+    cursor: pointer;
+
+    display: inline-block;
+    font-weight: bold;
+
+    margin-right: 2px;
+
+    &:hover {
+      color: #333;
+    }
+  }
+
 }
 
 .select2-search--inline {
   float: left;
-
+  padding: 3px 0;
   .select2-search__field {
     box-sizing: border-box;
     border: none;
     font-size: 100%;
-    margin-top: 5px;
     padding: 0;
 
     &::-webkit-search-cancel-button {

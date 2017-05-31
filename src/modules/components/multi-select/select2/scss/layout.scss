@@ -1,5 +1,6 @@
+@import './src/modules/styles/_variables.scss';
+
 .select2-container--default {
-  @import "single";
   @import "multiple";
 
   &.select2-container--open.select2-container--above {
@@ -28,6 +29,7 @@
       border: none;
       outline: 0;
       box-shadow: none;
+      width: 100% !important;
       -webkit-appearance: textfield;
     }
   }
@@ -47,7 +49,7 @@
     }
 
     &[aria-selected=true] {
-      background-color: #ddd;
+      font-weight:600;
     }
 
     .select2-results__option {
@@ -85,8 +87,7 @@
   }
 
   .select2-results__option--highlighted[aria-selected] {
-    background-color: #5897fb;
-    color: white;
+    background-color: $select-item-bg;
   }
 
   .select2-results__group {
