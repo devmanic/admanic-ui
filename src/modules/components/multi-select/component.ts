@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { Select2File } from './select2/index';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 declare const $: any;
 
 export interface MultiselectParams {
@@ -42,7 +43,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         '[class.is-hide-selected]': '_isHideSelected',
         '[class.is-show-count]': '_isShowSelectedCount',
         '[class.with-add-new-btn]': '_showAddNewBtn',
-        '[class.is-open]': '_isOpen',
+        '[class.is-open]': '_isOpen'
     },
     styleUrls: ['styles.scss'],
     providers: [MULTISELECT_VALUE_ACCESSOR],
@@ -50,7 +51,8 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         <select></select>
         <div class="adm-multi-select__dropdown">
             <div class="adm-multi-select__dropdown-wrap"></div>
-            <button *ngIf="_showAddNewBtn" class="adm-multi-select__add-new-btn" type="button">
+            <button *ngIf="_showAddNewBtn" (mousedown)="onAddNewBtnClick($event)" class="adm-multi-select__add-new-btn"
+                    type="button">
                 <i class="material-icons">add</i> Add new
             </button>
         </div>
@@ -86,7 +88,7 @@ export class MultiSelectComponent implements AfterViewInit {
         };
         setTimeout(() => {
             this._showAddNewBtn = params.showAddNewBtn;
-        }, 1)
+        }, 1);
         if (this._selectEl) {
             this._selectEl.select2(this._params);
         }
@@ -210,7 +212,7 @@ export class MultiSelectComponent implements AfterViewInit {
                     this._selectEl.val(this._model).trigger('change');
                 }
                 resolve();
-            }, 1);
+            }, 2);
         });
     }
 
@@ -222,7 +224,7 @@ export class MultiSelectComponent implements AfterViewInit {
         this.onTouched = fn;
     }
 
-    onAddNewBtnClick(e: Event) {
+    onAddNewBtnClick(e) {
         this.onAddClick.emit(e);
     }
 }
