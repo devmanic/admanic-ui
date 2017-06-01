@@ -10,15 +10,16 @@ $input-y-padding: 8px;
 $input-bg: #fff;
 $input-addon-bg: #fafafa;
 $input-addon-color: #8b97a2;
-$input-addon-width: 32px;
 $input-description-color: #8b97a2;
 // end inputs
 
-$caret-width:30px;
+$caret-width: 30px;
 
 $select-item-bg: #eee;
 $select-item-x-padding: $input-x-padding;
 $select-item-y-padding: 10px;
+
+$input-addon-width: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
 
 @mixin resetFont() {
   color: inherit;
@@ -84,7 +85,7 @@ $select-item-y-padding: 10px;
   }
 }
 
-@mixin dropdownItemEl{
+@mixin dropdownItemEl {
   position: relative;
   cursor: pointer;
   display: block;

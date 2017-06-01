@@ -43,7 +43,7 @@
       display: flex;
       cursor: text;
       align-items: center;
-      min-height: ( ( ($input-y-padding * 2) + $text-size ) + 2) * 1;
+      min-height: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
     }
@@ -140,5 +140,11 @@
     padding: 0 !important;
     position: absolute !important;
     width: 1px !important;
+  }
+}
+
+adm-input-container{
+  .adm-multi-select{
+
   }
 }

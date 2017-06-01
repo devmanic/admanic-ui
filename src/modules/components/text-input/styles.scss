@@ -29,7 +29,6 @@
     background: $input-addon-bg;
     margin: 0;
     border-radius: $input-border-radius 0 0 $input-border-radius;
-    transition: all .3s;
     color: $input-addon-color;
     min-width: $input-addon-width;
     text-align: center;
@@ -43,9 +42,13 @@
   }
   &__container {
     display: block;
-    input[adm][type="text"], adm-single-select, adm-select[single], textarea[adm] {
+    input[adm][type="text"],
+    adm-single-select,
+    adm-select[single],
+    textarea[adm],
+    adm-multi-select,
+    adm-multi-select .select2-container .select2-selection {
       width: 100%;
-      transition: border-color .3s;
     }
     input[adm][type="text"],
     textarea[adm] {
@@ -66,7 +69,8 @@
         > .adm-input__addon,
         > adm-single-select,
         > adm-select[single],
-        > .zelect__input__addon {
+        > .zelect__input__addon,
+        > adm-multi-select .select2-container .select2-selection {
           border-color: $input-border-color-invalid;
         }
       }
@@ -83,10 +87,14 @@
         input[adm][type="text"],
         adm-single-select,
         adm-select[single],
-        textarea[adm] {
+        textarea[adm],
+        adm-multi-select .select2-container .select2-selection {
           border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+        }
+        .adm-multi-select__dropdown {
+          left: -1px;
         }
       }
     }
