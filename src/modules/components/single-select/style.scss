@@ -58,7 +58,7 @@ $caret-width: 30px;
     z-index: 102;
     overflow: hidden;
     &__list {
-      max-height: 165px;
+      max-height: $select-options-height;
       overflow: auto;
       margin: 0 !important;
       padding: 0 !important;
@@ -85,7 +85,7 @@ $caret-width: 30px;
       }
       > li,
       > ol {
-       @include dropdownItemEl;
+        @include dropdownItemEl;
         &.is-selected {
           font-weight: 600;
         }

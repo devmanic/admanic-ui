@@ -21,6 +21,8 @@ $select-item-y-padding: 10px;
 
 $input-addon-width: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
 
+$select-options-height:165px;
+
 @mixin resetFont() {
   color: inherit;
   font-family: inherit;

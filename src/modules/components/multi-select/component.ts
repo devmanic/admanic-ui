@@ -2,32 +2,9 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef
 } from '@angular/core';
-import { Select2File } from './select2/index';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { MultiselectParams } from './model';
 declare const $: any;
-
-export interface MultiselectParams {
-    placeholder?: string;
-    allowClear?: boolean;
-    tags?: boolean;
-    ajax?: any;
-    data?: Array<{ value?: number | string, label?: string, disabled?: boolean, id?: number | string, text?: string }>;
-    disabled?: boolean;
-    maximumSelectionLength?: number;
-    minimumResultsForSearch?: string;
-    tokenSeparators?: Array<string>;
-    matcher?: Function;
-    language?: string;
-    dir?: string;
-    templateResult?: Function;
-    showSelectedCount?: number;
-    multiple?: boolean;
-    dropdownParent?: any;
-    showAddNewBtn?: boolean;
-    orderByInput?: boolean;
-}
-
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -62,11 +39,24 @@ export class MultiSelectComponent implements AfterViewInit {
     _selectEl: any;
     _defaultParams: MultiselectParams = {};
     _params: MultiselectParams = this._defaultParams;
-    _model: string[] = [];
+    _value: string[] = [];
     _isShowSelectedCount: boolean;
     _isHideSelected: boolean;
     _showAddNewBtn: boolean;
     _isOpen: boolean;
+    _modelChangedI: number = 0;
+    _hasGroups: boolean;
+
+    @Output() change = new EventEmitter();
+    @Output() open = new EventEmitter();
+    @Output() opening = new EventEmitter();
+    @Output() close = new EventEmitter();
+    @Output() closing = new EventEmitter();
+    @Output() select = new EventEmitter();
+    @Output() selecting = new EventEmitter();
+    @Output() unselect = new EventEmitter();
+    @Output() unselecting = new EventEmitter();
+    @Output() onAddClick = new EventEmitter();
 
     @Input()
     set params(params: MultiselectParams) {
@@ -74,16 +64,29 @@ export class MultiSelectComponent implements AfterViewInit {
             this._selectEl.select2('destroy');
         }
 
+        let data = [];
+        if (params.data) {
+            if (this._hasGroups) {
+                data = params.data.map((opt: any) => ({
+                    text: opt.name,
+                    children: opt.values.map((el: any) => ( {
+                        id: el.value || el.id,
+                        text: el.label || el.text
+                    }))
+                }));
+            } else {
+                data = params.data.map(opt => ({
+                    id: opt.value || opt.id,
+                    text: opt.label || opt.text
+                }));
+            }
+        }
+
         this._params = {
             ...this._defaultParams,
             ...this._params,
             ...params,
-            data: params.data ? params.data.map(opt => {
-                return {
-                    id: opt.value || opt.id,
-                    text: opt.label || opt.text
-                };
-            }) : [],
+            data,
             allowClear: !!this._params.showSelectedCount
         };
         setTimeout(() => {
@@ -98,30 +101,25 @@ export class MultiSelectComponent implements AfterViewInit {
     set options(defaults: { value: string, label: string }[]) {
         setTimeout(() => {
             if (defaults && Array.isArray(defaults)) {
+                this._hasGroups = defaults.every((el: any) => el.hasOwnProperty('name'));
                 this.params = {...this._params, data: defaults};
             }
         }, 1);
     };
 
-    @Output() change = new EventEmitter();
-    @Output() open = new EventEmitter();
-    @Output() opening = new EventEmitter();
-    @Output() close = new EventEmitter();
-    @Output() closing = new EventEmitter();
-    @Output() select = new EventEmitter();
-    @Output() selecting = new EventEmitter();
-    @Output() unselect = new EventEmitter();
-    @Output() unselecting = new EventEmitter();
-    @Output() onAddClick = new EventEmitter();
+    get value() {
+        return this._value;
+    }
 
-
-    onChange: Function = (_: any) => {
-    };
-    onTouched: Function = () => {
-    };
+    set value(val) {
+        this._value = val;
+        if (++this._modelChangedI > 2) {
+            this.onChange(val);
+            this.onTouched();
+        }
+    }
 
     constructor(private el: ElementRef) {
-
     }
 
     init() {
@@ -134,66 +132,82 @@ export class MultiSelectComponent implements AfterViewInit {
         this.params = this._defaultParams;
     }
 
-    ngAfterViewInit() {
-        this.init();
-        this.bindEvents();
+    bindEvents() {
+        this._selectEl
+            .on('change', (event) => {
+                this.writeValue(this._selectEl.val(), false).then(() => {
+                    if (!!this._params.showSelectedCount) {
+                        this.showSelectedCountFn(event);
+                    }
+                    this.change.emit(event);
+                });
+            })
+            .on('select2:open', (event) => {
+                this.open.emit(event);
+                this._isOpen = true;
+            })
+            .on('select2:opening', (event) => {
+                this.opening.emit(event);
+            })
+            .on('select2:close', (event) => {
+                this.close.emit(event);
+                this._isOpen = false;
+            })
+            .on('select2:closing', (event) => {
+                this.closing.emit(event);
+            })
+            .on('select2:select', (event) => {
+                if (this._params.orderByInput) {
+                    let $element = $(event.params.data.element);
+                    $element.detach();
+                    $(event.currentTarget).append($element);
+                    $(event.currentTarget).trigger('change');
+                }
+                this.select.emit([event, this.value]);
+            })
+            .on('select2:selecting', (event) => {
+                this.selecting.emit(event);
+            })
+            .on('select2:unselect', (event) => {
+                this.unselect.emit([event, this.value]);
+            })
+            .on('select2:unselecting', (event) => {
+                this.unselecting.emit(event);
+            });
     }
 
-    bindEvents() {
-        this._selectEl.on('change', (event) => {
-            this.writeValue(this._selectEl.val(), false).then(() => {
-                if (!!this._params.showSelectedCount) {
-                    this.showSelectedCountFn(event);
-                }
-            });
-            this.change.emit(event);
-        });
-        this._selectEl.on('select2:open', (event) => {
-            this.open.emit(event);
-            this._isOpen = true;
-        });
-        this._selectEl.on('select2:opening', (event) => {
-            this.opening.emit(event);
-        });
-        this._selectEl.on('select2:close', (event) => {
-            this.close.emit(event);
-            this._isOpen = false;
-        });
-        this._selectEl.on('select2:closing', (event) => {
-            this.closing.emit(event);
-        });
-        this._selectEl.on('select2:select', (event) => {
-            if (this._params.orderByInput) {
-                let $element = $(event.params.data.element);
-                $element.detach();
-                $(event.currentTarget).append($element);
-                $(event.currentTarget).trigger('change');
-            }
-
-            this.select.emit([event, this._model]);
-        });
-        this._selectEl.on('select2:selecting', (event) => {
-            this.selecting.emit(event);
-        });
-        this._selectEl.on('select2:unselect', (event) => {
-            this.unselect.emit([event, this._model]);
-        });
-        this._selectEl.on('select2:unselecting', (event) => {
-            this.unselecting.emit(event);
-        });
+    onAddNewBtnClick(e) {
+        this.onAddClick.emit(e);
     }
 
     showSelectedCountFn(e: Event) {
         $(e.currentTarget).parent().find('.select2-search.select2-search--inline .select2-selection__choice').remove();
-        if (this._model && this._model.length > this._params.showSelectedCount) {
+        if (this.value && this.value.length > this._params.showSelectedCount) {
             this._isShowSelectedCount = true;
             $(e.currentTarget)
                 .parent()
                 .find('.select2-search.select2-search--inline')
-                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__choice__remove select2-selection__clear'>×</span> ${this._model.length} items selected </span>`);
+                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__choice__remove select2-selection__clear'>×</span> ${this.value.length} items selected </span>`);
         } else {
             this._isShowSelectedCount = false;
         }
+    }
+
+    writeValue(val: any, trigger: boolean = true): Promise<any> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this.value = val;
+                if (this.value !== undefined && this._selectEl !== undefined && trigger) {
+                    this._selectEl.val(this.value).trigger('change');
+                }
+                resolve();
+            }, 2);
+        });
+    }
+
+    ngAfterViewInit() {
+        this.init();
+        this.bindEvents();
     }
 
     ngOnDestroy() {
@@ -202,19 +216,10 @@ export class MultiSelectComponent implements AfterViewInit {
         }
     }
 
-    writeValue(value: any, trigger: boolean = true): Promise<any> {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                this._model = value;
-                this.onChange(this._model);
-
-                if (value !== undefined && this._selectEl !== undefined && trigger) {
-                    this._selectEl.val(this._model).trigger('change');
-                }
-                resolve();
-            }, 2);
-        });
-    }
+    onChange: Function = (_: any) => {
+    };
+    onTouched: Function = () => {
+    };
 
     registerOnChange(fn: Function): void {
         this.onChange = fn;
@@ -222,9 +227,5 @@ export class MultiSelectComponent implements AfterViewInit {
 
     registerOnTouched(fn: Function): void {
         this.onTouched = fn;
-    }
-
-    onAddNewBtnClick(e) {
-        this.onAddClick.emit(e);
     }
 }

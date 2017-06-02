@@ -1,7 +1,6 @@
 @import './src/modules/styles/_variables.scss';
 
 .select2-container--default {
-  @import "multiple";
 
   &.select2-container--open.select2-container--above {
     .select2-selection--single, .select2-selection--multiple {
@@ -35,7 +34,7 @@
   }
 
   .select2-results > .select2-results__options {
-    max-height: 200px;
+    max-height: $select-options-height;
     overflow-y: auto;
   }
 
@@ -49,7 +48,7 @@
     }
 
     &[aria-selected=true] {
-      font-weight:600;
+      font-weight: 600;
     }
 
     .select2-results__option {
@@ -91,8 +90,10 @@
   }
 
   .select2-results__group {
-    cursor: default;
     display: block;
-    padding: 6px;
+    margin: 0;
+    padding: $input-y-padding + 2px $input-x-padding / 2;
+    font-weight: bold;
+    line-height: 1;
   }
 }
