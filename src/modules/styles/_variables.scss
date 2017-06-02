@@ -10,13 +10,18 @@ $input-y-padding: 8px;
 $input-bg: #fff;
 $input-addon-bg: #fafafa;
 $input-addon-color: #8b97a2;
-$input-addon-width: 32px;
 $input-description-color: #8b97a2;
 // end inputs
+
+$caret-width: 30px;
 
 $select-item-bg: #eee;
 $select-item-x-padding: $input-x-padding;
 $select-item-y-padding: 10px;
+
+$input-addon-width: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
+
+$select-options-height:165px;
 
 @mixin resetFont() {
   color: inherit;
@@ -79,5 +84,40 @@ $select-item-y-padding: 10px;
     border-radius: $input-border-radius;
     opacity: .1;
     cursor: none;
+  }
+}
+
+@mixin dropdownItemEl {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  border: none;
+  height: auto;
+  text-align: left;
+  border-top: none;
+  line-height: 1em;
+  padding: $select-item-y-padding $select-item-x-padding;
+  font-size: $text-size - 1px;
+  text-transform: none;
+  font-weight: normal;
+  box-shadow: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin selectAddNewBtn {
+  @include resetBtn;
+  padding: $input-y-padding $input-x-padding*2;
+  border-top: 1px solid $input-border-color;
+  width: 100%;
+  position: relative;
+  text-align: left;
+  cursor: pointer;
+  i {
+    font-size: 16px;
+    position: absolute;
+    top: 8px;
+    left: $input-x-padding - 5px;
   }
 }

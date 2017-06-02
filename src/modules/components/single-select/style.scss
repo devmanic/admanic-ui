@@ -58,7 +58,7 @@ $caret-width: 30px;
     z-index: 102;
     overflow: hidden;
     &__list {
-      max-height: 165px;
+      max-height: $select-options-height;
       overflow: auto;
       margin: 0 !important;
       padding: 0 !important;
@@ -85,22 +85,7 @@ $caret-width: 30px;
       }
       > li,
       > ol {
-        position: relative;
-        cursor: pointer;
-        display: block;
-        border: none;
-        height: auto;
-        text-align: left;
-        border-top: none;
-        line-height: 1em;
-        padding: $select-item-y-padding $select-item-x-padding;
-        font-size: $text-size - 1px;
-        text-transform: none;
-        font-weight: normal;
-        box-shadow: none;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        @include dropdownItemEl;
         &.is-selected {
           font-weight: 600;
         }
@@ -131,19 +116,7 @@ $caret-width: 30px;
   }
 
   &__add-new-btn {
-    @include resetBtn;
-    padding: $input-y-padding $input-x-padding*2;
-    border-top: 1px solid $input-border-color;
-    width: 100%;
-    position: relative;
-    text-align: left;
-    cursor: pointer;
-    i {
-      font-size: 16px;
-      position: absolute;
-      top: 8px;
-      left: $input-x-padding - 5px;
-    }
+    @include selectAddNewBtn;
   }
 
   &.is-disabled {
@@ -157,7 +130,7 @@ $caret-width: 30px;
     }
     .adm-select__caret {
       &:before {
-        transform: rotate(180deg) translateY(50%);
+        transform: rotate(180deg);
       }
     }
   }

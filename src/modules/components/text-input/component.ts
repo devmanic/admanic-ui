@@ -71,7 +71,7 @@ export class InputContainer {
 
     get invalid(): boolean {
         if (this.control) {
-            if (this.control.dirty) {
+            if (this.control.touched) {
                 return this.control.invalid;
             }
         }
