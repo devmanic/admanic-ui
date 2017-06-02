@@ -1,6 +1,6 @@
 import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
-    ViewEncapsulation, forwardRef
+    ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiselectParams } from './model';
@@ -20,7 +20,9 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         '[class.is-hide-selected]': '_isHideSelected',
         '[class.is-show-count]': '_isShowSelectedCount',
         '[class.with-add-new-btn]': '_showAddNewBtn',
-        '[class.is-open]': '_isOpen'
+        '[class.is-open]': '_isOpen && !_isTags',
+        '[class.is-tags]': '_isTags',
+        '[class.is-above]': '_isAbove'
     },
     styleUrls: ['styles.scss'],
     providers: [MULTISELECT_VALUE_ACCESSOR],
@@ -35,7 +37,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         </div>
     `
 })
-export class MultiSelectComponent implements AfterViewInit {
+export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     _selectEl: any;
     _defaultParams: MultiselectParams = {};
     _params: MultiselectParams = this._defaultParams;
@@ -46,6 +48,8 @@ export class MultiSelectComponent implements AfterViewInit {
     _isOpen: boolean;
     _modelChangedI: number = 0;
     _hasGroups: boolean;
+    _isTags: boolean;
+    _isAbove: boolean;
 
     @Output() change = new EventEmitter();
     @Output() open = new EventEmitter();
@@ -90,7 +94,9 @@ export class MultiSelectComponent implements AfterViewInit {
             allowClear: !!this._params.showSelectedCount
         };
         setTimeout(() => {
-            this._showAddNewBtn = params.showAddNewBtn;
+            this._showAddNewBtn = this._params.showAddNewBtn;
+            this._isTags = this._params.tags;
+            console.log(this._isTags);
         }, 1);
         if (this._selectEl) {
             this._selectEl.select2(this._params);
@@ -145,6 +151,7 @@ export class MultiSelectComponent implements AfterViewInit {
             .on('select2:open', (event) => {
                 this.open.emit(event);
                 this._isOpen = true;
+                this._isAbove = $(event.target).next().hasClass('select2-container--above');
             })
             .on('select2:opening', (event) => {
                 this.opening.emit(event);
