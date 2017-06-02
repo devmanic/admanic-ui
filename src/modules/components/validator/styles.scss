@@ -1,0 +1,12 @@
+@import './src/modules/styles/_variables.scss';
+
+.adm-validator-message {
+  color: $input-border-color-invalid;
+  font-size: 11px;
+  padding: 2px;
+  line-height: 1.4;
+  display: none;
+  &.is-active {
+    display: inline-block;
+  }
+}

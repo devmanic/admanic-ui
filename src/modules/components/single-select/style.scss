@@ -1,0 +1,147 @@
+@import './src/modules/styles/_variables.scss';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+$caret-width: 30px;
+
+.adm-select {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  background: $input-bg;
+  border: 1px solid $input-border-color;
+  border-radius: $input-border-radius;
+  color: $text-color;
+  font-size: $text-size;
+
+  &__input {
+    input[type='text'] {
+      display: block;
+      width: 100%;
+      @include resetInput;
+      padding: $input-y-padding $caret-width $input-y-padding $input-x-padding;
+    }
+  }
+
+  &__caret {
+    @include resetBtn;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    font-size: 0;
+    color: transparent;
+    width: $caret-width;
+    border-radius: 0 $input-border-radius $input-border-radius 0;
+    cursor: pointer;
+    &:before {
+      @include caretIcon(#888);
+      @include centerAbsolut;
+    }
+  }
+
+  &__options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    background: $input-bg;
+    border: 1px solid $input-border-color;
+    border-top-width: 0;
+    margin-top: 1px;
+    border-radius: 0 0 3px 3px;
+    z-index: 102;
+    overflow: hidden;
+    &__list {
+      max-height: $select-options-height;
+      overflow: auto;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+      &.clear-selection {
+        border-top: 1px solid #cfd3d7;
+        li {
+          font-weight: bold;
+          background: transparent !important;
+        }
+      }
+      > p {
+        margin: 0;
+        padding: $input-y-padding + 2px $input-x-padding / 2;
+        font-weight: bold;
+        border-top: 1px solid $input-border-color;
+        line-height: 1;
+        &:first-child {
+          border-top: none;
+        }
+        &.hidden {
+          display: none;
+        }
+      }
+      > li,
+      > ol {
+        @include dropdownItemEl;
+        &.is-selected {
+          font-weight: 600;
+        }
+        &.hidden {
+          display: none;
+        }
+        &:hover,
+        &.is-selected {
+          background-color: $select-item-bg;
+        }
+      }
+      &:hover {
+        > * {
+          &.is-selected {
+            background: transparent;
+            &:hover {
+              background-color: $select-item-bg;
+            }
+          }
+        }
+      }
+      b {
+        display: block;
+        margin-top: 5px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  &__add-new-btn {
+    @include selectAddNewBtn;
+  }
+
+  &.is-disabled {
+    @include disableInput;
+  }
+
+  &.is-active {
+    border-radius: $input-border-radius $input-border-radius 0 0;
+    .adm-select__options {
+      display: block;
+    }
+    .adm-select__caret {
+      &:before {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &.is-drop-up {
+    .adm-select__options {
+      top: auto;
+      bottom: 100%;
+      border-radius: $input-border-radius $input-border-radius 0 0;
+      border-top-width: 1px;
+    }
+    border-radius: 0 0 $input-border-radius $input-border-radius;
+  }
+}
