@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ValidatorsModule } from '../validator/validator.module';
-import { CheckboxComponent } from './checkbox.component';
+import { CheckboxComponent } from './component';
+import { ValidatorsModule } from '../validator/module';
 
 @NgModule({
     imports: [
