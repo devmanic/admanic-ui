@@ -5,7 +5,13 @@ $checkbox-border-color: #5a5a5a;
 $checkbox-checked: #46bb00;
 
 .adm-checkbox {
-  display: inline-block;
+  display: block;
+  margin: 5px 0;
+  &__wrap {
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+  }
   &__el {
     display: inline-block;
     width: $checkbox-size;
@@ -19,6 +25,7 @@ $checkbox-checked: #46bb00;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 10px 0 0;
     &:before {
       content: "check";
       font-family: 'Material Icons';
@@ -34,6 +41,20 @@ $checkbox-checked: #46bb00;
     }
   }
 
+  &__label {
+    cursor: pointer;
+    &.is-required {
+      @include requiredLabel;
+    }
+  }
+
+  &.is-rtl {
+    flex-direction: row-reverse;
+    .adm-checkbox__el {
+      margin: 0 0 0 10px;
+    }
+  }
+
   &[checked=true] {
     .adm-checkbox__el {
       background: $checkbox-checked;
@@ -46,7 +67,6 @@ $checkbox-checked: #46bb00;
 
   &[disabled=true] {
     pointer-evets: none;
-    user-select: none;
     .adm-checkbox__el {
       cursor: not-allowed;
       background: rgba($checkbox-border-color, .3);

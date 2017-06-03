@@ -121,3 +121,14 @@ $select-options-height:165px;
     left: $input-x-padding - 5px;
   }
 }
+
+@mixin requiredLabel{
+  &:after {
+    content: "*";
+    color: $input-border-color-invalid;
+    display: inline-block;
+    margin-left: 3px;
+    vertical-align: top;
+    margin-top: -2px;
+  }
+}
