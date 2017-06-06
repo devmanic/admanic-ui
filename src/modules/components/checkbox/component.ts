@@ -16,7 +16,7 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
 
 @Component({
     providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
-    selector: 'adm-checkbox',
+    selector: 'adm-checkbox, adm-radio',
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./style.scss'],
     template: `
@@ -40,6 +40,7 @@ export class CheckboxComponent {
     _checked: boolean | string;
     _required: boolean;
     _ctrl: FormControl;
+    _type: 'checkbox' | 'radio' = 'checkbox';
 
     @Input() disabled: boolean;
     @Input() rtl: boolean;
@@ -58,12 +59,24 @@ export class CheckboxComponent {
     }
 
     get checked(): boolean | string {
+        if (this.isRadio) {
+            return this._checked;
+        }
         return !this.value ? this._checked : this._checked == this.value;
     }
 
     @Output() change: EventEmitter<boolean | string> = new EventEmitter();
 
     constructor(private el: ElementRef) {
+        this._type = el.nativeElement.localName === 'adm-checkbox' ? 'checkbox' : 'radio';
+    }
+
+    get isCheckbox(): boolean {
+        return this._type === 'checkbox';
+    }
+
+    get isRadio(): boolean {
+        return this._type === 'radio';
     }
 
     writeValue(val: any) {
