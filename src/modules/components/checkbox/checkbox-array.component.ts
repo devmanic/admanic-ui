@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
@@ -28,7 +28,7 @@ export interface option {
         </div>
     `
 })
-export class CheckboxArrayComponent implements OnDestroy {
+export class CheckboxArrayComponent implements OnDestroy, AfterViewInit {
     _options: option[] = [];
     _value: string[] = [];
     _arr: FormArray = new FormArray([]);
@@ -58,7 +58,11 @@ export class CheckboxArrayComponent implements OnDestroy {
         return this._arr.controls;
     }
 
-    constructor() {
+    ngAfterViewInit() {
+        this._value.forEach((el: string) => {
+            let item: FormControl = this.arr.filter(item => item.param.value === el)[0];
+            if (!!item) item.setValue(el);
+        });
         this._arr.valueChanges.subscribe((value: string[]) => {
             this.writeValue(value.filter(el => !!el));
         });

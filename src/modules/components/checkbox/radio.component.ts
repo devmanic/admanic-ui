@@ -1,6 +1,5 @@
-import { Component, forwardRef, Input, OnDestroy } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _ from 'lodash';
+import { AfterViewInit, Component, forwardRef, Input, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface option {
@@ -17,21 +16,19 @@ export interface option {
     }],
     template: `
         <div [formGroup]="_form" *ngIf="_options.length">
-                <adm-radio
-                        formControlName="model"
-                        [value]="item.value"
-                        [checked]="item.value == _form.get('model').value"
-                        *ngFor="let item of _options">
-                    {{item.label}}
-                </adm-radio>
+            <adm-radio
+                    formControlName="model"
+                    [value]="item.value"
+                    [checked]="item.value == _form.get('model').value"
+                    *ngFor="let item of _options">
+                {{item.label}}
+            </adm-radio>
         </div>
-        <!--<pre>{{_form.value | json:2}}</pre>-->
-        <!--<hr>-->
     `
 })
-export class RadioListComponent implements OnDestroy {
+export class RadioListComponent implements OnDestroy, AfterViewInit {
     _options: option[] = [];
-    _value: string[] = [];
+    _value: string;
     _model: FormControl = new FormControl(null);
     _required: boolean;
     _form: FormGroup = new FormGroup({
@@ -49,7 +46,8 @@ export class RadioListComponent implements OnDestroy {
         }
     }
 
-    constructor() {
+    ngAfterViewInit() {
+        this._model.setValue(this._value);
         this._model.valueChanges.filter(val => !!val).subscribe((value) => {
             this.writeValue(value != this._value ? value : null);
         });
