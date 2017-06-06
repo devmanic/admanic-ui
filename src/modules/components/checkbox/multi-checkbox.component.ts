@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, forwardRef, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,14 +10,20 @@ export interface option {
 
 @Component({
     selector: 'adm-multi-checkbox',
+    encapsulation: ViewEncapsulation.None,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => CheckboxArrayComponent),
+        useExisting: forwardRef(() => MultiCheckboxComponent),
         multi: true
     }],
+    styleUrls:['./multi-selector.style.scss'],
+    host: {
+        'class': 'adm-multi-checkbox',
+        '[class.is-inline]': 'inline'
+    },
     template: `
         <div [formGroup]="_form" *ngIf="arr.length">
-            <div formArrayName="arr">
+            <div formArrayName="arr" class="adm-multi-ctrl-wrap">
                 <adm-checkbox
                         *ngFor="let item of arr"
                         [formControl]="item"
@@ -28,15 +34,16 @@ export interface option {
         </div>
     `
 })
-export class CheckboxArrayComponent implements OnDestroy, AfterViewInit {
+export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
     _options: option[] = [];
     _value: string[] = [];
     _arr: FormArray = new FormArray([]);
-    _required: boolean;
     _form: FormGroup = new FormGroup({
         arr: this._arr
     });
     _subscribers: Subscription[] = [];
+
+    @Input() inline: boolean;
 
     @Input()
     set options(opts: any[]) {
@@ -63,9 +70,11 @@ export class CheckboxArrayComponent implements OnDestroy, AfterViewInit {
             let item: FormControl = this.arr.filter(item => item.param.value === el)[0];
             if (!!item) item.setValue(el);
         });
-        this._arr.valueChanges.subscribe((value: string[]) => {
-            this.writeValue(value.filter(el => !!el));
-        });
+        this._subscribers.push(
+            this._arr.valueChanges.subscribe((value: string[]) => {
+                this.writeValue(value.filter(el => !!el));
+            })
+        );
     }
 
     writeValue(val: any) {

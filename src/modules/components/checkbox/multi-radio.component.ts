@@ -8,14 +8,19 @@ export interface option {
 }
 
 @Component({
-    selector: 'adm-radio-list',
+    selector: 'adm-multi-radio',
     providers: [{
         provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => RadioListComponent),
+        useExisting: forwardRef(() => MultiRadioComponent),
         multi: true
     }],
+    host: {
+        'class': 'adm-multi-radio',
+        '[class.is-inline]': 'inline'
+    },
+    styleUrls:['./multi-selector.style.scss'],
     template: `
-        <div [formGroup]="_form" *ngIf="_options.length">
+        <div [formGroup]="_form" *ngIf="_options.length" class="adm-multi-ctrl-wrap">
             <adm-radio
                     formControlName="model"
                     [value]="item.value"
@@ -26,15 +31,16 @@ export interface option {
         </div>
     `
 })
-export class RadioListComponent implements OnDestroy, AfterViewInit {
+export class MultiRadioComponent implements OnDestroy, AfterViewInit {
     _options: option[] = [];
     _value: string;
     _model: FormControl = new FormControl(null);
-    _required: boolean;
     _form: FormGroup = new FormGroup({
         model: this._model
     });
     _subscribers: Subscription[] = [];
+
+    @Input() inline: boolean;
 
     @Input()
     set options(opts: any[]) {
@@ -48,9 +54,11 @@ export class RadioListComponent implements OnDestroy, AfterViewInit {
 
     ngAfterViewInit() {
         this._model.setValue(this._value);
-        this._model.valueChanges.filter(val => !!val).subscribe((value) => {
-            this.writeValue(value != this._value ? value : null);
-        });
+        this._subscribers.push(
+            this._model.valueChanges.filter(val => !!val).subscribe((value) => {
+                this.writeValue(value != this._value ? value : null);
+            })
+        );
     }
 
     writeValue(val: any) {

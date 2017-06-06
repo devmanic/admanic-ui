@@ -10,9 +10,12 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CheckboxComponent),
+    useExisting: forwardRef(() => CheckboxControlComponent),
     multi: true
 };
+
+const CHECKBOX_CLASS: string = 'adm-checkbox';
+const RADIO_CLASS: string = 'adm-radio';
 
 @Component({
     providers: [CHECKBOX_CONTROL_VALUE_ACCESSOR],
@@ -20,15 +23,15 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./style.scss'],
     template: `
-        <div class="adm-checkbox__wrap">
-            <div class="adm-checkbox__el" (click)="toggle();"></div>
-            <div class="adm-checkbox__label" [class.is-required]="_required" (click)="toggle();">
+        <div class="{{baseClassName}}__wrap">
+            <div class="{{baseClassName}}__el" (click)="toggle();"></div>
+            <div class="{{baseClassName}}__label" [class.is-required]="_required" (click)="toggle();">
                 <ng-content></ng-content>
             </div>
         </div>
     `,
     host: {
-        'class': 'adm-checkbox',
+        '[class]': 'baseClassName',
         '[attr.checked]': 'checked',
         '[class.is-checked]': 'checked',
         '[attr.disabled]': 'disabled',
@@ -36,7 +39,7 @@ export const CHECKBOX_CONTROL_VALUE_ACCESSOR: any = {
         '[class.is-rtl]': 'rtl'
     }
 })
-export class CheckboxComponent {
+export class CheckboxControlComponent {
     _checked: boolean | string;
     _required: boolean;
     _ctrl: FormControl;
@@ -50,7 +53,6 @@ export class CheckboxComponent {
     set control(ctrl: FormControl) {
         this._required = ctrl.hasError('required');
         this._ctrl = ctrl;
-        console.log(this._required);
     }
 
     @Input()
@@ -77,6 +79,10 @@ export class CheckboxComponent {
 
     get isRadio(): boolean {
         return this._type === 'radio';
+    }
+
+    get baseClassName(): string {
+        return this.isRadio ? RADIO_CLASS : CHECKBOX_CLASS;
     }
 
     writeValue(val: any) {

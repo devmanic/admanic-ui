@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckboxComponent } from './component';
+import { CheckboxControlComponent } from './control.component';
 import { ValidatorsModule } from '../validator/module';
-import { CheckboxArrayComponent } from './checkbox-array.component';
-import { RadioListComponent } from './radio.component';
+import { MultiCheckboxComponent } from './multi-checkbox.component';
+import { MultiRadioComponent } from './multi-radio.component';
 
 @NgModule({
     imports: [
@@ -13,9 +13,9 @@ import { RadioListComponent } from './radio.component';
         ReactiveFormsModule,
         ValidatorsModule
     ],
-    exports: [CheckboxComponent, CheckboxArrayComponent, RadioListComponent],
-    declarations: [CheckboxComponent, CheckboxArrayComponent, RadioListComponent],
+    exports: [CheckboxControlComponent, MultiCheckboxComponent, MultiRadioComponent],
+    declarations: [CheckboxControlComponent, MultiCheckboxComponent, MultiRadioComponent],
     providers: []
 })
-export class CheckboxModule {
+export class CheckboxAndRadioModule {
 }
