@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from './component';
 import { ValidatorsModule } from '../validator/module';
+import { CheckboxArrayComponent } from './checkbox-array.component';
 
 @NgModule({
     imports: [
@@ -11,8 +12,8 @@ import { ValidatorsModule } from '../validator/module';
         ReactiveFormsModule,
         ValidatorsModule
     ],
-    exports: [CheckboxComponent],
-    declarations: [CheckboxComponent],
+    exports: [CheckboxComponent, CheckboxArrayComponent],
+    declarations: [CheckboxComponent, CheckboxArrayComponent],
     providers: []
 })
 export class CheckboxModule {
