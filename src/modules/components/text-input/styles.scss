@@ -14,14 +14,7 @@
     display: block;
 
     &.is-required {
-      &:after {
-        content: "*";
-        color: #f78d00;
-        display: inline-block;
-        margin-left: 3px;
-        vertical-align: top;
-        margin-top: -2px;
-      }
+      @include requiredLabel;
     }
   }
   &__addon {
