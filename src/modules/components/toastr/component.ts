@@ -2,21 +2,19 @@ import {
     Component, ChangeDetectorRef,
     NgZone, OnDestroy, AnimationTransitionEvent, ViewEncapsulation
 } from '@angular/core';
-import { Toast } from './toast.model';
-import { ToastOptions } from './toast-options';
+import { Toast } from './model';
+import { ToastOptions } from './options';
 import { DomSanitizer } from '@angular/platform-browser';
 import 'rxjs/add/operator/first';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-    selector: 'toast-container',
+    selector: 'adm-toast-container',
     styleUrls: [`./styles.scss`],
     encapsulation: ViewEncapsulation.None,
     host: {
-        'id': 'adm-toast-container',
-        '[class]': 'positionClass',
-        '[style.position]': 'position'
+        '[class]': 'positionClass'
     },
     template: `
         <div *ngFor="let toast of toasts; trackBy:trackByFn" class="adm-toast is__{{toast.type}}"
@@ -34,7 +32,6 @@ import { Observable } from 'rxjs/Observable';
     `
 })
 export class ToastContainer implements OnDestroy {
-    position = 'fixed';
     messageClass: string;
     titleClass: string;
     positionClass: string;

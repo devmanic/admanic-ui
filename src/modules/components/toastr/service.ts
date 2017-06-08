@@ -1,15 +1,15 @@
 import {
     Injectable, ComponentRef, ApplicationRef, NgZone,
-    ReflectiveInjector, ViewContainerRef, ComponentFactoryResolver, Injector, EmbeddedViewRef
+    ReflectiveInjector, ViewContainerRef, ComponentFactoryResolver, Injector
 } from '@angular/core';
 import { ToastContainer } from './component';
-import { ToastOptions } from './toast-options';
-import { Toast } from './toast.model';
+import { ToastOptions } from './options';
+import { Toast } from './model';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class ToastsManager {
+export class ToastService {
     container: ComponentRef<any>;
 
     private index = 0;
@@ -67,10 +67,6 @@ export class ToastsManager {
         });
     }
 
-    getComponentRootNode(componentRef: ComponentRef<any>): HTMLElement {
-        return (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    }
-
     createTimeout(toast: Toast): any {
         let task: number;
         this.ngZone.runOutsideAngular(() => {
@@ -92,6 +88,7 @@ export class ToastsManager {
 
         Object.keys(toast.config).forEach(k => {
             if (customConfig.hasOwnProperty(k)) {
+                console.log('===here===', k)
                 toast.config[k] = customConfig[k];
             }
         });
@@ -99,6 +96,8 @@ export class ToastsManager {
         if (toast.config.dismiss === 'auto') {
             toast.timeoutId = this.createTimeout(toast);
         }
+
+        console.log('toast', toast);
 
         this.container.instance.addToast(toast);
         return toast;
@@ -159,7 +158,6 @@ export class ToastsManager {
         return this.show(toast, options);
     }
 
-    // allow user define custom background color and image
     custom(message: string, title?: string, options?: any): Promise<Toast> {
         const data = options && options.data ? options.data : null;
         const toast = new Toast('custom', message, title, data);

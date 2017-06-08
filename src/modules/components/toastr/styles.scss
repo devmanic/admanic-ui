@@ -2,10 +2,12 @@
 
 @keyframes admToast {
   from {
-    transform: scale(0) translate(100%);
+    transform: scale(0);
+    opacity: 0;
   }
   to {
-    transform: scale(1) translate(0);
+    transform: scale(1);
+    opacity: 0.8;
   }
 }
 
@@ -25,8 +27,7 @@
   position: relative;
   user-select: none;
   border-bottom: 2px solid transparent;
-  animation-name: admToast;
-  animation-duration: .3s;
+  animation: admToast .3s 1 ease-in;
   &:before {
     content: '';
     width: 27px;
@@ -124,7 +125,8 @@
   }
 }
 
-#adm-toast-container {
+adm-toast-container {
+  display: block;
   pointer-events: none;
   position: fixed;
   z-index: 99999;
@@ -135,13 +137,13 @@
   &.is__top-center > div,
   &.is__bottom-center > div {
     width: 300px;
-    margin: auto;
+    margin: 0 auto 6px;
   }
 
   &.is__top-full-width > div,
   &.is__bottom-full-width > div {
     width: 96%;
-    margin: auto;
+    margin: 0 auto 6px;
   }
 
   &.is__top-center {

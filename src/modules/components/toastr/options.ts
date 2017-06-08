@@ -17,7 +17,7 @@ export class ToastOptions {
     maxShown: number = 5;
     newestOnTop: boolean = true;
     animate: string = 'fade';
-    toastLife: number = 2000;
+    toastLife: number = 3000;
     enableHTML: boolean = false;
     dismiss: string = 'auto';
     messageClass: string = 'adm-toast__message';
