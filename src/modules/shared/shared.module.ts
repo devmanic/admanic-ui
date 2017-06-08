@@ -13,4 +13,5 @@ import { ClipboardService } from './clipboard.service';
         ListRequestService
     ]
 })
-export class SharedModule {}
+export class SharedModule {
+}
