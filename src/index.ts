@@ -9,3 +9,4 @@ export * from './modules/components/checkbox/module';
 export * from './modules/components/toastr/module';
 export * from './modules/components/toastr/service';
 export * from './modules/components/toastr/options';
+export * from './modules/components/date-range-picker/module'
