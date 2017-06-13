@@ -23,11 +23,10 @@ import { Observable } from 'rxjs/Observable';
                 &times;
             </div>
             <div *ngIf="toast.title" class="{{toast.config.titleClass || titleClass}}">{{toast.title}}</div>
-            <div [ngSwitch]="toast.config.enableHTML">
-                <span *ngSwitchCase="true" [innerHTML]="sanitizer.bypassSecurityTrustHtml(toast.message)"></span>
-                <span *ngSwitchDefault
-                      class="{{toast.config.messageClass || messageClass}}">{{toast.message}}</span>
+            <div *ngIf="toast.config.enableHTML">
+                <span [innerHTML]="toast.message"></span>
             </div>
+            <span *ngIf="!toast.config.enableHTML" class="{{toast.config.messageClass || messageClass}}">{{toast.message}}</span>
         </div>
     `
 })

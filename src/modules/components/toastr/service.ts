@@ -88,7 +88,6 @@ export class ToastService {
 
         Object.keys(toast.config).forEach(k => {
             if (customConfig.hasOwnProperty(k)) {
-                console.log('===here===', k)
                 toast.config[k] = customConfig[k];
             }
         });
@@ -96,8 +95,6 @@ export class ToastService {
         if (toast.config.dismiss === 'auto') {
             toast.timeoutId = this.createTimeout(toast);
         }
-
-        console.log('toast', toast);
 
         this.container.instance.addToast(toast);
         return toast;
@@ -130,8 +127,10 @@ export class ToastService {
     }
 
     dispose() {
-        this.container.destroy();
-        this.container = null;
+        if (this.container) {
+            this.container.destroy();
+            this.container = null;
+        }
     }
 
     error(message: string, title?: string, options?: any): Promise<Toast> {
