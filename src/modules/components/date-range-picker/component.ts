@@ -28,31 +28,34 @@ import { Calendar } from './service.calendar';
         }
     ],
     template: `
-        <button (click)="toggle();">{{label}}</button>
+        <button adm class="adm-date-picker__label" (click)="toggle();">{{label}}</button>
         <div class="adm-date-picker__holder" *ngIf="isOpen">
             <date-range-picker-selector (apply)="onApply($event);"
                                         [initialDate]="value"
-                                        [ranges]="rangesList"
+                                        [enableReset]="enableResetBtn"
+                                        [ranges]="datePeriods"
                                         [format]="format"></date-range-picker-selector>
         </div>
     `
 })
 export class AdmDateRangePickerContainer {
     @Output() change: EventEmitter<IDate> = new EventEmitter();
-    @Input() format = 'DD/MM/YYYY';
+    @Input() format: string = 'DD/MM/YYYY';
+    @Input() placeholder: string = 'Select Date';
+    @Input() enableResetBtn: boolean;
 
-    private _open: boolean = true;
+    private _open: boolean;
     private _value: IDate = {start: null, end: null};
 
     get value(): IDate {
         return this._value;
     }
 
-    rangesList: IDateRange[] = [
+    @Input() datePeriods: IDateRange[] = [
         {
             label: 'Today',
-            start: this._calendar.today,
-            end: this._calendar.today
+            start: moment().toDate(),
+            end: moment().toDate()
         },
         {
             label: 'Yesterday',
@@ -68,11 +71,6 @@ export class AdmDateRangePickerContainer {
             label: 'Last month',
             start: moment().subtract(1, 'month').startOf('month').toDate(),
             end: moment().subtract(1, 'month').endOf('month').toDate()
-        },
-        {
-            label: 'Random',
-            start: moment().subtract(3, 'month').toDate(),
-            end: moment().startOf('month').toDate()
         }
     ];
 
@@ -103,7 +101,7 @@ export class AdmDateRangePickerContainer {
 
     get label(): string {
         if (this._calendar.isModelValid(this.value)) {
-            const selectedRange = this.rangesList.filter((range: IDateRange) => {
+            const selectedRange = this.datePeriods.filter((range: IDateRange) => {
                 return range.start.toISOString() === this.value.start.toISOString() && range.end.toISOString() === this.value.end.toISOString();
             })[0];
 
@@ -117,7 +115,7 @@ export class AdmDateRangePickerContainer {
 
             return `${moment(this.value.start).format(this.format)} - ${moment(this.value.end).format(this.format)}`;
         }
-        return 'Select Date';
+        return this.placeholder;
     }
 
     @HostListener('click', ['$event']) onClick(e: Event) {
@@ -127,9 +125,6 @@ export class AdmDateRangePickerContainer {
     @HostListener('document: click', ['$event']) onDocumentClick() {
         this.hide();
     }
-
-    //sad
-
 
     writeValue(value: IDate) {
         this._value = value;

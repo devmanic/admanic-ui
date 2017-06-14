@@ -49,7 +49,8 @@
     <div class="adm-date-picker__calendar__controls">
         <ul>
             <li>
-                <button class="adm-btn adm-btn__reset" type="button" (click)="reset();">Reset</button>
+                <button *ngIf="enableReset" class="adm-btn adm-btn__reset" type="button" (click)="reset();">Reset
+                </button>
             </li>
             <li>
                 <button class="adm-btn adm-btn__cancel" (click)="onCancel()">Cancel</button>

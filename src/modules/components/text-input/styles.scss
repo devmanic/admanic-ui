@@ -40,11 +40,17 @@
     adm-select[single],
     textarea[adm],
     adm-multi-select,
-    adm-multi-select .select2-container .select2-selection {
+    adm-multi-select .select2-container .select2-selection,
+    adm-date-range-picker,
+    adm-date-range-picker button[adm] {
       width: 100%;
     }
+    adm-date-range-picker {
+      position: static;
+    }
     input[adm][type="text"],
-    textarea[adm] {
+    textarea[adm],
+    button[adm] {
       @include resetInput;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
@@ -63,7 +69,8 @@
         > adm-single-select,
         > adm-select[single],
         > .zelect__input__addon,
-        > adm-multi-select .select2-container .select2-selection {
+        > adm-multi-select .select2-container .select2-selection,
+        > adm-date-range-picker button[adm] {
           border-color: $input-border-color-invalid;
         }
       }
@@ -81,7 +88,8 @@
         adm-single-select,
         adm-select[single],
         textarea[adm],
-        adm-multi-select .select2-container .select2-selection {
+        adm-multi-select .select2-container .select2-selection,
+        button[adm] {
           border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;

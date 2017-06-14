@@ -1,8 +1,8 @@
 @import './src/modules/styles/_variables.scss';
 
 $col-size: 30px;
-$bg: $color-green;
-$color2: #00beef;
+$bg: $color-blue;
+$color2: $color-green;
 
 @keyframes scaleIt {
   from {
@@ -23,6 +23,10 @@ adm-date-range-picker {
 }
 
 .adm-date-picker {
+  &__label {
+    @include resetBtn;
+    white-space: nowrap;
+  }
   &__holder {
     position: absolute;
     left: 0;
@@ -31,9 +35,8 @@ adm-date-range-picker {
     width: 505px;
     z-index: 999;
   }
-  display: flex;
   &__calendar {
-    background: $input-addon-bg;
+    background: rgba($input-addon-bg, .7);
     &__item {
       text-align: center;
       display: inline-block;
@@ -84,13 +87,13 @@ adm-date-range-picker {
       border: 1px solid $input-border-color;
       background: #fff;
       border-radius: $input-border-radius;
-      box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.15);
+      box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.11);
       .adm-date-picker__info {
         display: block;
         position: relative;
         overflow: hidden;
         border-bottom: 1px solid $input-border-color;
-        padding: 10px 20px;
+        padding: 13px 20px;
         ul {
           margin: 0;
           padding: 0;
@@ -108,10 +111,10 @@ adm-date-range-picker {
             button {
               @include resetBtn;
               cursor: pointer;
-              color: $color2;
+              //color: $color2;
               border-bottom: 1px dashed transparent;
               &:hover {
-                border-color: $color2;
+                border-color: initial;
               }
             }
           }
@@ -142,6 +145,7 @@ adm-date-range-picker {
         border-width: 2px 0;
         box-sizing: border-box;
         z-index: 1;
+        vertical-align: middle;
         &.is__today {
           &:before {
             content: '';
