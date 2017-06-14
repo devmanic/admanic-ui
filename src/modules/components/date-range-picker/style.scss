@@ -40,6 +40,7 @@ adm-date-range-picker {
       vertical-align: top;
       border-right: 1px solid rgba($input-border-color, .5);
       padding: 15px 20px;
+      color: #555;
       &:last-child {
         border-right: none;
       }
@@ -47,8 +48,7 @@ adm-date-range-picker {
     &__title {
       text-transform: uppercase;
       margin-bottom: 15px;
-      color: #A9A3AE;
-      line-height: 24px;
+      line-height: 22px;
       b {
         margin-left: 3px;
       }
@@ -60,12 +60,12 @@ adm-date-range-picker {
         background: transparent;
         border: none;
         line-height: 1;
-        border: 1px solid;
-        border-radius: $input-border-radius / 2;
+        //border: 1px solid;
+        //border-radius: $input-border-radius / 2;
         color: $bg;
         transition: transform .1s ease-in;
         &:hover {
-          transform: scale(1.05);
+          transform: scale(1.1);
         }
         .material-icons {
           font-size: 20px;
@@ -109,8 +109,9 @@ adm-date-range-picker {
               @include resetBtn;
               cursor: pointer;
               color: $color2;
+              border-bottom: 1px dashed transparent;
               &:hover {
-                color: $bg;
+                border-color: $color2;
               }
             }
           }
@@ -119,7 +120,7 @@ adm-date-range-picker {
     }
     &__table__holder {
       height: $col-size * 6;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     &__table {
       border-collapse: collapse;
@@ -133,7 +134,6 @@ adm-date-range-picker {
       > * {
         height: $col-size;
         width: $col-size;
-        color: #8b8a8c;
         cursor: pointer;
         user-select: none;
         transition: background .1s ease;
@@ -196,7 +196,6 @@ adm-date-range-picker {
     }
     &__range {
       text-align: left;
-      color: #444;
     }
     &__controls {
       display: block;
@@ -220,11 +219,8 @@ adm-date-range-picker {
             padding: 8px 10px;
             cursor: pointer;
             line-height: 1;
-            &__reset,
-            &__apply {
-              &:hover {
-                color: $color2;
-              }
+            &:hover {
+              color: $color2;
             }
             &__apply {
               background: $color2;
@@ -233,7 +229,7 @@ adm-date-range-picker {
               &:hover {
                 background: transparent;
                 border-color: $color2;
-                color: $color2;
+                //color: $color2;
               }
             }
           }
