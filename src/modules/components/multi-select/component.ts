@@ -68,6 +68,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this._selectEl.select2('destroy');
         }
 
+
         let data = [];
         if (params.data) {
             if (this._hasGroups) {
@@ -96,9 +97,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         setTimeout(() => {
             this._showAddNewBtn = this._params.showAddNewBtn;
             this._isTags = this._params.tags;
-            console.log(this._isTags);
         }, 1);
+
         if (this._selectEl) {
+            this._selectEl[0].innerHTML = '';
             this._selectEl.select2(this._params);
         }
     };

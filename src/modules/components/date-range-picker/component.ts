@@ -122,7 +122,7 @@ export class AdmDateRangePickerContainer {
         e.stopPropagation();
     }
 
-    @HostListener('document: click', ['$event']) onDocumentClick() {
+    @HostListener('document: click', []) onDocumentClick() {
         this.hide();
     }
 
