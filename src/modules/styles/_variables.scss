@@ -21,7 +21,10 @@ $select-item-y-padding: 10px;
 
 $input-addon-width: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
 
-$select-options-height:165px;
+$select-options-height: 165px;
+
+$color-green: #46bb00;
+$color-blue: #00beef;
 
 @mixin resetFont() {
   color: inherit;
@@ -122,7 +125,7 @@ $select-options-height:165px;
   }
 }
 
-@mixin requiredLabel{
+@mixin requiredLabel {
   &:after {
     content: "*";
     color: $input-border-color-invalid;
