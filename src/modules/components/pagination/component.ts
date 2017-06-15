@@ -6,18 +6,19 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'adm-pagination',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     host: {
-        'class': 'adm-pagination'
+        'class': 'adm-pagination',
+        'aria-label': 'Page navigation'
     },
     styleUrls: ['./style.scss'],
     template: `
         <table>
             <tr>
                 <td *ngIf="!showFullPagination && showDropdown">
-                    <adm-input-container [label]="titles.dropdownLabel">
-                        <adm-select single [options]="_range" [(ngModel)]="current" style="width: 100px;"
+                    <adm-input-container [label]="titles.dropdownLabel" class="adm-pagination__dropdown">
+                        <adm-select single [options]="_range" [(ngModel)]="current"
                                     placeholder="Page">
                         </adm-select>
                     </adm-input-container>
@@ -41,7 +42,8 @@ import { FormControl, FormGroup } from '@angular/forms';
                             <template [ngIf]="showNextDots && !showFullPagination">
                                 <li>...</li>
                                 <li>
-                                    <button (click)="setCurrent(total)" [disabled]="current == total">{{titles.last}}
+                                    <button (click)="setCurrent(totalBtns)" [disabled]="current == totalBtns">
+                                        {{titles.last}}
                                     </button>
                                 </li>
                             </template>
@@ -55,10 +57,20 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class PaginationComponent implements OnInit {
     _range: { label, value }[];
+    _total: number;
     @Input() current: number;
     @Output() currentChange: EventEmitter<number> = new EventEmitter<number>();
 
-    @Input() total: number;
+    @Input()
+    set total(n: number) {
+        this._total = n;
+        this.getRange();
+    }
+
+    get total(): number {
+        return this._total;
+    }
+
     @Input() visiblePage: number;
     @Input() titles: { first, prev, prevSet, nextSet, next, last, dropdownLabel, paginationLabel } = {
         first: 'First',
@@ -67,10 +79,11 @@ export class PaginationComponent implements OnInit {
         nextSet: '...',
         next: '\u00BB',
         last: 'Last',
-        dropdownLabel: 'Go to page',
-        paginationLabel: 'Pagination'
+        dropdownLabel: '',
+        paginationLabel: ''
     };
     @Input() showDropdown: boolean = true;
+    @Input() itemsPerPage: number;
 
     @Output() onPageChanged: EventEmitter<number> = new EventEmitter<number>();
 
@@ -82,12 +95,15 @@ export class PaginationComponent implements OnInit {
     constructor() {
     }
 
-    getRange(): { label, value }[] {
-        this._range = Array.from(Array(this.total).keys()).map(el => ({
+    get totalBtns(): number {
+        return Math.ceil(this.total / this.itemsPerPage);
+    }
+
+    getRange() {
+        this._range = Array.from(Array(this.totalBtns ? this.totalBtns : 0).keys()).map(el => ({
             label: (el + 1).toString(),
             value: el + 1
         }));
-        return this._range;
     }
 
     isShowNum(n: number) {
@@ -111,11 +127,11 @@ export class PaginationComponent implements OnInit {
     }
 
     get showNextDots(): boolean {
-        return this.current < this.total - 2;
+        return this.current < this.totalBtns - 2;
     }
 
     get showFullPagination(): boolean {
-        return this.total < 10;
+        return this.totalBtns < 10;
     }
 
     setCurrent(n: number) {
@@ -124,4 +140,6 @@ export class PaginationComponent implements OnInit {
         this.onPageChanged.emit(this.current);
         this.getRange();
     }
+
+    //sadsahhkjhkjh
 }
