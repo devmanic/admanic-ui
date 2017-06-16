@@ -65,7 +65,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     server = '';
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
-    showToTop:boolean = false;
+    showToTop: boolean = false;
 
     @Input('options') _options: Array<OptionModel | OptionWithGroupModel> = [];
     @Input('value') _value = false;
@@ -315,6 +315,15 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     inputClick(e: Event | any) {
         e.isInputClick = true;
         e.inputId = this.id;
+    }
+
+    onEnterClick(e: Event) {
+        const value = (<HTMLInputElement>e.target).value;
+        if (this.hasGroups || !value) return;
+        const filtered = this.options.filter(el => el.value == value);
+        if (filtered && filtered[0]) {
+            this.onSelect(filtered[0].value);
+        }
     }
 
     private calculatePosition() {

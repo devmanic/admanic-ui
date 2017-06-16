@@ -4,6 +4,7 @@
            spellcheck="false"
            [placeholder]="placeholder"
            (click)="inputClick($event)"
+           (keyup.enter)="onEnterClick($event)"
            (focus)="startSearch($event)"
            formControlName="queryStr">
 
