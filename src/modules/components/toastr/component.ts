@@ -14,10 +14,13 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: [`./styles.scss`],
     encapsulation: ViewEncapsulation.None,
     host: {
-        '[class]': 'positionClass'
+        '[class]': 'positionClass',
+        'data-qa': 'toast-container'
     },
     template: `
-        <div *ngFor="let toast of toasts; trackBy:trackByFn" class="adm-toast is__{{toast.type}}"
+        <div *ngFor="let toast of toasts; trackBy:trackByFn"
+             [attr.data-qa]="_qaLabels[toast.type] ? _qaLabels[toast.type] : ''"
+             class="adm-toast is__{{toast.type}}"
              (click)="clicked(toast)">
             <div class="adm-toast__close-btn" *ngIf="toast.config.showCloseButton" (click)="removeToast(toast)">
                 &times;
@@ -44,6 +47,10 @@ export class ToastContainer implements OnDestroy {
 
     _onEnter: Subject<any> = new Subject();
     _onExit: Subject<any> = new Subject();
+
+    _qaLabels = {
+        success: 'success-toast-message'
+    };
 
     constructor(private sanitizer: DomSanitizer,
                 private cdr: ChangeDetectorRef,
