@@ -1,4 +1,4 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ToastContainer} from './component';
 import {ToastService} from './service';
