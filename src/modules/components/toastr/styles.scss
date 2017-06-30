@@ -81,6 +81,7 @@
 
   &__title {
     font-weight: bold;
+    user-select: none;
   }
   &__message {
     word-wrap: break-word;
