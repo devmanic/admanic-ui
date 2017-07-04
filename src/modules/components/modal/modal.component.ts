@@ -1,11 +1,7 @@
 /**
  * Created by bnosachenko on 27.06.17.
  */
-import {
-    ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,
-    ViewEncapsulation
-} from '@angular/core';
-import { ModalService } from './modal.service';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
