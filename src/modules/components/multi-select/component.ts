@@ -132,11 +132,11 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     init() {
         this._selectEl = $(this.el.nativeElement.querySelector('select'));
-        this._defaultParams = {
+        this._defaultParams = Object.assign({}, {
             multiple: true,
             dropdownParent: $(this.el.nativeElement).find('.adm-multi-select__dropdown-wrap'),
             placeholder: 'Select'
-        };
+        }, this._params);
         this.params = this._defaultParams;
     }
 

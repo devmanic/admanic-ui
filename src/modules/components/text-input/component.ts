@@ -69,6 +69,7 @@ export class InputContainer {
     @Input() disabled: boolean;
 
     get required(): boolean {
+        if (!this._ctrl) return false;
         this._ctrl.hasError('required') ? this._required = true : '';
         return this._required || this._ctrl.hasError('required');
     };
