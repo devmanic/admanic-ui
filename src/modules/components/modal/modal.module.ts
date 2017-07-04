@@ -1,24 +1,20 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-
-import { NgbModalBackdrop } from './modal-backdrop';
-import { NgbModalWindow } from './modal-window';
-import { NgbModalStack } from './modal-stack';
-import { NgbModal } from './modal';
-
-export { NgbModal, NgbModalOptions } from './modal';
-export { NgbModalRef, NgbActiveModal } from './modal-ref';
-export { ModalDismissReasons } from './modal-dismiss-reasons';
+import { NgModule, Injectable } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ModalComponent } from './modal.component';
 
 @NgModule({
-    declarations: [NgbModalBackdrop, NgbModalWindow],
-    entryComponents: [NgbModalBackdrop, NgbModalWindow],
-    providers: [NgbModal]
+    imports: [CommonModule],
+    declarations: [ModalComponent],
+    exports: [ModalComponent]
+    // entryComponents: [NgbModalBackdrop, NgbModalWindow],
+    // providers: [NgbModal]
 })
-export class NgbModalModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: NgbModalModule,
-            providers: [NgbModal, NgbModalStack]
-        };
+
+export class ModalModule {
+    constructor(){
+        alert('v konstructore');
+    }
+    public showMessage(): void {
+        alert('nahui!');
     }
 }

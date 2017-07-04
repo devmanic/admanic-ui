@@ -5,6 +5,8 @@ import {
     ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output,
     ViewEncapsulation
 } from '@angular/core';
+import { ModalService } from './modal.service';
+
 
 @Component({
     selector: 'adm-modal',
@@ -16,6 +18,15 @@ import {
     styleUrls: ['./style.scss'],
     templateUrl: './template.html'
 })
-export class ModalComponent {
 
+export class ModalComponent {
+    @Input() public message: string;
+
+    constructor() {
+
+    }
+
+    public showMessage(): void {
+        alert(this.message);
+    }
 }
