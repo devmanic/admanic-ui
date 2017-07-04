@@ -1,12 +1,13 @@
 <!-- search input -->
 <div class="adm-select__input" [formGroup]="form">
-    <input type="text"
+    <textarea
            spellcheck="false"
+           rows="1"
            [placeholder]="placeholder"
            (click)="inputClick($event)"
            (keyup.enter)="onEnterClick($event)"
            (focus)="startSearch($event)"
-           formControlName="queryStr">
+           formControlName="queryStr"></textarea>
 
     <!-- toggle button -->
     <button class="adm-select__caret" type="button" (click)="toggleOpen($event)">

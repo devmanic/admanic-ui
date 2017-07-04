@@ -21,6 +21,8 @@ import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
 
+declare const SERVER: string;
+
 export interface OptionModel {
     value: string | number;
     label: string;
@@ -62,7 +64,7 @@ export const newEntityLen: number = 3;
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
     isOpen: boolean = false;
     newItemPostfix: string;
-    server = '';
+    server = SERVER || '';
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
     showToTop: boolean = false;
@@ -134,6 +136,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.originalPlaceholder = this.placeholder;
 
         this.initAjax(this.ajax);
+        this.calculateTextareaHeight();
 
         if (this.allowCreateEntity) {
             this.queryStr.statusChanges.subscribe((status: string) => {
@@ -235,6 +238,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     subscribeToQueryStringChange() {
         this._subscribers.push(this.queryStr.valueChanges.filter(value => !!value || value === '').subscribe(() => {
+            this.calculateTextareaHeight();
             this.isAjax ? this.onAjaxFindOptions() : this.filter();
         }));
     }
@@ -396,5 +400,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     trackListByFn(index: number, item: OptionModel) {
         return item.value;
+    }
+
+    calculateTextareaHeight() {
+        const el = this.el.nativeElement.querySelector('textarea');
+        el.style.cssText = `height:auto`;
+        el.style.cssText = `height:${el.scrollHeight + 2}px`;
     }
 }

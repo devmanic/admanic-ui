@@ -52,9 +52,10 @@ export class DynamicTextAreaDirective implements OnDestroy {
 })
 export class InputContainer {
     _ctrl: FormControl;
+    _required: boolean;
 
     @Input() set control(ctrl: FormControl) {
-        this.required = ctrl.hasError('required');
+        this._required = ctrl.hasError('required');
         this._ctrl = ctrl;
     };
 
@@ -67,7 +68,10 @@ export class InputContainer {
     @Input() description: string;
     @Input() disabled: boolean;
 
-    required: boolean = false;
+    get required(): boolean {
+        this._ctrl.hasError('required') ? this._required = true : '';
+        return this._required || this._ctrl.hasError('required');
+    };
 
     get invalid(): boolean {
         if (this.control) {

@@ -17,13 +17,15 @@ $caret-width: 30px;
   border-radius: $input-border-radius;
   color: $text-color;
   font-size: $text-size;
-
+  vertical-align: middle;
   &__input {
-    input[type='text'] {
+    input[type='text'],
+    textarea {
       display: block;
       width: 100%;
       @include resetInput;
       padding: $input-y-padding $caret-width $input-y-padding $input-x-padding;
+      line-height: 1.25;
     }
   }
 
