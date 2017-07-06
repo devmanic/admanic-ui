@@ -26,6 +26,8 @@ $caret-width: 30px;
       @include resetInput;
       padding: $input-y-padding $caret-width $input-y-padding $input-x-padding;
       line-height: 1.25;
+      resize: none;
+      min-width: 150px;
     }
   }
 

@@ -8,6 +8,10 @@
   user-select: none;
   -webkit-user-select: none;
 
+  &.hidden{
+    display: none;
+  }
+
   &__dropdown {
     z-index: 1051;
     position: absolute;
@@ -37,6 +41,7 @@
     position: relative;
     vertical-align: middle;
     width: 100% !important;
+    min-width: 150px;
 
     .select2-selection {
       display: flex;

@@ -23,7 +23,7 @@
     margin: 0;
     border-radius: $input-border-radius 0 0 $input-border-radius;
     color: $input-addon-color;
-    min-width: $input-addon-width;
+    flex-basis: $input-addon-width;
     text-align: center;
     line-height: 1;
     display: flex;
@@ -44,7 +44,7 @@
     adm-multi-select .select2-container .select2-selection,
     adm-date-range-picker,
     adm-date-range-picker button[adm] {
-      width: 100%;
+      flex: 1;
     }
     adm-date-range-picker {
       position: static;
@@ -62,6 +62,7 @@
       background: $input-bg;
       position: relative;
       text-align: left;
+      width: 100%;
     }
     &.is-invalid {
       > .wrap {
@@ -86,6 +87,8 @@
       .wrap {
         display: flex;
         flex-direction: row;
+        justify-content: space-around;
+        align-content: stretch;
         input[adm][type="text"],
         input[adm][type="number"],
         adm-single-select,

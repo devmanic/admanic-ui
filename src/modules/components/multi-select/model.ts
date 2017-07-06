@@ -17,4 +17,6 @@ export interface MultiselectParams {
     dropdownParent?: any;
     showAddNewBtn?: boolean;
     orderByInput?: boolean;
+    hideSelected?: boolean;
+    width?: string;
 }

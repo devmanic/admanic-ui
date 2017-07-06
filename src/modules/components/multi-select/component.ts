@@ -22,7 +22,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         '[class.with-add-new-btn]': '_showAddNewBtn',
         '[class.is-open]': '_isOpen && !_isTags',
         '[class.is-tags]': '_isTags',
-        '[class.is-above]': '_isAbove'
+        '[class.is-above]': '_isAbove',
     },
     styleUrls: ['styles.scss'],
     providers: [MULTISELECT_VALUE_ACCESSOR],
@@ -39,7 +39,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
 })
 export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     _selectEl: any;
-    _defaultParams: MultiselectParams = {};
+    _defaultParams: MultiselectParams = {width: '100%'};
     _params: MultiselectParams = this._defaultParams;
     _value: string[] = [];
     _isShowSelectedCount: boolean;
@@ -50,6 +50,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     _hasGroups: boolean;
     _isTags: boolean;
     _isAbove: boolean;
+    _notSelect2Instance: boolean;
 
     @Output() change = new EventEmitter();
     @Output() open = new EventEmitter();
@@ -97,6 +98,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         setTimeout(() => {
             this._showAddNewBtn = this._params.showAddNewBtn;
             this._isTags = this._params.tags;
+            this._isHideSelected = this._params.hideSelected;
         }, 1);
 
         if (this._selectEl) {
@@ -172,7 +174,9 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                     $(event.currentTarget).append($element);
                     $(event.currentTarget).trigger('change');
                 }
-                this.select.emit([event, this.value]);
+                setTimeout(() => {
+                    this.select.emit([event, this.value, event.params.data]);
+                }, 3);
             })
             .on('select2:selecting', (event) => {
                 this.selecting.emit(event);

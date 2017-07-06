@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class CustomValidators {
+    private static patternIp4 = /^(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))$/;
+    private static patternIp6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+
     public static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
         let config = _.merge({
             required: 'Required',
@@ -13,13 +16,15 @@ export class CustomValidators {
             stringPattern: 'Can contain only letters, numbers, spaces and `, . / * _ -` symbols.',
             numberPattern: 'Can contain only positive numbers',
             emailPattern: 'Invalid email',
-            email: 'Invalid email',
             passwordPattern: 'Password must have at least one digit, lower and upper case letter',
             nospacePattern: 'No whitespace allowed',
             passwordEqualPattern: 'Confirm password and password fields must be equal',
             ipPattern: 'Ip incorrect',
+            ipArrayPattern: 'Ip list incorrect',
             allFill: 'All fields must be filled',
-            urlPattern: 'Is not a valid URL'
+            nT: 'All fields must be filled',
+            urlPattern: 'Is not a valid URL',
+            notAllowSpace: 'Can not contain white spaces'
         }, {});
 
         return config[validatorName];
@@ -31,6 +36,17 @@ export class CustomValidators {
                 return null;
             } else {
                 return !_.isEmpty(control.value) ? null : {isEmptyPattern: false};
+            }
+        };
+    }
+
+    public static notAllowWhiteSpacesValidator(): ValidatorFn {
+        let pattern = /^\S*$/;
+        return (control: AbstractControl): { [key: string]: any } => {
+            if (!(control.dirty || control.touched)) {
+                return null;
+            } else {
+                return pattern.test(control.value) ? null : {notAllowSpace: false};
             }
         };
     }
@@ -124,7 +140,7 @@ export class CustomValidators {
 
     public static isAllFillValidator(): ValidatorFn {
         return (control: AbstractControl | any): { [key: string]: any } => {
-            if (_.filter(control.controls, (item: any) => !item.value || item._skipValidation).length === Object.keys(control.controls).length) {
+            if (!(control.dirty || control.touched)) {
                 return null;
             } else {
                 if (_.find(control.controls, (item: any) => !(item.value || _.isBoolean(item.value)))) {
@@ -132,6 +148,34 @@ export class CustomValidators {
                 } else {
                     return null;
                 }
+            }
+        };
+    };
+
+    public static NTValidator(): ValidatorFn {
+        return (control: AbstractControl | any): { [key: string]: any } => {
+            if (!(control.dirty || control.touched)) {
+                return null;
+            } else {
+
+                let condition_id = control.controls['condition_id'];
+                if (!(condition_id.value || _.isBoolean(condition_id.value))) {
+                    return {nT: false};
+                }
+
+                let entity_id = control.controls['entity_id'];
+                let entity_type = control.controls['entity_type'];
+
+                if (control.controls['nestedTargeting'].length > 0 && control.controls['check_entity'].value) {
+                    if (!(entity_id.value || _.isBoolean(entity_id.value))) {
+                        return {nT: false};
+                    }
+                    if (!(entity_type.value || _.isBoolean(entity_type.value))) {
+                        return {nT: false};
+                    }
+                }
+
+                return null;
             }
         };
     };
@@ -146,7 +190,7 @@ export class CustomValidators {
                 });
 
                 let allFieldsEmpty = _.filter(control.controls, (item: any) => {
-                        return (item.dirty && !item.value) || item._skipValidation;
+                        return !item.value || item._skipValidation;
                     }).length === Object.keys(control.controls).length;
 
                 if (!allRequiredCond || allFieldsEmpty) {
@@ -159,20 +203,32 @@ export class CustomValidators {
     };
 
     public static ipPatternValidator(): ValidatorFn {
-        let patternIp4 = /^(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))$/;
-        let patternIp6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
         return (control: AbstractControl): { [key: string]: any } => {
             if (!(control.dirty || control.touched)) {
                 return null;
             } else {
-                if (patternIp6.test(control.value)) {
+                if (this.patternIp6.test(control.value)) {
                     return null;
                 } else {
-                    if (patternIp4.test(control.value)) {
+                    if (this.patternIp4.test(control.value)) {
                         return null;
                     } else {
                         return {ipPattern: false};
                     }
+                }
+            }
+        };
+    };
+
+    public static ipArrayPatternValidator(): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } => {
+            if (!(control.dirty || control.touched)) {
+                return null;
+            } else {
+                if (control.value.every((el: any) => this.patternIp6.test(el) || this.patternIp4.test(el))) {
+                    return null;
+                } else {
+                    return {ipArrayPattern: false};
                 }
             }
         };
@@ -223,7 +279,7 @@ export class CustomValidators {
     }
 
     public static urlValidator(): ValidatorFn {
-        let pattern = /^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(?::\d{1,5})?(?:$|[?\/#])/i;
+        let pattern = /^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(?::\d{1,5})?(?:$|[?\/#])?(?:$|[{}]*)/i;
         return (control: AbstractControl): { [key: string]: any } => {
             if (_.isEmpty(control.value)) {
                 return null;

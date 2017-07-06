@@ -37,7 +37,7 @@ export class DynamicTextAreaDirective implements OnDestroy {
         '[class.is-disabled]': 'disabled'
     },
     template: `
-        <label class="adm-input__label" [ngClass]="{'is-required':required}" *ngIf="!!label">{{label}}</label>
+        <label class="adm-input__label" [ngClass]="{'is-required':required && label != '&nbsp;'}" *ngIf="!!label">{{label}}</label>
         <div class="wrap">
             <div *ngIf="!!addonIcon" class="adm-input__addon">
                 <i class="material-icons">{{addonIcon}}</i>

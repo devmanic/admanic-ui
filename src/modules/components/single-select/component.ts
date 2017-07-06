@@ -136,7 +136,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.originalPlaceholder = this.placeholder;
 
         this.initAjax(this.ajax);
-        this.calculateTextareaHeight();
 
         if (this.allowCreateEntity) {
             this.queryStr.statusChanges.subscribe((status: string) => {
@@ -147,6 +146,14 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 }
             });
         }
+
+        Observable.fromEvent(window, 'resize').subscribe(() => {
+            this.calculateTextareaHeight();
+        });
+
+        setTimeout(() => {
+            this.calculateTextareaHeight();
+        }, 100);
     }
 
     initAjax(params: AjaxParams) {

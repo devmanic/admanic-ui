@@ -106,7 +106,7 @@ $color-blue: #00beef;
   box-shadow: none;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  //white-space: nowrap;
 }
 
 @mixin selectAddNewBtn {
