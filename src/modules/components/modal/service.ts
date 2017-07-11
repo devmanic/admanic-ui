@@ -18,33 +18,39 @@ export class ModalManagerService {
         this.rootViewContainerRef = vRef;
     }
 
-     show(content:string, options?: Object): Promise<any> {
+     show(obj:{title, content}): Promise<any> {
         return new Promise((resolve, reject) => {
-            if (!this.container) {
+            this.dispose();
+            setTimeout(()=>{
                 // get app root view component ref
                 if (!this.rootViewContainerRef) {
                     try {
                         // this._rootViewContainerRef = this.appRef['_rootComponents'][0].location.vcRef;
                         this.rootViewContainerRef = this.appRef['_rootComponents'][0]['_hostElement'].vcRef;
                     } catch (e) {
-                        reject(new Error('Please set root ViewContainerRef using setRootViewContainerRef(vRef: ViewContainerRef) method.'));
+                        throw new Error('Please set root ViewContainerRef using setRootViewContainerRef(vRef: ViewContainerRef) method.');
                     }
                 }
 
                 let providers = ReflectiveInjector.resolve([]);
 
-                // create and load ToastContainer
                 let toastFactory = this.componentFactoryResolver.resolveComponentFactory(ModalContainerComponent);
                 let childInjector = ReflectiveInjector.fromResolvedProviders(providers, this.rootViewContainerRef.parentInjector);
                 this.container = this.rootViewContainerRef.createComponent(toastFactory, this.rootViewContainerRef.length, childInjector);
-                
 
-                this.container.instance.onExit().subscribe(() => {
+                this.container.instance.onExit().subscribe((res) => {
                     this.dispose();
+                    reject(res);
                 });
-            }
 
-            resolve(true);
+                this.container.instance.onApply().subscribe((res)=>{
+                    this.dispose();
+                    resolve(res);
+                });
+
+                this.container.instance.showModal(obj)
+            }, 300);            
+            
         });
     }
 
