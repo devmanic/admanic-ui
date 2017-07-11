@@ -1,0 +1,79 @@
+@import './src/modules/styles/_variables.scss';
+
+adm-modal-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    &:before{
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background: rgba(#000, .4);
+    }
+}
+.adm-modal{
+    &__wrap{
+        z-index: 1;
+    }
+
+    border:1px solid $input-border-color;
+    background: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    font-size:14px;
+    color:$text-color;
+    
+    &__header,
+    &__content,
+    &__footer{
+        padding: 15px 30px;
+    }
+
+    &__close-btn{
+        position: absolute;
+        right: 8px;
+        top: 13px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        color: #7b7b7b;
+        opacity: .8;
+        &:hover{
+            opacity: 1;
+        }
+        i{
+            font-size: 20px;
+        }
+    }
+    &__header{
+        border-bottom:1px solid $input-border-color;
+        font-size: 1.25em;
+        line-height: 1;
+        position: relative;
+    }
+    &__content{
+        min-width: 400px;
+        padding-top: 25px;
+        padding-bottom:25px;
+    }
+    &__footer{
+        padding-top:10px;
+        padding-bottom:10px;
+        text-align: right;
+        background: $input-addon-bg;
+        border-top:1px solid $input-border-color;
+    }
+}

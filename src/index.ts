@@ -12,3 +12,5 @@ export * from './modules/components/toastr/options';
 export * from './modules/components/date-range-picker/module';
 
 export * from './modules/components/pagination/module';
+export * from './modules/components/modal/module';
+export * from './modules/components/modal/service';
