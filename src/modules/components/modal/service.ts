@@ -18,7 +18,7 @@ export class ModalManagerService {
         this.rootViewContainerRef = vRef;
     }
 
-     show(obj:{title, content}): Promise<any> {
+     show(obj:{title?:string, content?:any, btns?:{postive:string, negative:string}|false, type?:'success'|'error'|'info'|'warning' }): Promise<any> {
         return new Promise((resolve, reject) => {
             this.dispose();
             setTimeout(()=>{

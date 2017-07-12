@@ -1,6 +1,114 @@
 @import './src/modules/styles/_variables.scss';
+@mixin keyframes($animation-name) {
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
 
-adm-modal-container{
+$swal2-white:       #fff !default;
+$swal2-black:       #000 !default;
+$swal2-transparent: rgba($swal2-black, 0) !default;
+
+$swal2-success:        #a5dc86 !default;
+$swal2-success-border: rgba($swal2-success, .2) !default;
+$swal2-error:          #f27474 !default;
+$swal2-warning:        #f8bb86 !default;
+$swal2-info:           #3fc3ee !default;
+$swal2-question:       #87adbd !default;
+
+$swal2-overlay:        rgba($swal2-black, .4) !default;
+
+$swal2-close-button:               lighten($swal2-black, 80) !default;
+$swal2-close-button-hover:         #d55 !default;
+
+$swal2-input-border:               lighten($swal2-black, 85) !default;
+$swal2-input-border-focus:         #b4dbed !default;
+$swal2-input-box-shadow:           rgba($swal2-black, .06) !default;
+$swal2-input-box-shadow-focus:     #c4e6f5 !default;
+
+$swal2-validationerror-background: #ea7d7d !default;
+$swal2-validationerror-color:      $swal2-white !default;
+
+@mixin animation($str) {
+  animation: #{$str};
+}
+@include keyframes(animate-success-tip) {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px;
+  }
+
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px;
+  }
+
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px;
+  }
+}
+
+@include keyframes(animate-success-long) {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+
+  84% {
+    width: 55px;
+    right: 0;
+    top: 35px;
+  }
+
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+  }
+}
+
+@include keyframes(rotatePlaceholder) {
+  0% {
+    transform: rotate(-45deg);
+  }
+
+  5% {
+    transform: rotate(-45deg);
+  }
+
+  12% {
+    transform: rotate(-405deg);
+  }
+
+  100% {
+    transform: rotate(-405deg);
+  }
+}
+
+adm-modal-container {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -10,7 +118,7 @@ adm-modal-container{
     justify-content: center;
     align-items: center;
     height: 100%;
-    &:before{
+    &:before {
         content: '';
         display: inline-block;
         position: absolute;
@@ -21,15 +129,15 @@ adm-modal-container{
         margin: auto;
         background: rgba(#000, .4);
     }
-    &.inactive{
+    &.inactive {
         display: none;
     }
 }
-.adm-modal{
-    &__wrap{
+
+.adm-modal {
+    &__wrap {
         z-index: 1;
     }
-
     border:1px solid $input-border-color;
     background: #fff;
     border-radius: 3px;
@@ -37,14 +145,95 @@ adm-modal-container{
     font-size:14px;
     color:$text-color;
     max-width: 700px;
-    
+    &-icon {
+        width: 80px;
+        height: 80px;
+        border: 4px solid transparent;
+        border-radius: 50%;
+        margin: 20px auto 30px;
+        padding: 0;
+        position: relative;
+        box-sizing: content-box;
+        cursor: default;
+        user-select: none;
+        &.is__success {
+            border-color: $swal2-success;
+            [class^='swal2-success-circular-line'] {
+                // Emulate moving circular line
+                border-radius: 50%;
+                position: absolute;
+                width: 60px;
+                height: 120px;
+                transform: rotate(45deg);
+                &[class$='left'] {
+                    border-radius: 120px 0 0 120px;
+                    top: -7px;
+                    left: -33px;
+                    transform: rotate(-45deg);
+                    transform-origin: 60px 60px;
+                }
+                &[class$='right'] {
+                    border-radius: 0 120px 120px 0;
+                    top: -11px;
+                    left: 30px;
+                    transform: rotate(-45deg);
+                    transform-origin: 0 60px;
+                     @include animation('rotatePlaceholder 4.25s ease-in');
+                }
+            }
+            .swal2-success-ring {
+                // Ring
+                width: 80px;
+                height: 80px;
+                border: 4px solid $swal2-success-border;
+                border-radius: 50%;
+                box-sizing: content-box;
+                position: absolute;
+                left: -4px;
+                top: -4px;
+                z-index: 2;
+            }
+            .swal2-success-fix {
+                // Hide corners left from animation
+                width: 7px;
+                height: 90px;
+                position: absolute;
+                left: 28px;
+                top: 8px;
+                z-index: 1;
+                transform: rotate(-45deg);
+            }
+            [class^='swal2-success-line'] {
+                height: 5px;
+                background-color: $swal2-success;
+                display: block;
+                border-radius: 2px;
+                position: absolute;
+                z-index: 2;
+                &[class$='tip'] {
+                    width: 25px;
+                    left: 14px;
+                    top: 46px;
+                    transform: rotate(45deg);
+                    @include animation('animate-success-tip 0.75s');
+                }
+                &[class$='long'] {
+                    width: 47px;
+                    right: 8px;
+                    top: 38px;
+                    transform: rotate(-45deg);
+                    @include animation('animate-success-long 0.75s');
+                }
+            }
+        }
+    }
     &__header,
     &__content,
-    &__footer{
+    &__footer {
         padding: 15px 30px;
+        min-width: 400px;
     }
-
-    &__close-btn{
+    &__close-btn {
         position: absolute;
         right: 8px;
         top: 13px;
@@ -55,30 +244,29 @@ adm-modal-container{
         margin: 0;
         color: #7b7b7b;
         opacity: .8;
-        &:hover{
+        &:hover {
             opacity: 1;
         }
-        i{
+        i {
             font-size: 20px;
         }
     }
-    &__header{
-        border-bottom:1px solid $input-border-color;
+    &__header {
+        border-bottom: 1px solid $input-border-color;
         font-size: 1.25em;
         line-height: 1;
         position: relative;
     }
-    &__content{
-        min-width: 400px;
+    &__content {
         padding-top: 25px;
-        padding-bottom:25px;
+        padding-bottom: 25px;
         line-height: 1.5;
     }
-    &__footer{
-        padding-top:10px;
-        padding-bottom:10px;
+    &__footer {
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: right;
         background: $input-addon-bg;
-        border-top:1px solid $input-border-color;
+        border-top: 1px solid $input-border-color;
     }
 }
