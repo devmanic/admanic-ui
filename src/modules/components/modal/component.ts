@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone, OnDestroy, ViewEncapsulation, ViewContainerRef, TemplateRef, Input } from '@angular/core';
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
+import { modalI } from './model';
 
 @Component({
     selector: 'adm-modal-container',
@@ -13,31 +14,42 @@ import { Observable } from "rxjs/Observable";
     template: `
         <template [ngIf]="modal">
             <div class="adm-modal__wrap" (click)="preventPropagation($event);">
-                <div class="adm-modal">
+                <div class="adm-modal" [ngClass]="{'is__success':iconTypeExist && modal.type === 'success', 'is__info':iconTypeExist && modal.type === 'info', 'is__warning':iconTypeExist && modal.type === 'warning', 'is__error':iconTypeExist && modal.type === 'error', 'without-type':!modal.type || !iconTypeExist, 'with-type':modal.type && iconTypeExist}">
                     <template [ngIf]="modal.title && modal.title.length">
-                        <div class="adm-modal__header">{{ modal.title }} <button (click)="onCancelClick($event);" class="adm-modal__close-btn"><i class="material-icons">close</i></button></div>                        
+                        <div class="adm-modal__header">
+                            <template [ngIf]="!!modal.type && iconTypeExist">
+                                <div class="adm-modal-icon is__success" *ngIf="modal.type === 'success'">
+                                    <div class="swal2-success-circular-line-left"></div><span class="swal2-success-line-tip swal2-animate-success-line-tip"></span> <span class="swal2-success-line-long swal2-animate-success-line-long"></span><div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div><div class="swal2-success-circular-line-right"></div>
+                                </div>
+                                <div class="adm-modal-icon is__info" *ngIf="modal.type === 'info'">i</div>
+                                <div class="adm-modal-icon is__warning"  *ngIf="modal.type === 'warning'">!</div>
+                                <div class="adm-modal-icon is__error"  *ngIf="modal.type === 'error'">
+                                    <span class="swal2-x-mark swal2-animate-x-mark">
+                                        <span class="swal2-x-mark-line-left"></span>
+                                        <span class="swal2-x-mark-line-right"></span>
+                                    </span>
+                                </div>
+                            </template>
+                            <div class="adm-modal__header__text">
+                                {{ modal.title }}
+                                <button (click)="onCancelClick($event);" class="adm-modal__close-btn"><i class="material-icons">close</i></button>                                
+                            </div>
+                        </div>                        
                     </template>
-                    <div class="adm-modal__content">
-                        <template [ngIf]="!!modal.type && iconTypeExist">
-                            <div class="adm-modal-icon is__success" *ngIf="modal.type === 'success'">
-                               <div class="swal2-success-circular-line-left"></div><span class="swal2-success-line-tip swal2-animate-success-line-tip"></span> <span class="swal2-success-line-long swal2-animate-success-line-long"></span><div class="swal2-success-ring"></div> <div class="swal2-success-fix" style="background: rgb(255, 255, 255);"></div><div class="swal2-success-circular-line-right" style="background: rgb(255, 255, 255);"></div>
-                            </div>
-                            <div class="adm-modal-icon is__success" *ngIf="modal.type === 'error'">
-
-                            </div>
-                            
-                        </template>
-                        <template [ngIf]="modal.content && modal.content.length">
-                            <div [innerHtml]="modal.content"></div>
-                        </template>
-                        <template [ngIf]="renderTemplate">
-                            <adm-dynamic-render-component [template]="modal.content"></adm-dynamic-render-component>
-                        </template>
-                    </div>                    
+                    <template [ngIf]="modal.content">
+                        <div class="adm-modal__content">
+                            <template [ngIf]="modal.content.length">
+                                <div [innerHtml]="modal.content"></div>
+                            </template>
+                            <template [ngIf]="renderTemplate">
+                                <adm-dynamic-render-component [template]="modal.content"></adm-dynamic-render-component>
+                            </template>
+                        </div>
+                    </template>               
                     <template [ngIf]="!hideActionBar">
                         <div class="adm-modal__footer">
-                            <button class="adm-modal__btn" *ngIf="modal.btns.negative" (click)="onCancelClick($event);">{{ modal.btns.negative }}</button>
-                            <button class="adm-modal__btn" *ngIf="modal.btns.positive" (click)="onApplyClick($event);">{{ modal.btns.positive }}</button>                    
+                            <button class="adm-modal__btn is__negative" *ngIf="modal.btns.negative" (click)="onCancelClick($event);">{{ modal.btns.negative }}</button>
+                            <button class="adm-modal__btn is__positive" *ngIf="modal.btns.positive" (click)="onApplyClick($event);">{{ modal.btns.positive }}</button>                    
                         </div>
                     </template>
                 </div>
@@ -47,13 +59,13 @@ import { Observable } from "rxjs/Observable";
 })
 
 export class ModalContainerComponent implements OnDestroy {
-    modal: { title?: string, content?: any, btns?: { postive: string, negative: string } | false, type?: 'success' | 'error' | 'info' | 'warning' };
+    modal: modalI;
     iconTypes: string[] = ['success', 'error', 'info', 'warning'];
     iconTypeExist: boolean;
     renderTemplate: boolean;
     constructor(private _zone: NgZone) { }
 
-    showModal(obj: { title?: string, content?: any, btns?: { postive: string, negative: string } | false, type?: 'success' | 'error' | 'info' | 'warning' }) {
+    showModal(obj: modalI) {
         const baseOptions = {
             btns: { positive: 'Ok', negative: 'Cancel' }
         }

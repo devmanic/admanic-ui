@@ -3,6 +3,7 @@ import {
     ReflectiveInjector, ViewContainerRef, ComponentFactoryResolver, Injector
 } from '@angular/core';
 import { ModalContainerComponent } from './component';
+import {modalI} from './model';
 
 @Injectable()
 export class ModalManagerService {
@@ -18,7 +19,7 @@ export class ModalManagerService {
         this.rootViewContainerRef = vRef;
     }
 
-     show(obj:{title?:string, content?:any, btns?:{postive:string, negative:string}|false, type?:'success'|'error'|'info'|'warning' }): Promise<any> {
+     show(obj:modalI): Promise<any> {
         return new Promise((resolve, reject) => {
             this.dispose();
             setTimeout(()=>{
