@@ -65,6 +65,12 @@
       width: 100%;
       box-sizing: border-box;
     }
+    input.adm-typeahead{
+      &.is__open{
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
     &.is-invalid {
       > .wrap {
         > input[adm][type="text"],
