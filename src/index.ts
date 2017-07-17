@@ -13,4 +13,6 @@ export * from './modules/components/date-range-picker/module';
 
 export * from './modules/components/pagination/module';
 
-export * from './modules/components/menu/menu.module'
+export * from './modules/components/menu/menu.module';
+
+export * from './modules/components/table/table.module';
