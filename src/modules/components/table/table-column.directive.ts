@@ -11,9 +11,9 @@ export class TableColumnComponent implements OnInit {
     @Input() admColumn: any;
 
     get _hide(): boolean {
-        if (!this.table._columns.hasOwnProperty(this.admColumn))
+        if (!this.table._columnsShowObj.hasOwnProperty(this.admColumn))
             return true;
-        return this.table._columns[this.admColumn] == false;
+        return this.table._columnsShowObj[this.admColumn] == false;
     }
 
     constructor(private _el: ElementRef, private table: TableComponent) {
@@ -21,8 +21,6 @@ export class TableColumnComponent implements OnInit {
     }
 
     ngOnInit() {
-        // console.log(this._el);
-        //asd
-        this.table.arr.push(this.admColumn)
+        this.table.addColumnsKey(this.admColumn);
     }
 }
