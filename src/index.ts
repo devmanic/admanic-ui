@@ -14,3 +14,5 @@ export * from './modules/components/date-range-picker/module';
 export * from './modules/components/pagination/module';
 
 export * from './modules/shared/clipboard.service'
+export * from './modules/components/modal/module';
+export * from './modules/components/modal/service';
