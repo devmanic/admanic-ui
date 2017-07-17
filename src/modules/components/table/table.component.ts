@@ -14,11 +14,13 @@ import { Component, Input, OnInit } from '@angular/core';
     `
 })
 export class TableComponent implements OnInit {
+    arr:any[] = [];
     @Input() columns: any;
 
     get _columns():any{
         const cols = {};
-        this.columns.forEach(el => cols[el.id] = el.id.checked);
+        this.columns.forEach(el => cols[el.id] = el.checked);
+        // console.log(cols)
         return cols;
     }
 
@@ -26,5 +28,6 @@ export class TableComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.arr)
     }
 }

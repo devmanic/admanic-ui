@@ -23,5 +23,6 @@ export class TableColumnComponent implements OnInit {
     ngOnInit() {
         // console.log(this._el);
         //asd
+        this.table.arr.push(this.admColumn)
     }
 }
