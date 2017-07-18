@@ -1,0 +1,11 @@
+adm-typeahead-results{
+    .adm-select__options{
+        display: block;
+        left: 0;
+        right: 0;
+        .adm-select__options__list b{
+            display: inline;
+            margin:0;
+        }
+    }
+}
