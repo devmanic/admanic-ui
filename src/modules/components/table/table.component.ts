@@ -1,22 +1,28 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
     selector: 'table[adm-table]',
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        '[class.table]': 'true'
+    },
     styles: [`
         th i[hidden] {
             display: none;
         }
     `],
     template: `
-        <!--(click)="onCheckedAllItem($event)"
-                                      
-                                      -->
-        <tr>
-            <th>
+        <thead>
+
+        <tr class="table__name">
+            <th *ngIf="!hideCheckAll">
                 <div class="checkbox-table">
                     <adm-input-container>
-                        <adm-checkbox (click)="onCheckAllHandler($event);" [(ngModel)]="all_check" (change)="all_checkHandler($event);" [disabled]="isCheckedAllItem">
+                        <adm-checkbox
+                                (click)="parent.onCheckedAllItem($event)"
+                                [(ngModel)]="parent.all_check"
+                                [disabled]="parent.isCheckedAllItem()">
                         </adm-checkbox>
                     </adm-input-container>
                 </div>
@@ -37,7 +43,10 @@ import * as _ from 'lodash';
                 </span>
             </th>
         </tr>
+        </thead>
+
         <ng-content></ng-content>
+
     `
 })
 export class TableComponent implements OnInit {
@@ -47,12 +56,14 @@ export class TableComponent implements OnInit {
 
     @Output() onSortBy: EventEmitter<string> = new EventEmitter<string>();
     @Output() onCheckedAllItem: EventEmitter<any> = new EventEmitter<any>();
-    @Output() all_checkChange:EventEmitter<any> = new EventEmitter();
+    @Output() all_checkChange: EventEmitter<any> = new EventEmitter();
 
-    @Input() activeSortByField: string;
-    @Input() activeSortOrder: number;
-    @Input() listData:any[] = [];
-    @Input() all_check:boolean = true;
+    // @Input() activeSortByField: string;
+    // @Input() activeSortOrder: number;
+    // @Input() listData: any[] = [];
+    // @Input() all_check: boolean = null;
+
+    @Input() parent: any = {};
 
     @Input() set columns(items) {
         if (!this._arr.length) {
@@ -85,6 +96,12 @@ export class TableComponent implements OnInit {
         return cols;
     }
 
+    get hideCheckAll(): boolean {
+        if (!this._columns.length || this.parent.all_check === null)
+            return true;
+        return false;
+    }
+
     addColumnsKey(key) {
         if (this._arr.indexOf(key) === -1) {
             this._arr = [].concat(this._arr, [key]);
@@ -95,29 +112,6 @@ export class TableComponent implements OnInit {
 
     trackListByFn(index: number) {
         return index;
-    }
-
-    columnClickHandler(key: string) {
-        this.onSortBy.emit(key);
-    }
-
-    onCheckAllHandler(e: Event) {
-        e.preventDefault();
-        this.listData = this.listData.map(el => Object.assign(el, {checked: this.all_check}));
-        this.onCheckedAllItem.emit(e);
-    }
-
-    all_checkHandler(){
-        this.all_checkChange.emit(this.all_check);
-    }
-
-    get isCheckedAllItem():boolean{
-        if (this.listData.length) {
-            if (_.every(this.listData, ['access.can_trash', true]) || _.every(this.listData, ['access.can_delete', true])) {
-                return false;
-            }
-        }
-        return true;
     }
 
     constructor() {
