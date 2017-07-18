@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'table[adm-table]',
@@ -8,7 +9,18 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
         }
     `],
     template: `
+        <!--(click)="onCheckedAllItem($event)"
+                                      
+                                      -->
         <tr>
+            <th>
+                <div class="checkbox-table">
+                    <adm-input-container>
+                        <adm-checkbox (click)="onCheckAllHandler($event);" [(ngModel)]="all_check" (change)="all_checkHandler($event);" [disabled]="isCheckedAllItem">
+                        </adm-checkbox>
+                    </adm-input-container>
+                </div>
+            </th>
             <th *ngFor="let item of _columns; trackBy: trackListByFn;"
                 [admColumn]="item.id"
                 (click)="columnClickHandler(item.id)">
@@ -34,8 +46,13 @@ export class TableComponent implements OnInit {
     _sortInProgress: boolean;
 
     @Output() onSortBy: EventEmitter<string> = new EventEmitter<string>();
+    @Output() onCheckedAllItem: EventEmitter<any> = new EventEmitter<any>();
+    @Output() all_checkChange:EventEmitter<any> = new EventEmitter();
+
     @Input() activeSortByField: string;
     @Input() activeSortOrder: number;
+    @Input() listData:any[] = [];
+    @Input() all_check:boolean = true;
 
     @Input() set columns(items) {
         if (!this._arr.length) {
@@ -82,6 +99,25 @@ export class TableComponent implements OnInit {
 
     columnClickHandler(key: string) {
         this.onSortBy.emit(key);
+    }
+
+    onCheckAllHandler(e: Event) {
+        e.preventDefault();
+        this.listData = this.listData.map(el => Object.assign(el, {checked: this.all_check}));
+        this.onCheckedAllItem.emit(e);
+    }
+
+    all_checkHandler(){
+        this.all_checkChange.emit(this.all_check);
+    }
+
+    get isCheckedAllItem():boolean{
+        if (this.listData.length) {
+            if (_.every(this.listData, ['access.can_trash', true]) || _.every(this.listData, ['access.can_delete', true])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     constructor() {
