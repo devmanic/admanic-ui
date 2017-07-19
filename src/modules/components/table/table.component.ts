@@ -29,15 +29,15 @@ import * as _ from 'lodash';
             </th>
             <th *ngFor="let item of _columns; trackBy: trackListByFn;"
                 [admColumn]="item.id"
-                (click)="columnClickHandler(item.id)">
+                (click)="parent.onSortBy(item.id)">
                 <span class="table-title">{{item.name}}
                     <i class="material-icons"
-                       attr.data-arrow_downward="{{activeSortByField === item.id}}"
-                       [hidden]="activeSortByField !== item.id || activeSortOrder !== 1">
+                       attr.data-arrow_downward="{{parent.activeSortByField === item.id}}"
+                       [hidden]="parent.activeSortByField !== item.id || parent.activeSortOrder !== 1">
                         arrow_downward
                     </i>
                     <i class="material-icons"
-                       [hidden]="activeSortByField !== item.id || activeSortOrder !== 0">
+                       [hidden]="parent.activeSortByField !== item.id || parent.activeSortOrder !== 0">
                         arrow_upward
                     </i>
                 </span>
@@ -118,5 +118,6 @@ export class TableComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._columns = this.parent.columnsOptions;
     }
 }
