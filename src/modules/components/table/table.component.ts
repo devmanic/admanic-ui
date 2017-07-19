@@ -14,32 +14,34 @@ import * as _ from 'lodash';
     `],
     template: `
         <thead>
-
         <tr class="table__name">
             <th *ngIf="!hideCheckAll">
                 <div class="checkbox-table">
                     <adm-input-container>
                         <adm-checkbox
-                                (click)="parent.onCheckedAllItem($event)"
-                                [(ngModel)]="parent.all_check"
-                                [disabled]="parent.isCheckedAllItem()">
+                                (click)="onCheckAllHandler($event);"
+                                [(ngModel)]="all_check"
+                                (change)="all_checkHandler($event);"
+                                [disabled]="isCheckedAllItem">
                         </adm-checkbox>
                     </adm-input-container>
                 </div>
             </th>
             <th *ngFor="let item of _columns; trackBy: trackListByFn;"
                 [admColumn]="item.id"
-                (click)="parent.onSortBy(item.id)">
+                (click)="item.sortable ? columnClickHandler(item.id) : null">
                 <span class="table-title">{{item.name}}
-                    <i class="material-icons"
-                       attr.data-arrow_downward="{{parent.activeSortByField === item.id}}"
-                       [hidden]="parent.activeSortByField !== item.id || parent.activeSortOrder !== 1">
-                        arrow_downward
-                    </i>
-                    <i class="material-icons"
-                       [hidden]="parent.activeSortByField !== item.id || parent.activeSortOrder !== 0">
-                        arrow_upward
-                    </i>
+                    <template [ngIf]="item.sortable">
+                        <i class="material-icons"
+                           attr.data-arrow_downward="{{activeSortByField === item.id}}"
+                           [hidden]="activeSortByField !== item.id || activeSortOrder !== 1">
+                            arrow_downward
+                        </i>
+                        <i class="material-icons"
+                           [hidden]="activeSortByField !== item.id || activeSortOrder !== 0">
+                            arrow_upward
+                        </i>
+                    </template>
                 </span>
             </th>
         </tr>
@@ -58,12 +60,10 @@ export class TableComponent implements OnInit {
     @Output() onCheckedAllItem: EventEmitter<any> = new EventEmitter<any>();
     @Output() all_checkChange: EventEmitter<any> = new EventEmitter();
 
-    // @Input() activeSortByField: string;
-    // @Input() activeSortOrder: number;
-    // @Input() listData: any[] = [];
-    // @Input() all_check: boolean = null;
-
-    @Input() parent: any = {};
+    @Input() activeSortByField: string;
+    @Input() activeSortOrder: number;
+    @Input() listData: any[] = [];
+    @Input() all_check: boolean = true;
 
     @Input() set columns(items) {
         if (!this._arr.length) {
@@ -96,12 +96,6 @@ export class TableComponent implements OnInit {
         return cols;
     }
 
-    get hideCheckAll(): boolean {
-        if (!this._columns.length || this.parent.all_check === null)
-            return true;
-        return false;
-    }
-
     addColumnsKey(key) {
         if (this._arr.indexOf(key) === -1) {
             this._arr = [].concat(this._arr, [key]);
@@ -114,10 +108,32 @@ export class TableComponent implements OnInit {
         return index;
     }
 
+    columnClickHandler(key: string) {
+        this.onSortBy.emit(key);
+    }
+
+    onCheckAllHandler(e: Event) {
+        e.preventDefault();
+        this.listData = this.listData.map(el => Object.assign(el, {checked: this.all_check}));
+        this.onCheckedAllItem.emit(e);
+    }
+
+    all_checkHandler() {
+        this.all_checkChange.emit(this.all_check);
+    }
+
+    get isCheckedAllItem(): boolean {
+        if (this.listData.length) {
+            if (_.every(this.listData, ['access.can_trash', true]) || _.every(this.listData, ['access.can_delete', true])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     constructor() {
     }
 
     ngOnInit() {
-        this._columns = this.parent.columnsOptions;
     }
 }

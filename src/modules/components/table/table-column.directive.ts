@@ -16,8 +16,7 @@ export class TableColumnComponent implements OnInit {
         return this.table._columnsShowObj[this.admColumn] == false;
     }
 
-    constructor(private _el: ElementRef, private table: TableComponent) {
-        // console.log(table);
+    constructor(private table: TableComponent) {
     }
 
     ngOnInit() {
