@@ -13,6 +13,10 @@ export * from './modules/components/date-range-picker/module';
 
 export * from './modules/components/pagination/module';
 
+export * from './modules/components/menu/menu.module';
+
+export * from './modules/components/table/table.module';
+
 export * from './modules/shared/clipboard.service'
 export * from './modules/components/modal/module';
 export * from './modules/components/modal/service';
