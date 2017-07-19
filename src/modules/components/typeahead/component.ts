@@ -110,6 +110,7 @@ export class TypeaheadComponent implements OnInit, OnDestroy {
         this._el.nativeElement.value = result;
         this.writeValue(result);
         this._closePopup();
+        this.selectItem.emit(Object.assign(new Event('typeAheadSelect'), {item:result}));
     }
 
     dismissPopup() {
@@ -125,7 +126,6 @@ export class TypeaheadComponent implements OnInit, OnDestroy {
             this._el.nativeElement.value = value;
         }
         this._onChange(value);
-        this.selectItem.emit(value);
     }
 
     handleKeyDown(event: KeyboardEvent) {
