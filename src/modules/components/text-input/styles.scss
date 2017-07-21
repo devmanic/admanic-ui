@@ -19,6 +19,7 @@
   }
   &__addon {
     border: 1px solid $input-border-color;
+    border-right: none;
     background: $input-addon-bg;
     margin: 0;
     border-radius: $input-border-radius 0 0 $input-border-radius;
@@ -35,8 +36,7 @@
   }
   &__container {
     display: block;
-    input[adm][type="text"],
-    input[adm][type="number"],
+    input[adm],
     adm-single-select,
     adm-select[single],
     textarea[adm],
@@ -49,8 +49,7 @@
     adm-date-range-picker {
       position: static;
     }
-    input[adm][type="text"],
-    input[adm][type="number"],
+    input[adm],
     textarea[adm],
     button[adm] {
       @include resetInput;
@@ -65,15 +64,15 @@
       width: 100%;
       box-sizing: border-box;
     }
-    input.adm-typeahead{
-      &.is__open{
+    input.adm-typeahead {
+      &.is__open {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
     }
     &.is-invalid {
       > .wrap {
-        > input[adm][type="text"],
+        > input[adm],
         > textarea[adm],
         > .adm-input__addon,
         > adm-single-select,
@@ -96,14 +95,12 @@
         flex-direction: row;
         justify-content: space-around;
         align-content: stretch;
-        input[adm][type="text"],
-        input[adm][type="number"],
+        input[adm],
         adm-single-select,
         adm-select[single],
         textarea[adm],
         adm-multi-select .select2-container .select2-selection,
         button[adm] {
-          border-left: 0;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }

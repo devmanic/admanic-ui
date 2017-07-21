@@ -337,6 +337,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }
     }
 
+    onEnterKeydown(e:Event){
+        e.preventDefault();
+    }
+
     private calculatePosition() {
         this.showToTop = this.el.nativeElement.getBoundingClientRect().top + 165 > window.innerHeight;
     }
