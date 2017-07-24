@@ -41,6 +41,7 @@ export interface AjaxParams {
 }
 
 export const newEntityLen: number = 3;
+
 @Component({
     providers: [
         {
@@ -58,19 +59,21 @@ export const newEntityLen: number = 3;
         '[class.disabled]': 'disabled',
         '[class.invalid]': 'invalidQueryString',
         '[class.is-active]': 'isOpen',
-        '[class.is-drop-up]': 'showToTop'
+        '[class.is-drop-up]': 'showToTop',
+        '[class.pending-data-load]': '!_dataLoaded'
     }
 })
-export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit, OnChanges {
+export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
     isOpen: boolean = false;
     newItemPostfix: string;
     server = SERVER || '';
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
     showToTop: boolean = false;
+    _options: Array<OptionModel | OptionWithGroupModel> = [];
+    _dataLoaded: boolean;
 
-    @Input('options') _options: Array<OptionModel | OptionWithGroupModel> = [];
-    @Input('value') _value = false;
+    @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
     @Input() allowClear: boolean = false;
     @Input() allowCreateEntity: boolean = false;
@@ -83,8 +86,20 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         return this._options;
     }
 
-    set options(options: OptionModel[] | any) {
-        this._options = options;
+    @Input()
+    set options(options: Array<OptionModel | OptionWithGroupModel>) {
+        if (options && Array.isArray(options)) {
+            this._options = this.value ?
+                options.map((el: OptionModel) => Object.assign({}, el, {selected: el.value == this.value})) :
+                options;
+
+            let selected = this._options.filter((el: OptionModel) => el.selected)[0];
+            if (selected)
+                this.writeValue(selected['value']);
+
+            this._dataLoaded = true;
+            this.hasGroups = this._options.every((el: any) => el.hasOwnProperty('name'));
+        }
     }
 
     get value() {
@@ -180,16 +195,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.onTouched = fn;
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes._options && changes._options.currentValue && changes._options.currentValue.length) {
-            this.hasGroups = changes._options.currentValue.every((el: any) => el.hasOwnProperty('name'));
-            let selected = changes._options.currentValue.filter((el: OptionModel) => el.selected)[0];
-            if (selected) {
-                this.writeValue(selected.value);
-            }
-        }
-    }
-
     clearSelection(e: Event = new Event('')) {
         e.preventDefault();
         this.writeValue('');
@@ -197,11 +202,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     writeValue(value, isSelect = false) {
-        if (value || value === null || value == '0') {
+        if (value || value === null || value == '0' || !this._options) {
             this.value = value;
 
-            let array = this.hasGroups ? ArrayUtils.flatMap(this.options, (item: any) => item.values) : this.options;
-            let selectedOption: OptionModel = array.filter((option: OptionModel) => value == option.value)[0];
+            let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
+            let selectedOption: OptionModel = <OptionModel>array.filter((option: OptionModel) => value == option.value)[0];
             this.selectedItem = selectedOption;
 
             if (!selectedOption || !selectedOption.label || !selectedOption.value) {
@@ -219,7 +224,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             this.queryStr.setValue('');
             this.value = null;
             this.selectedItem = null;
-            this.options = this.options.map((option: OptionModel) => {
+            this._options = this._options.map((option: OptionModel) => {
                 return Object.assign(option, {selected: false, hidden: false});
             });
         }
@@ -253,10 +258,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     onAjaxFindOptions(skipQuery: boolean = false) {
         clearTimeout(this.ajaxTimeout);
         this.ajaxTimeout = setTimeout(() => {
-            this.options = [];
+            this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
-                (res: any) => this.options = this.mapAjaxToOptions(res),
-                (err: any) => this.options = []
+                (res: any) => this._options = this.mapAjaxToOptions(res),
+                (err: any) => this._options = []
             );
         }, 300);
     }
@@ -298,18 +303,18 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     filter(value: string = this.queryStr.value) {
-        if (value === null) {
+        if (value === null || !this._options) {
             return;
         }
         if (!this.hasGroups) {
-            this.options = this.options.map((item: OptionModel) => ({
+            this._options = this._options.map((item: OptionModel) => ({
                 ...item,
                 hidden: (item.label !== null ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false),
                 selected: this.isElSelected(item)
             }));
         } else {
-            this.options = this.options.map((option: any) => (
-                {
+            this._options = this._options.map((option: any) => (
+                option.values ? {
                     name: option.name,
                     hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
                     values: option.values.map((item: OptionModel) =>
@@ -318,7 +323,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                             selected: this.isElSelected(item)
                         })
                     )
-                }
+                } : option
             ));
         }
     }
@@ -331,13 +336,13 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     onEnterClick(e: Event) {
         const value = (<HTMLInputElement>e.target).value;
         if (this.hasGroups || !value) return;
-        const filtered = this.options.filter(el => el.value == value);
+        const filtered = this._options.filter((el: OptionModel) => el.value == value);
         if (filtered && filtered[0]) {
-            this.onSelect(filtered[0].value);
+            this.onSelect(filtered[0]['value']);
         }
     }
 
-    onEnterKeydown(e:Event){
+    onEnterKeydown(e: Event) {
         e.preventDefault();
     }
 
@@ -379,8 +384,8 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 label: this.trimNewItemString(this.queryStr.value) + this.newItemPostfix,
                 selected: true
             };
-            this.options = [].concat(
-                this.options.filter((option: OptionModel) => option.value != newOption.value),
+            this._options = [].concat(
+                this._options.filter((option: OptionModel) => option.value != newOption.value),
                 [newOption]
             );
             this.writeValue(newOption.value);
@@ -389,7 +394,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     get nothingNotFound(): boolean {
-        return this.options.every((option: OptionModel) => option.hidden);
+        return this._options && this._options.length ? this._options.every((option: OptionModel) => option.hidden) : true;
     }
 
     showValueLabelOnEmptyQuery() {
@@ -416,6 +421,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     calculateTextareaHeight() {
         const el = this.el.nativeElement.querySelector('textarea');
         el.style.cssText = `height:auto`;
-        el.style.cssText = `height:${el.scrollHeight + 2}px`;
+        el.style.cssText = `height:${el.scrollHeight}px`;
     }
 }

@@ -8,6 +8,57 @@
 
 $caret-width: 30px;
 
+$spiner-items: 12; //Make sure you have enough DOM elements
+$spinner-item-width: 1px;
+$spinner-dimension: 20px;
+$spinner-item-background-color: #666;
+
+.adm-spinner-container {
+  height: $spinner-dimension;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: $spinner-dimension;
+
+  .spinner {
+    background: $spinner-item-background-color;
+    height: $spinner-item-width;
+    width: 25%;
+
+    &.spinner {
+      left: 50%;
+      opacity: .3;
+      position: absolute;
+      top: 50%;
+      transform-origin: -100% 0;
+    }
+
+    @for $spinner from 1 through $spiner-items {
+      &.spinner-#{$spinner} {
+        $rotate: (360 / $spiner-items) * $spinner;
+        animation: spinner-animation #{($spiner-items * 1) / 15}s #{($spinner)/15}s infinite;
+        transform: translate(100%, 0) rotate(#{$rotate}deg);
+      }
+    }
+
+    @at-root {
+      @keyframes spinner-animation {
+        0% {
+          opacity: .3
+        }
+        10% {
+          opacity: 1
+        }
+        100% {
+          opacity: .3;
+        }
+      }
+    }
+
+  }
+}
+
 .adm-select {
   display: inline-block;
   position: relative;
@@ -28,7 +79,7 @@ $caret-width: 30px;
       line-height: 1.25;
       resize: none;
       min-width: 150px;
-      overflow-x:hidden;
+      overflow-x: hidden;
     }
   }
 
@@ -148,5 +199,14 @@ $caret-width: 30px;
       border-top-width: 1px;
     }
     border-radius: 0 0 $input-border-radius $input-border-radius;
+  }
+
+  &.pending-data-load {
+    .adm-select__caret {
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SingleSelectComponent } from './component';
+import { SingleSelectComponent } from './single-select.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorsModule } from '../validator/module';
