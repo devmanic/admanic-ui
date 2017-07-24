@@ -174,6 +174,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     initAjax(params: AjaxParams) {
         if (params) {
             this.isAjax = true;
+            this._dataLoaded = true;
         }
     }
 
@@ -260,25 +261,28 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.ajaxTimeout = setTimeout(() => {
             this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
-                (res: any) => this._options = this.mapAjaxToOptions(res),
+                (res: any) => {
+                    this._options = this.mapAjaxToOptions(res);
+                },
                 (err: any) => this._options = []
             );
         }, 300);
     }
 
     mapAjaxToOptions(data: any[] = []): OptionModel[] {
-        if (this.allowClear && this.queryStr.value === '') {
-            this.value = undefined;
-        }
+        // if (this.allowClear && this.queryStr.value === '') {
+        //     this.value = undefined;
+        // }
         return data.map((el: any) => ({
             label: el.title,
             value: el.id,
-            selected: this.queryStr.value === '' && this.allowClear ? false : el.id == this.value
+            selected: el.id == this.value
         }));
     }
 
     sendAjax(skipQuery: boolean = false) {
         this.pendingRequest = true;
+        this._dataLoaded = false;
         let params = {
             ...this.baseAjaxOptions,
             ...this.ajax.options,
@@ -292,7 +296,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         return this.http.get(this.server + `/${this.ajax.path}/list` + ListRequestService.parseRequestObject(params))
             .map((res: Response) => res.json().data)
             .catch((err, caught) => this.errorHandler.handle(err, caught))
-            .finally(() => this.pendingRequest = false);
+            .finally(() => {
+                this.pendingRequest = false;
+                this._dataLoaded = true;
+            });
     }
 
     isElSelected(item: OptionModel): boolean {
