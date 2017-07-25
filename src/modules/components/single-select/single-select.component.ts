@@ -7,7 +7,7 @@ import {
     Input,
     OnDestroy,
     Output,
-    OnChanges, SimpleChanges, ViewEncapsulation, ElementRef
+    ViewEncapsulation, ElementRef, OnInit
 } from '@angular/core';
 import {
     ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
@@ -20,6 +20,7 @@ import { ListRequestService } from '../../shared/list-request.service';
 import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
+import { setTimeout } from 'timers';
 
 declare const SERVER: string;
 
@@ -72,6 +73,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     showToTop: boolean = false;
     _options: Array<OptionModel | OptionWithGroupModel> = [];
     _dataLoaded: boolean;
+    queryChangeSubscription: Subscription;
 
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
@@ -203,7 +205,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     writeValue(value, isSelect = false) {
-        if (value || value === null || value == '0' || !this._options) {
+        console.log('writeValue');
+        if (!this._options) {
+            return;
+        }
+        this.unsubscribeFromQueryStringChange();
+        if (value || value === null || value == '0') {
             this.value = value;
 
             let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
@@ -217,6 +224,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
             let label = this.trimNewItemString(selectedOption.label);
             this.queryStr.setValue(label);
+            this.calculateTextareaHeight();
 
             if (isSelect) {
                 this.selected.emit(selectedOption);
@@ -229,6 +237,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 return Object.assign(option, {selected: false, hidden: false});
             });
         }
+        this.subscribeToQueryStringChange();
     }
 
     @HostListener('document: click', ['$event'])
@@ -241,43 +250,51 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     onSelect(value: any) {
+        console.log('---onSelect---');
+        this.writeValue(value, true);
         if (this.isOpen) {
-            this.showValueLabelOnEmptyQuery();
             this.isOpen = false;
             this.hide.emit();
         }
-        this.writeValue(value, true);
     }
 
     subscribeToQueryStringChange() {
-        this._subscribers.push(this.queryStr.valueChanges.filter(value => !!value || value === '').subscribe(() => {
-            this.calculateTextareaHeight();
-            this.isAjax ? this.onAjaxFindOptions() : this.filter();
-        }));
+        this.queryChangeSubscription ? this.queryChangeSubscription.unsubscribe() : '';
+        setTimeout(() => {
+            console.log('subscribeToQueryStringChange');
+            this.queryChangeSubscription = this.queryStr.valueChanges.filter(value => !!value || value === '').subscribe((value) => {
+                this.calculateTextareaHeight();
+                this.isAjax ? this.onAjaxFindOptions() : this.filter();
+            });
+        }, 100);
+    }
+
+    unsubscribeFromQueryStringChange() {
+        console.log('unsubscribeFromQueryStringChange');
+        if (this.queryChangeSubscription) {
+            this.queryChangeSubscription.unsubscribe();
+        }
     }
 
     onAjaxFindOptions(skipQuery: boolean = false) {
         clearTimeout(this.ajaxTimeout);
         this.ajaxTimeout = setTimeout(() => {
-            this._options = [];
+            // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options = this.mapAjaxToOptions(res);
+                    this._options = res.map((el: any) => ({
+                        label: el.title,
+                        value: el.id,
+                        selected: el.id == this.value
+                    }));
+                    const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
+                    if (selected) {
+                        this.selectedItem = selected;
+                    }
                 },
                 (err: any) => this._options = []
             );
         }, 300);
-    }
-
-    mapAjaxToOptions(data: any[] = []): OptionModel[] {
-        // if (this.allowClear && this.queryStr.value === '') {
-        //     this.value = undefined;
-        // }
-        return data.map((el: any) => ({
-            label: el.title,
-            value: el.id,
-            selected: el.id == this.value
-        }));
     }
 
     sendAjax(skipQuery: boolean = false) {
@@ -353,7 +370,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         e.preventDefault();
     }
 
-    private calculatePosition() {
+    calculatePosition() {
         this.showToTop = this.el.nativeElement.getBoundingClientRect().top + 165 > window.innerHeight;
     }
 
@@ -365,7 +382,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.calculatePosition();
         this.isOpen = true;
         this.show.emit();
-        if (this.isAjax) {
+        if (this.isAjax && !this._options || !this.options.length) {
             this.onAjaxFindOptions(true);
         }
     }
@@ -407,6 +424,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     showValueLabelOnEmptyQuery() {
         if (this.selectedItem && this.trimNewItemString(this.queryStr.value) !== this.trimNewItemString(this.selectedItem.label)) {
             this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
+            this.calculateTextareaHeight();
         }
     }
 
