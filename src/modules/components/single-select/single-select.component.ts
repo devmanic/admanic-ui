@@ -20,7 +20,6 @@ import { ListRequestService } from '../../shared/list-request.service';
 import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
-import { setTimeout } from 'timers';
 
 declare const SERVER: string;
 
@@ -74,6 +73,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     _options: Array<OptionModel | OptionWithGroupModel> = [];
     _dataLoaded: boolean;
     queryChangeSubscription: Subscription;
+    latestQuery: string = '';
 
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
@@ -101,6 +101,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
             this._dataLoaded = true;
             this.hasGroups = this._options.every((el: any) => el.hasOwnProperty('name'));
+        } else if (options === null) {
+            this._dataLoaded = false;
+            this._options = [];
+            this.hasGroups = false;
         }
     }
 
@@ -145,7 +149,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
 
     constructor(public http: Http, public errorHandler: ErrorHandler, private el: ElementRef) {
-        this.subscribeToQueryStringChange();
+        // this.subscribeToQueryStringChange();
     }
 
     ngAfterViewInit() {
@@ -177,6 +181,9 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         if (params) {
             this.isAjax = true;
             this._dataLoaded = true;
+            // if (this.value) {
+            //     this.onAjaxFindOptions();
+            // }
         }
     }
 
@@ -205,7 +212,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     writeValue(value, isSelect = false) {
-        console.log('writeValue');
         if (!this._options) {
             return;
         }
@@ -219,18 +225,18 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
             if (!selectedOption || !selectedOption.label || !selectedOption.value) {
                 this.queryStr.setValue('');
-                return;
-            }
+            } else {
+                let label = this.trimNewItemString(selectedOption.label);
+                this.queryStr.setValue(label);
 
-            let label = this.trimNewItemString(selectedOption.label);
-            this.queryStr.setValue(label);
+                if (isSelect) {
+                    this.selected.emit(selectedOption);
+                }
+            }
             this.calculateTextareaHeight();
-
-            if (isSelect) {
-                this.selected.emit(selectedOption);
-            }
         } else {
             this.queryStr.setValue('');
+            this.calculateTextareaHeight();
             this.value = null;
             this.selectedItem = null;
             this._options = this._options.map((option: OptionModel) => {
@@ -250,7 +256,9 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     onSelect(value: any) {
-        console.log('---onSelect---');
+        if (!this.selectedItem || this.selectedItem.label != this.queryStr.value) {
+            this.latestQuery = this.queryStr.value;
+        }
         this.writeValue(value, true);
         if (this.isOpen) {
             this.isOpen = false;
@@ -259,20 +267,19 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     subscribeToQueryStringChange() {
-        this.queryChangeSubscription ? this.queryChangeSubscription.unsubscribe() : '';
+        this.unsubscribeFromQueryStringChange();
         setTimeout(() => {
-            console.log('subscribeToQueryStringChange');
-            this.queryChangeSubscription = this.queryStr.valueChanges.filter(value => !!value || value === '').subscribe((value) => {
+            this.queryChangeSubscription = this.queryStr.valueChanges.filter(value => !!value || value === '').debounceTime(100).subscribe((value) => {
                 this.calculateTextareaHeight();
                 this.isAjax ? this.onAjaxFindOptions() : this.filter();
             });
-        }, 100);
+        }, 300);
     }
 
     unsubscribeFromQueryStringChange() {
-        console.log('unsubscribeFromQueryStringChange');
         if (this.queryChangeSubscription) {
             this.queryChangeSubscription.unsubscribe();
+            this.queryChangeSubscription = null;
         }
     }
 
@@ -290,6 +297,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
                     if (selected) {
                         this.selectedItem = selected;
+
+                        // if (!this.isOpen && this.value) {
+                        //     this.writeValue(this.selectedItem.value);
+                        // }
                     }
                 },
                 (err: any) => this._options = []
@@ -303,12 +314,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         let params = {
             ...this.baseAjaxOptions,
             ...this.ajax.options,
-            query: this.queryStr.value
+            query: skipQuery ? this.latestQuery : this.queryStr.value
         };
 
-        if (skipQuery) {
-            delete params.query;
-        }
+        // if (skipQuery) {
+        //     delete params.query;
+        // }
 
         return this.http.get(this.server + `/${this.ajax.path}/list` + ListRequestService.parseRequestObject(params))
             .map((res: Response) => res.json().data)
@@ -382,7 +393,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.calculatePosition();
         this.isOpen = true;
         this.show.emit();
-        if (this.isAjax && !this._options || !this.options.length) {
+        if (this.isAjax) {
             this.onAjaxFindOptions(true);
         }
     }
@@ -423,8 +434,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     showValueLabelOnEmptyQuery() {
         if (this.selectedItem && this.trimNewItemString(this.queryStr.value) !== this.trimNewItemString(this.selectedItem.label)) {
+            this.unsubscribeFromQueryStringChange();
             this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
             this.calculateTextareaHeight();
+            this.subscribeToQueryStringChange();
         }
     }
 
@@ -440,7 +453,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     trackListByFn(index: number, item: OptionModel) {
-        return item.value;
+        return index;
     }
 
     calculateTextareaHeight() {
