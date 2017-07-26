@@ -8,7 +8,7 @@
   user-select: none;
   -webkit-user-select: none;
 
-  &.hidden{
+  &.hidden {
     display: none;
   }
 
@@ -168,6 +168,12 @@
           border-top-right-radius: 0;
         }
       }
+    }
+  }
+
+  &.pending-data-load {
+    .select2-container.select2:after {
+      display: none !important;
     }
   }
 

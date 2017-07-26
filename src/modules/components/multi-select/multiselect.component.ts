@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiselectParams } from './model';
+
 declare const $: any;
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
@@ -23,10 +24,27 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         '[class.is-open]': '_isOpen && !_isTags',
         '[class.is-tags]': '_isTags',
         '[class.is-above]': '_isAbove',
+        '[class.pending-data-load]': '!_dataLoaded'
     },
     styleUrls: ['styles.scss'],
     providers: [MULTISELECT_VALUE_ACCESSOR],
     template: `
+        <div class="adm-spinner-container"
+             style="transform: none; z-index: 1; right: 5px; left:initial; top: 0; bottom:0; margin: auto;"
+             *ngIf="!_dataLoaded">
+            <div class="spinner spinner-1"></div>
+            <div class="spinner spinner-2"></div>
+            <div class="spinner spinner-3"></div>
+            <div class="spinner spinner-4"></div>
+            <div class="spinner spinner-5"></div>
+            <div class="spinner spinner-6"></div>
+            <div class="spinner spinner-7"></div>
+            <div class="spinner spinner-8"></div>
+            <div class="spinner spinner-9"></div>
+            <div class="spinner spinner-10"></div>
+            <div class="spinner spinner-11"></div>
+            <div class="spinner spinner-12"></div>
+        </div>
         <select></select>
         <div class="adm-multi-select__dropdown">
             <div class="adm-multi-select__dropdown-wrap"></div>
@@ -51,6 +69,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     _isTags: boolean;
     _isAbove: boolean;
     _notSelect2Instance: boolean;
+    _dataLoaded: boolean;
 
     @Output() change = new EventEmitter();
     @Output() open = new EventEmitter();
@@ -67,8 +86,8 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     set params(params: MultiselectParams) {
         if (this._selectEl && this._selectEl.hasClass('select2-hidden-accessible')) {
             this._selectEl.select2('destroy');
+            this._selectEl[0].innerHTML = '';
         }
-
 
         let data = [];
         if (params.data) {
@@ -102,7 +121,6 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         }, 1);
 
         if (this._selectEl) {
-            this._selectEl[0].innerHTML = '';
             this._selectEl.select2(this._params);
         }
     };
@@ -113,6 +131,11 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             if (defaults && Array.isArray(defaults)) {
                 this._hasGroups = defaults.every((el: any) => el.hasOwnProperty('name'));
                 this.params = {...this._params, data: defaults};
+                this._dataLoaded = true;
+            } else if (defaults === null) {
+                this._hasGroups = false;
+                this._dataLoaded = false;
+                this.params = {...this._params, data: []};
             }
         }, 1);
     };
