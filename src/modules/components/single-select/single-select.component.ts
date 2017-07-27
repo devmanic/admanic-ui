@@ -290,7 +290,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
                     this._options = res.map((el: any) => ({
-                        label: el.title,
+                        label: el.title || el.text || el.label || el.id,
                         value: el.id,
                         selected: el.id == this.value
                     }));
@@ -425,6 +425,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             );
             this.writeValue(newOption.value);
             this.newEntityAdd.emit(this.trimNewItemString(newOption.label));
+            this._dataLoaded = true;
         }
     }
 
