@@ -10,6 +10,7 @@ export class Select2File {
     static load() {
         jQueryLoadService.load();
         if (window.hasOwnProperty('jQuery') && !(!!window['jQuery']().select2)) {
+            console.log('sadsadsa here');
             window['eval'](this.raw);
         }
     }

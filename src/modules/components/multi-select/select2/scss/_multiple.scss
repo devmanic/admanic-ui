@@ -35,7 +35,8 @@
     line-height: 1;
   }
 
-  .select2-selection__choice__remove {
+  .select2-selection__choice__remove,
+  .select2-selection__choice > .select2-selection__clear {
     color: #999;
     cursor: pointer;
 
