@@ -93,7 +93,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             ...this._params,
             ...params,
             data,
-            allowClear: !!this._params.showSelectedCount
+            allowClear: true
         };
         setTimeout(() => {
             this._showAddNewBtn = this._params.showAddNewBtn;
