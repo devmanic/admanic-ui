@@ -24,6 +24,7 @@ export class CustomValidators {
             allFill: 'All fields must be filled',
             nT: 'All fields must be filled',
             urlPattern: 'Is not a valid URL',
+            acceptRules: 'You should to accept the rules',
             notAllowSpace: 'Can not contain white spaces'
         }, {});
 
@@ -190,8 +191,8 @@ export class CustomValidators {
                 });
 
                 let allFieldsEmpty = _.filter(control.controls, (item: any) => {
-                        return !item.value || item._skipValidation;
-                    }).length === Object.keys(control.controls).length;
+                    return !item.value || item._skipValidation;
+                }).length === Object.keys(control.controls).length;
 
                 if (!allRequiredCond || allFieldsEmpty) {
                     return null;

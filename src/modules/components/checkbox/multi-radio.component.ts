@@ -18,7 +18,7 @@ export interface option {
         'class': 'adm-multi-radio',
         '[class.is-inline]': 'inline'
     },
-    styleUrls:['./multi-selector.style.scss'],
+    styleUrls: ['./multi-selector.style.scss'],
     template: `
         <div [formGroup]="_form" *ngIf="_options.length" class="adm-multi-ctrl-wrap">
             <adm-radio
@@ -44,11 +44,15 @@ export class MultiRadioComponent implements OnDestroy, AfterViewInit {
 
     @Input()
     set options(opts: any[]) {
-        if (typeof opts[0] === 'string') {
-            this._options = opts.map((el: string) => ({
-                value: el,
-                label: el
-            }));
+        if (Array.isArray(opts)) {
+            if (typeof opts[0] === 'string') {
+                this._options = opts.map((el: string) => ({
+                    value: el,
+                    label: el
+                }));
+            } else {
+                this._options = opts;
+            }
         }
     }
 
