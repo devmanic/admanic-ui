@@ -100,7 +100,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 this.writeValue(selected['value']);
 
             this._dataLoaded = true;
-            this.hasGroups = this._options.every((el: any) => el.hasOwnProperty('name'));
+            this.hasGroups = this._options.length && this._options.every((el: any) => el.hasOwnProperty('name'));
         } else if (options === null) {
             this._dataLoaded = false;
             this._options = [];
@@ -218,7 +218,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
             this.value = value;
-
+            // console.log('---- this._options ----', this._options);
             let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
             let selectedOption: OptionModel = <OptionModel>array.filter((option: OptionModel) => value == option.value)[0];
             this.selectedItem = selectedOption;
