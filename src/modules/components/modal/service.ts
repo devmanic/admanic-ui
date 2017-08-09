@@ -20,7 +20,7 @@ export class ModalManagerService {
         this.rootViewContainerRef = vRef;
     }
 
-    show(obj: modalI, onOk?: () => {}, onClose?: () => {}) {
+    show(obj: modalI, onOk?: Function, onClose?: Function) {
         this.dispose();
         setTimeout(() => {
             // get app root view component ref
