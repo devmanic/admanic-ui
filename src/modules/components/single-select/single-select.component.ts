@@ -41,6 +41,7 @@ export interface AjaxParams {
 }
 
 export const newEntityLen: number = 3;
+
 @Component({
     providers: [
         {
@@ -68,6 +69,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
     showToTop: boolean = false;
+    _viewPath: string;
 
     @Input('options') _options: Array<OptionModel | OptionWithGroupModel> = [];
     @Input('value') _value = false;
@@ -78,6 +80,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Input() entityName: string = 'item';
     @Input() ajax: AjaxParams = null;
     @Input() showAddNewBtn: boolean = false;
+
+    @Input()
+    set viewPath(path) {
+        this._viewPath = `${location.origin}/${path}`;
+    };
 
     get options() {
         return this._options;
@@ -337,7 +344,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }
     }
 
-    onEnterKeydown(e:Event){
+    onEnterKeydown(e: Event) {
         e.preventDefault();
     }
 
