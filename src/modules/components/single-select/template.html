@@ -15,6 +15,16 @@
         toggle
     </button>
     <!-- / toggle button -->
+
+    <!-- view link -->
+    <template [ngIf]="_viewPath && value">
+        <div class="adm-select__view-item">
+            <a class="adm-select__view-item__btn" target="_blank" href="{{_viewPath}}/{{value}}">
+                View <i class="material-icons">launch</i>
+            </a>
+        </div>
+    </template>
+    <!-- /view link -->
 </div>
 <!-- / search input -->
 
