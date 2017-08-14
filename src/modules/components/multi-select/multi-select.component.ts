@@ -112,7 +112,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             ...this._params,
             ...params,
             data,
-            allowClear: !!this._params.showSelectedCount
+            allowClear: true
         };
         setTimeout(() => {
             this._showAddNewBtn = this._params.showAddNewBtn;
@@ -223,7 +223,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             $(e.currentTarget)
                 .parent()
                 .find('.select2-search.select2-search--inline')
-                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__choice__remove select2-selection__clear'>×</span> ${this.value.length} items selected </span>`);
+                .prepend(`<span class='select2-selection__choice'><span class='select2-selection__clear'>×</span> ${this.value.length} items selected </span>`);
         } else {
             this._isShowSelectedCount = false;
         }

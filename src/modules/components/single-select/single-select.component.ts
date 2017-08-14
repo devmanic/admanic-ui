@@ -74,6 +74,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     _dataLoaded: boolean;
     queryChangeSubscription: Subscription;
     latestQuery: string = '';
+    _viewPath: string;
 
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
@@ -83,6 +84,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Input() entityName: string = 'item';
     @Input() ajax: AjaxParams = null;
     @Input() showAddNewBtn: boolean = false;
+
+    @Input()
+    set viewPath(path) {
+        this._viewPath = `${location.origin}/${path}`;
+    };
 
     get options() {
         return this._options;

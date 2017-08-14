@@ -86,10 +86,12 @@ export class CheckboxControlComponent {
     }
 
     writeValue(val: any) {
-        this._checked = (val === true || val === 1) ? true : val;
-        this.onChange(this._checked);
-        this.onTouched();
-        this.change.emit(this._checked);
+        if (!this.disabled) {
+            this._checked = (val === true || val === 1) ? true : val;
+            this.onChange(this._checked);
+            this.onTouched();
+            this.change.emit(this._checked);
+        }
     }
 
     toggle(): void {

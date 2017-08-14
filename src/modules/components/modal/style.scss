@@ -1,10 +1,10 @@
 @import './src/modules/styles/_variables.scss';
-@mixin keyframes($animation-name) {
-    @keyframes #{$animation-name} {
-        @content;
-    }
-}
 
+@mixin keyframes($animation-name) {
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
 
 $swal2-white: #fff !default;
 $swal2-black: #000 !default;
@@ -25,58 +25,58 @@ $swal2-input-box-shadow-focus: #c4e6f5 !default;
 $swal2-validationerror-background: #ea7d7d !default;
 $swal2-validationerror-color: $swal2-white !default;
 @mixin animation($str) {
-    animation: #{$str};
+  animation: #{$str};
 }
 
 @include keyframes(animate-success-tip) {
-    0% {
-        width: 0;
-        left: 1px;
-        top: 19px;
-    }
-    54% {
-        width: 0;
-        left: 1px;
-        top: 19px;
-    }
-    70% {
-        width: 50px;
-        left: -8px;
-        top: 37px;
-    }
-    84% {
-        width: 17px;
-        left: 21px;
-        top: 48px;
-    }
-    100% {
-        width: 25px;
-        left: 14px;
-        top: 45px;
-    }
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px;
+  }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px;
+  }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px;
+  }
 }
 
 @include keyframes(animate-success-long) {
-    0% {
-        width: 0;
-        right: 46px;
-        top: 54px;
-    }
-    65% {
-        width: 0;
-        right: 46px;
-        top: 54px;
-    }
-    84% {
-        width: 55px;
-        right: 0;
-        top: 35px;
-    }
-    100% {
-        width: 47px;
-        right: 8px;
-        top: 38px;
-    }
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  84% {
+    width: 55px;
+    right: 0;
+    top: 35px;
+  }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+  }
 }
 
 @include keyframes(showSweetAlert) {
@@ -109,297 +109,299 @@ $swal2-validationerror-color: $swal2-white !default;
   }
 }
 
-
 @include keyframes(rotatePlaceholder) {
-    0% {
-        transform: rotate(-45deg);
-    }
-    5% {
-        transform: rotate(-45deg);
-    }
-    12% {
-        transform: rotate(-405deg);
-    }
-    100% {
-        transform: rotate(-405deg);
-    }
+  0% {
+    transform: rotate(-45deg);
+  }
+  5% {
+    transform: rotate(-45deg);
+  }
+  12% {
+    transform: rotate(-405deg);
+  }
+  100% {
+    transform: rotate(-405deg);
+  }
 }
 
 adm-modal-container {
-    position: fixed;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 99999;
+  &:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    &:before {
-        content: '';
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        background: rgba(#000, .5);
-    }
-    &.inactive {
-        display: none;
-    }
+    margin: auto;
+    background: rgba(#000, .5);
+  }
+  &.inactive {
+    display: none;
+  }
 }
 
 .adm-modal {
-    &__wrap {
-        z-index: 1;
-        box-shadow: 0 6px 40px rgba(0, 0, 0, 0.35);
-        @include animation('showSweetAlert 0.3s');         
-    } // border:1px solid $input-border-color;
-    background: #fff;
-    border-radius: 5px;
-    overflow: hidden;
-    font-size:14px;
-    color:$text-color;
-    max-width: 600px;
+  &__wrap {
+    z-index: 1;
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.35);
+    @include animation('showSweetAlert 0.3s');
+  }
+  // border:1px solid $input-border-color;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  font-size: 14px;
+  color: $text-color;
+  max-width: 600px;
+  &.is__success {
+    .adm-modal__header {
+      background: #e5fbf4;
+    }
+    .adm-modal__footer .adm-modal__btn.is__positive {
+      background: #4bd396;
+      border-color: #4bd396;
+    }
+  }
+  &.is__info {
+    .adm-modal__header {
+      background: #e6fafa;
+    }
+  }
+  &.is__warning {
+    .adm-modal__header {
+      background: #fff5e5;
+    }
+    .adm-modal__footer .adm-modal__btn.is__positive {
+      background: #f8bb86;
+      border-color: #f8bb86;
+    }
+  }
+  &.is__error {
+    .adm-modal__header {
+      background: #fde9ea;
+    }
+    .adm-modal__footer .adm-modal__btn.is__positive {
+      background: #d54c48;
+      border-color: #d54c48;
+    }
+  }
+  &.with-type {
+    .adm-modal__header {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  &.without-type {
+    .adm-modal__header__text {
+      margin-bottom: 0;
+      text-align: left;
+    }
+    .adm-modal__close-btn {
+      top: 17px;
+    }
+  }
+  &-icon {
+    width: 80px;
+    height: 80px;
+    border: 4px solid transparent;
+    border-radius: 50%;
+    margin: 20px auto 30px;
+    padding: 0;
+    position: relative;
+    box-sizing: content-box;
+    cursor: default;
+    user-select: none;
     &.is__success {
-        .adm-modal__header {
-            background: #e5fbf4;
+      border-color: $swal2-success;
+      [class^='swal2-success-circular-line'] {
+        // Emulate moving circular line
+        border-radius: 50%;
+        position: absolute;
+        width: 60px;
+        height: 120px;
+        transform: rotate(45deg);
+        background: #e5fbf4;
+        &[class$='left'] {
+          border-radius: 120px 0 0 120px;
+          top: -7px;
+          left: -33px;
+          transform: rotate(-45deg);
+          transform-origin: 60px 60px;
         }
-        .adm-modal__footer .adm-modal__btn.is__positive {
-            background: #4bd396;
-            border-color: #4bd396;
+        &[class$='right'] {
+          border-radius: 0 120px 120px 0;
+          top: -11px;
+          left: 30px;
+          transform: rotate(-45deg);
+          transform-origin: 0 60px;
+          @include animation('rotatePlaceholder 4.25s ease-in');
         }
-    }
-    &.is__info {
-        .adm-modal__header {
-            background: #e6fafa;
-        }
-    }
-    &.is__warning {
-        .adm-modal__header {
-            background: #fff5e5;
-        }
-        .adm-modal__footer .adm-modal__btn.is__positive {
-            background: #f8bb86;
-            border-color: #f8bb86;
-        }
-    }
-    &.is__error{
-        .adm-modal__header{
-            background: #fde9ea;
-        }
-        .adm-modal__footer .adm-modal__btn.is__positive{
-            background: #d54c48;
-            border-color: #d54c48;
-        }
-    }
-    &.with-type{
-        .adm-modal__header {
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }        
-    }
-    &.without-type {
-        .adm-modal__header__text {
-            margin-bottom: 0;
-            text-align: left;
-        }
-        .adm-modal__close-btn{
-            top: 17px;
-        }
-    }
-    &-icon {
+      }
+      .swal2-success-ring {
+        // Ring
         width: 80px;
         height: 80px;
-        border: 4px solid transparent;
+        border: 4px solid $swal2-success-border;
         border-radius: 50%;
-        margin: 20px auto 30px;
-        padding: 0;
-        position: relative;
         box-sizing: content-box;
-        cursor: default;
-        user-select: none;
-        &.is__success {
-            border-color: $swal2-success;
-            [class^='swal2-success-circular-line'] {
-                // Emulate moving circular line
-                border-radius: 50%;
-                position: absolute;
-                width: 60px;
-                height: 120px;
-                transform: rotate(45deg);
-                background: #e5fbf4;
-                &[class$='left'] {
-                    border-radius: 120px 0 0 120px;
-                    top: -7px;
-                    left: -33px;
-                    transform: rotate(-45deg);
-                    transform-origin: 60px 60px;
-                }
-                &[class$='right'] {
-                    border-radius: 0 120px 120px 0;
-                    top: -11px;
-                    left: 30px;
-                    transform: rotate(-45deg);
-                    transform-origin: 0 60px;
-                    @include animation('rotatePlaceholder 4.25s ease-in');
-                }
-            }
-            .swal2-success-ring {
-                // Ring
-                width: 80px;
-                height: 80px;
-                border: 4px solid $swal2-success-border;
-                border-radius: 50%;
-                box-sizing: content-box;
-                position: absolute;
-                left: -4px;
-                top: -4px;
-                z-index: 2;
-            }
-            .swal2-success-fix {
-                // Hide corners left from animation
-                width: 7px;
-                height: 90px;
-                position: absolute;
-                left: 28px;
-                top: 8px;
-                z-index: 1;
-                transform: rotate(-45deg);
-                background: #e5fbf4;
-            }
-            [class^='swal2-success-line'] {
-                height: 5px;
-                background-color: $swal2-success;
-                display: block;
-                border-radius: 2px;
-                position: absolute;
-                z-index: 2;
-                &[class$='tip'] {
-                    width: 25px;
-                    left: 14px;
-                    top: 46px;
-                    transform: rotate(45deg);
-                    @include animation('animate-success-tip 0.75s');
-                }
-                &[class$='long'] {
-                    width: 47px;
-                    right: 8px;
-                    top: 38px;
-                    transform: rotate(-45deg);
-                    @include animation('animate-success-long 0.75s');
-                }
-            }
-        }
-        &.is__info {
-            font-family: 'Open Sans', sans-serif;
-            color: #3fc3ee;
-            border-color: #9de0f6;
-            font-size: 60px;
-            line-height: 80px;
-            text-align: center;
-        }
-        &.is__warning {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: $swal2-warning;
-            border-color: lighten($swal2-warning, 7);
-            font-size: 60px;
-            line-height: 80px;
-            text-align: center;
-        }
-        &.is__error {
-            border-color: $swal2-error;
-            @include animation('animate-error-icon 0.5s');
-            .swal2-x-mark {
-                position: relative;
-                display: block;
-            }
-            [class^='swal2-x-mark-line'] {
-                position: absolute;
-                height: 5px;
-                width: 47px;
-                background-color: $swal2-error;
-                display: block;
-                top: 37px;
-                border-radius: 2px;
-                &[class$='left'] {
-                    transform: rotate(45deg);
-                    left: 17px;
-                }
-                &[class$='right'] {
-                    transform: rotate(-45deg);
-                    right: 16px;
-                }
-            }
-        }
-    }
-    &__header,
-    &__content,
-    &__footer {
-        padding: 20px 30px;
-        min-width: 500px;
-        box-sizing: border-box;
-    }
-    &__close-btn {
         position: absolute;
-        right: 8px;
+        left: -4px;
+        top: -4px;
+        z-index: 2;
+      }
+      .swal2-success-fix {
+        // Hide corners left from animation
+        width: 7px;
+        height: 90px;
+        position: absolute;
+        left: 28px;
         top: 8px;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        margin: 0;
-        color: #ababab;
-        opacity: .8;
-        &:hover {
-            opacity: 1;
+        z-index: 1;
+        transform: rotate(-45deg);
+        background: #e5fbf4;
+      }
+      [class^='swal2-success-line'] {
+        height: 5px;
+        background-color: $swal2-success;
+        display: block;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 2;
+        &[class$='tip'] {
+          width: 25px;
+          left: 14px;
+          top: 46px;
+          transform: rotate(45deg);
+          @include animation('animate-success-tip 0.75s');
         }
-        i {
-            font-size: 26px;
+        &[class$='long'] {
+          width: 47px;
+          right: 8px;
+          top: 38px;
+          transform: rotate(-45deg);
+          @include animation('animate-success-long 0.75s');
         }
+      }
     }
-    &__header {
-        // border-bottom: 1px solid $input-border-color;
+    &.is__info {
+      font-family: 'Open Sans', sans-serif;
+      color: #3fc3ee;
+      border-color: #9de0f6;
+      font-size: 60px;
+      line-height: 80px;
+      text-align: center;
+    }
+    &.is__warning {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: $swal2-warning;
+      border-color: lighten($swal2-warning, 7);
+      font-size: 60px;
+      line-height: 80px;
+      text-align: center;
+    }
+    &.is__error {
+      border-color: $swal2-error;
+      @include animation('animate-error-icon 0.5s');
+      .swal2-x-mark {
         position: relative;
-        &__text {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 22px;
-            line-height: 1;
+        display: block;
+      }
+      [class^='swal2-x-mark-line'] {
+        position: absolute;
+        height: 5px;
+        width: 47px;
+        background-color: $swal2-error;
+        display: block;
+        top: 37px;
+        border-radius: 2px;
+        &[class$='left'] {
+          transform: rotate(45deg);
+          left: 17px;
         }
-    }
-    &__content {
-        padding-top: 25px;
-        padding-bottom: 25px;
-        line-height: 1.5;
-    }
-    &__footer {
-        text-align: right;
-        padding-top: 10px; // background: $input-addon-bg;
-        // border-top: 1px solid $input-border-color;
-        .adm-modal__btn {
-            @include resetBtn;
-            cursor: pointer;
-            padding: 9px 22px;
-            color: #444;
-            border: 1px solid;
-            border-radius: $input-border-radius;
-            margin: 0 5px;
-            min-width: 90px;
-            &:last-child {
-                margin-right: 0;
-            }
-            &:first-child {
-                margin-left: 0;
-            }
-            &.is__negative {}
-            &.is__positive {
-                background: #00beef;
-                color: #fff;
-                border-color: #00beef;
-            }
+        &[class$='right'] {
+          transform: rotate(-45deg);
+          right: 16px;
         }
+      }
     }
+  }
+  &__header,
+  &__content,
+  &__footer {
+    padding: 20px 30px;
+    min-width: 500px;
+    box-sizing: border-box;
+  }
+  &__close-btn {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    color: #ababab;
+    opacity: .8;
+    &:hover {
+      opacity: 1;
+    }
+    i {
+      font-size: 26px;
+    }
+  }
+  &__header {
+    // border-bottom: 1px solid $input-border-color;
+    position: relative;
+    &__text {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      line-height: 1;
+    }
+  }
+  &__content {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    line-height: 1.5;
+  }
+  &__footer {
+    text-align: right;
+    padding-top: 10px; // background: $input-addon-bg;
+    // border-top: 1px solid $input-border-color;
+    .adm-modal__btn {
+      @include resetBtn;
+      cursor: pointer;
+      padding: 9px 22px;
+      color: #444;
+      border: 1px solid;
+      border-radius: $input-border-radius;
+      margin: 0 5px;
+      min-width: 90px;
+      &:last-child {
+        margin-right: 0;
+      }
+      &:first-child {
+        margin-left: 0;
+      }
+      &.is__negative {
+      }
+      &.is__positive {
+        background: #00beef;
+        color: #fff;
+        border-color: #00beef;
+      }
+    }
+  }
 }

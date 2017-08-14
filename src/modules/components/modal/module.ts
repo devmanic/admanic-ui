@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ModalContainerComponent, DynamicRenderComponent } from "./component";
+import { ModalContainerComponent, DynamicRenderComponent } from "./modal.component";
 import { ModalManagerService } from "./service";
 import { CommonModule } from "@angular/common";
 
