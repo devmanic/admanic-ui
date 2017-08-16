@@ -156,6 +156,9 @@ adm-modal-container {
     z-index: 1;
     box-shadow: 0 6px 40px rgba(0, 0, 0, 0.35);
     @include animation('showSweetAlert 0.3s');
+    max-height: 96%;
+    overflow: auto;
+    border-radius: 5px;
   }
   // border:1px solid $input-border-color;
   background: #fff;

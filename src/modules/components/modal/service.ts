@@ -38,6 +38,7 @@ export class ModalManagerService {
             let toastFactory = this.componentFactoryResolver.resolveComponentFactory(ModalContainerComponent);
             let childInjector = ReflectiveInjector.fromResolvedProviders(providers, this.rootViewContainerRef.parentInjector);
             this.container = this.rootViewContainerRef.createComponent(toastFactory, this.rootViewContainerRef.length, childInjector);
+            document.querySelector('body').style.overflow = 'hidden';
 
             this.container.instance.onExit().subscribe((res) => {
                 this.dispose();
@@ -63,6 +64,7 @@ export class ModalManagerService {
             this.container.instance.onSubscribeFromNavigationStart();
             this.container.destroy();
             this.container = null;
+            document.querySelector('body').style.overflow = '';
         }
     }
 }
