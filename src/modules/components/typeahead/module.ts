@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { TypeaheadComponent } from './component';
+import { TypeaheadComponent } from './typeahead.component';
 import { SingleSelectModule } from "../single-select/module";
 import { InputModule } from "../text-input/module";
 import { TypeaheadResultsComponent, HighlightPipe } from './results.component';

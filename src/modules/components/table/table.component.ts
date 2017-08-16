@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output,
+    ViewEncapsulation
+} from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
@@ -55,6 +57,8 @@ export class TableComponent implements OnInit {
     _arr: any[] = [];
     _columns: any[] = [];
     _sortInProgress: boolean;
+    hideCheckAll: boolean;
+    _columnsShowObj: any = {};
 
     @Output() onSortBy: EventEmitter<string> = new EventEmitter<string>();
     @Output() onCheckedAllItem: EventEmitter<any> = new EventEmitter<any>();
@@ -65,42 +69,50 @@ export class TableComponent implements OnInit {
     @Input() listData: any[] = [];
     @Input() all_check: boolean = true;
 
-    @Input() set columns(items) {
+    @Input()
+    set columns(items) {
+        const itemsCopy = items.map(el => Object.assign({}, el));
         if (!this._arr.length) {
-            this._columns = items;
+            this._columns = itemsCopy;
+            this._setColumns();
         } else {
-            this._sortHeaders(items);
+            this._sortHeaders(itemsCopy);
         }
     }
 
     _sortHeaders(items) {
-        let result = [];
-        this._arr.forEach((key) => {
-            let found = false;
-            items = items.filter((item) => {
-                if (!found && item.id == key) {
-                    result.push(item);
-                    found = true;
-                    return false;
-                } else
-                    return true;
+        this._sortInProgress = true;
+        setTimeout(() => {
+            let result = [];
+            this._arr.forEach((key) => {
+                let found = false;
+                items = items.filter((item) => {
+                    if (!found && item.id == key) {
+                        result.push(Object.assign({}, item));
+                        found = true;
+                        return false;
+                    } else
+                        return true;
+                });
             });
-        });
-
-        this._columns = result;
+            this._sortInProgress = false;
+            this._columns = result;
+            this._setColumns();
+        }, 100);
     }
 
-    get _columnsShowObj(): any {
-        const cols = {};
-        this._columns.forEach(el => cols[el.id] = el.checked);
-        return cols;
+    _setColumns() {
+        this._columnsShowObj = {};
+        const obj = {};
+        this._columns.forEach(el => obj[el.id] = el.checked);
+        this._columnsShowObj = obj;
     }
 
     addColumnsKey(key) {
         if (this._arr.indexOf(key) === -1) {
             this._arr = [].concat(this._arr, [key]);
             if (!this._sortInProgress)
-                setTimeout(() => this._sortHeaders(this._columns), 300);
+                this._sortHeaders(this._columns);
         }
     }
 

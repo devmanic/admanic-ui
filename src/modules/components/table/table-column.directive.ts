@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { TableComponent } from './table.component';
 
 @Directive({
@@ -9,6 +9,7 @@ import { TableComponent } from './table.component';
 })
 export class TableColumnComponent implements OnInit {
     @Input() admColumn: any;
+    isThead: boolean;
 
     get _hide(): boolean {
         if (!this.table._columnsShowObj.hasOwnProperty(this.admColumn))
@@ -16,10 +17,13 @@ export class TableColumnComponent implements OnInit {
         return this.table._columnsShowObj[this.admColumn] == false;
     }
 
-    constructor(private table: TableComponent) {
+    constructor(private table: TableComponent, el: ElementRef) {
+        this.isThead = el.nativeElement.tagName.toLowerCase() === 'th';
     }
 
     ngOnInit() {
-        this.table.addColumnsKey(this.admColumn);
+        if (!this.isThead) {
+            this.table.addColumnsKey(this.admColumn);
+        }
     }
 }
