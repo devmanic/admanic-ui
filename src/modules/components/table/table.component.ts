@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output,
+import {
+    Component, EventEmitter, Input, OnInit, Output,
     ViewEncapsulation
 } from '@angular/core';
 import * as _ from 'lodash';
@@ -17,7 +18,7 @@ import * as _ from 'lodash';
     template: `
         <thead>
         <tr class="table__name">
-            <th *ngIf="!hideCheckAll">
+            <th *ngIf="this.all_check !== null">
                 <div class="checkbox-table">
                     <adm-input-container>
                         <adm-checkbox
@@ -53,11 +54,10 @@ import * as _ from 'lodash';
 
     `
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
     _arr: any[] = [];
     _columns: any[] = [];
     _sortInProgress: boolean;
-    hideCheckAll: boolean;
     _columnsShowObj: any = {};
 
     @Output() onSortBy: EventEmitter<string> = new EventEmitter<string>();
@@ -141,11 +141,5 @@ export class TableComponent implements OnInit {
             }
         }
         return true;
-    }
-
-    constructor() {
-    }
-
-    ngOnInit() {
     }
 }
