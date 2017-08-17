@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ElementRef } from '@angular/core';
 import { Pipe, PipeTransform, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 
@@ -6,34 +6,42 @@ import { Pipe, PipeTransform, Output, EventEmitter, ChangeDetectionStrategy } fr
     selector: 'adm-typeahead-results',
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['../single-select/style.scss', './styles.scss'],
-    host:{
-        '(click)':'$event.stopPropagation()'
+    host: {
+        '(click)': '$event.stopPropagation()'
     },
     template: `
         <div class="adm-select__options">
             <ul class="adm-select__options__list">
-                <li 
-                    *ngFor="let item of results; let idx = index; trackBy: trackListByFn;" 
-                    [class.is__active]="idx === activeIdx"
-                    (click)="onItemClick(item);" 
-                    [innerHtml]="item | higlight:query"></li>
+                <li
+                        *ngFor="let item of results; let idx = index; trackBy: trackListByFn;"
+                        [class.is__active]="idx === activeIdx"
+                        (click)="onItemClick(item);"
+                        [innerHtml]="item | higlight:query"></li>
             </ul>
         </div>
     `
 })
 
-export class TypeaheadResultsComponent {
-    @Input() results:string[] = [];
-    @Input() query:string;
+export class TypeaheadResultsComponent implements OnInit {
+    @Input() results: string[] = [];
+    @Input() query: string;
     @Output('select') selectEvent = new EventEmitter();
     @Output('activeChange') activeChangeEvent = new EventEmitter();
 
     focusFirst = true;
     activeIdx = 0;
+    optionsListContainer: Element;
 
-    getActive() { return this.results[this.activeIdx]; }
+    getActive() {
+        return this.results[this.activeIdx];
+    }
+
     markActive(activeIdx: number) {
         this.activeIdx = activeIdx;
+    }
+
+    setScrollForList() {
+        this.optionsListContainer.scrollTop = this.activeIdx * this.optionsListContainer.querySelector(`li:nth-child(${this.activeIdx || 1})`).clientHeight;
     }
 
     next() {
@@ -42,6 +50,7 @@ export class TypeaheadResultsComponent {
         } else {
             this.activeIdx++;
         }
+        this.setScrollForList();
     }
 
     prev() {
@@ -52,14 +61,22 @@ export class TypeaheadResultsComponent {
         } else {
             this.activeIdx--;
         }
+        this.setScrollForList();
     }
 
-    trackListByFn(index: number, item:string) {
+    trackListByFn(index: number, item: string) {
         return item;
     }
 
-    onItemClick(item){
+    onItemClick(item) {
         this.selectEvent.emit(item);
+    }
+
+    constructor(private el: ElementRef) {
+    }
+
+    ngOnInit() {
+        this.optionsListContainer = this.el.nativeElement.querySelector('.adm-select__options__list');
     }
 
 }
@@ -70,7 +87,7 @@ export class TypeaheadResultsComponent {
 })
 
 export class HighlightPipe implements PipeTransform {
-    transform(value:string, query:string): any {
-        return value.replace(new RegExp(query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'gi'), str=> `<b>${str}</b>`);
+    transform(value: string, query: string): any {
+        return value.replace(new RegExp(query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'gi'), str => `<b>${str}</b>`);
     }
 }
