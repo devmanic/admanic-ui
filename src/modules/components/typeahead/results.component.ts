@@ -41,7 +41,10 @@ export class TypeaheadResultsComponent implements OnInit {
     }
 
     setScrollForList() {
-        this.optionsListContainer.scrollTop = this.activeIdx * this.optionsListContainer.querySelector(`li:nth-child(${this.activeIdx || 1})`).clientHeight;
+        const arr = Array.from(this.optionsListContainer.querySelectorAll('li')).map(el => el.clientHeight);
+        arr.length = this.activeIdx;
+        const size = arr.length ? arr.reduce((p, c) => p + c) : 0;
+        this.optionsListContainer.scrollTop = size;
     }
 
     next() {

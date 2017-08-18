@@ -60,7 +60,9 @@ export const newEntityLen: number = 3;
         '[class.invalid]': 'invalidQueryString',
         '[class.is-active]': 'isOpen',
         '[class.is-drop-up]': 'showToTop',
-        '[class.pending-data-load]': '!_dataLoaded'
+        '[class.pending-data-load]': '!_dataLoaded',
+        '[class.has_value]': '!!value',
+        '[class.without_value]': '!value'
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
@@ -224,7 +226,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
             this.value = value;
-            // console.log('---- this._options ----', this._options);
             let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
             let selectedOption: OptionModel = <OptionModel>array.filter((option: OptionModel) => value == option.value)[0];
             this.selectedItem = selectedOption;
