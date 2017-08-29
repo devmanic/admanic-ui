@@ -219,6 +219,16 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.selected.emit(this.selectedItem);
     }
 
+    private clearValue() {
+        this.queryStr.setValue('');
+        this.calculateTextareaHeight();
+        this.value = null;
+        this.selectedItem = null;
+        this._options = this._options.map((option: OptionModel) => {
+            return Object.assign(option, {selected: false, hidden: false});
+        });
+    }
+
     writeValue(value, isSelect = false) {
         if (!this._options) {
             return;
@@ -227,11 +237,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         if (value || value === null || value == '0') {
             this.value = value;
             let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
-            let selectedOption: OptionModel = <OptionModel>array.filter((option: OptionModel) => value == option.value)[0];
+            let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
             this.selectedItem = selectedOption;
 
-            if (!selectedOption || !selectedOption.label || !selectedOption.value) {
-                this.queryStr.setValue('');
+            if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
+                this.clearValue();
             } else {
                 let label = this.trimNewItemString(selectedOption.label);
                 this.queryStr.setValue(label);
@@ -242,13 +252,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             }
             this.calculateTextareaHeight();
         } else {
-            this.queryStr.setValue('');
-            this.calculateTextareaHeight();
-            this.value = null;
-            this.selectedItem = null;
-            this._options = this._options.map((option: OptionModel) => {
-                return Object.assign(option, {selected: false, hidden: false});
-            });
+            this.clearValue();
         }
         this.subscribeToQueryStringChange();
     }
