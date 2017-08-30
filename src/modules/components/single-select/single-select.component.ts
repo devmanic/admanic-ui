@@ -219,16 +219,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.selected.emit(this.selectedItem);
     }
 
-    private clearValue() {
-        this.queryStr.setValue('');
-        this.calculateTextareaHeight();
-        this.value = null;
-        this.selectedItem = null;
-        this._options = this._options.map((option: OptionModel) => {
-            return Object.assign(option, {selected: false, hidden: false});
-        });
-    }
-
     writeValue(value, isSelect = false) {
         if (!this._options) {
             return;
@@ -241,7 +231,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             this.selectedItem = selectedOption;
 
             if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
-                this.clearValue();
+                this.queryStr.setValue('');
             } else {
                 let label = this.trimNewItemString(selectedOption.label);
                 this.queryStr.setValue(label);
@@ -252,7 +242,13 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             }
             this.calculateTextareaHeight();
         } else {
-            this.clearValue();
+            this.queryStr.setValue('');
+            this.calculateTextareaHeight();
+            this.value = null;
+            this.selectedItem = null;
+            this._options = this._options.map((option: OptionModel) => {
+                return Object.assign(option, {selected: false, hidden: false});
+            });
         }
         this.subscribeToQueryStringChange();
     }
