@@ -79,6 +79,9 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     latestQuery: string = '';
     _viewPath: string;
 
+    _totalItemsInAjaxResponse: string | number;
+    _currentAjaxPage: number = 1;
+
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
     @Input() allowClear: boolean = false;
@@ -297,11 +300,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options = res.map((el: any) => ({
+                    this._options = res.data.map((el: any) => ({
                         label: el.title || el.text || el.label || el.id,
                         value: el.id,
                         selected: el.id == this.value
                     }));
+                    this._totalItemsInAjaxResponse = res.total_rows;
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
                     if (selected) {
                         this.selectedItem = selected;
@@ -316,13 +320,18 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }, 300);
     }
 
-    sendAjax(skipQuery: boolean = false) {
+    sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100) {
+
         this.pendingRequest = true;
         this._dataLoaded = false;
+        this._currentAjaxPage = page;
+
         let params = {
+            query: skipQuery ? this.latestQuery : this.queryStr.value,
+            limit,
+            page: this._currentAjaxPage,
             ...this.baseAjaxOptions,
-            ...this.ajax.options,
-            query: skipQuery ? this.latestQuery : this.queryStr.value
+            ...this.ajax.options
         };
 
         // if (skipQuery) {
@@ -330,12 +339,37 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         // }
 
         return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
-            .map((res: Response) => res.json().data)
+            .map((res: Response) => res.json())
             .catch((err, caught) => this.errorHandler.handle(err, caught))
             .finally(() => {
                 this.pendingRequest = false;
                 this._dataLoaded = true;
             });
+    }
+
+    ajaxLoadMoreItems(e: Event) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        clearTimeout(this.ajaxTimeout);
+        this.ajaxTimeout = setTimeout(() => {
+            this.sendAjax(false, this._currentAjaxPage + 1).toPromise().then((res) => {
+                this._totalItemsInAjaxResponse = res.total_rows;
+                
+                this._options = [].concat(this._options, res.data.map((el: any) => ({
+                    label: el.title || el.text || el.label || el.id,
+                    value: el.id,
+                    selected: el.id == this.value
+                })));
+
+
+                const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
+                if (selected) {
+                    this.selectedItem = selected;
+                }
+            });
+        }, 100);
+
     }
 
     isElSelected(item: OptionModel): boolean {

@@ -95,6 +95,16 @@
     </ul>
     <!-- / clear selection btn -->
 
+    <!-- load more button -->
+    <button *ngIf="_totalItemsInAjaxResponse > _options.length && !nothingNotFound && !pendingRequest"
+            class="adm-select__add-new-btn"
+            (click)="ajaxLoadMoreItems($event);"
+            type="button">
+        <i class="material-icons">cached</i> Load more items <small>({{_options.length}} from {{_totalItemsInAjaxResponse}}
+        shown)</small>
+    </button>
+    <!-- /load more button -->
+
     <!-- add new btn -->
     <button *ngIf="showAddNewBtn" class="adm-select__add-new-btn" type="button" (click)="onAddNewBtnClick($event)">
         <i class="material-icons">add</i> Add new
