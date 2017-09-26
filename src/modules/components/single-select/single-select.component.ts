@@ -38,6 +38,7 @@ export interface OptionWithGroupModel {
 export interface AjaxParams {
     path: string;
     options?: ListRequest;
+    fullpath?: boolean
 }
 
 export const newEntityLen: number = 3;
@@ -328,7 +329,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         //     delete params.query;
         // }
 
-        return this.http.get(this.server + `/${this.ajax.path}/list` + ListRequestService.parseRequestObject(params))
+        return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
             .map((res: Response) => res.json().data)
             .catch((err, caught) => this.errorHandler.handle(err, caught))
             .finally(() => {
