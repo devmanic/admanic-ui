@@ -81,6 +81,8 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     _totalItemsInAjaxResponse: string | number;
     _currentAjaxPage: number = 1;
+    _ajax: AjaxParams = null;
+
 
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
@@ -88,13 +90,23 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Input() allowCreateEntity: boolean = false;
     @Input() disabled: boolean = false;
     @Input() entityName: string = 'item';
-    @Input() ajax: AjaxParams = null;
     @Input() showAddNewBtn: boolean = false;
+
+    @Input()
+    set ajax(params: AjaxParams) {
+        this._ajax = params;
+        this.queryStr.setValue('');
+    }
+
+    get ajax(): AjaxParams {
+        return this._ajax;
+    }
+
 
     @Input()
     set viewPath(path) {
         this._viewPath = `${location.origin}/${path}`;
-    };
+    }
 
     get options() {
         return this._options;
@@ -355,7 +367,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         this.ajaxTimeout = setTimeout(() => {
             this.sendAjax(false, this._currentAjaxPage + 1).toPromise().then((res) => {
                 this._totalItemsInAjaxResponse = res.total_rows;
-                
+
                 this._options = [].concat(this._options, res.data.map((el: any) => ({
                     label: el.title || el.text || el.label || el.id,
                     value: el.id,
