@@ -79,7 +79,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     latestQuery: string = '';
     _viewPath: string;
 
-    _totalItemsInAjaxResponse: string | number;
+    _totalItemsInAjaxResponse: number;
     _currentAjaxPage: number = 1;
     _ajax: AjaxParams = null;
 
@@ -96,6 +96,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     set ajax(params: AjaxParams) {
         this._ajax = params;
         this.queryStr.setValue('');
+        this._options = [];
     }
 
     get ajax(): AjaxParams {
@@ -147,6 +148,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Output() hide = new EventEmitter();
     @Output() selected = new EventEmitter();
     @Output() onAddClick = new EventEmitter();
+    @Output() onAjaxResponceRecive = new EventEmitter<{ total_rows: number }>();
 
     queryStr: FormControl = new FormControl(null, [
         Validators.minLength(newEntityLen),
@@ -166,7 +168,8 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     ajaxTimeout: any = null;
 
     baseAjaxOptions: ListRequest = {
-        filter: 'active'
+        filter: 'active',
+        is_select: 1
     };
 
     selectedItem: OptionModel = null;
@@ -318,6 +321,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                         selected: el.id == this.value
                     }));
                     this._totalItemsInAjaxResponse = res.total_rows;
+                    this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
                     if (selected) {
                         this.selectedItem = selected;
