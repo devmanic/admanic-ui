@@ -10,6 +10,9 @@ export class DynamicTextAreaDirective implements OnDestroy, AfterViewInit {
     _keyUpSubscriber: Subscription;
 
     constructor(private el: ElementRef) {
+        el.nativeElement.style.height = 'auto';
+        el.nativeElement.style.height = `${el.nativeElement.scrollHeight + 2}px`;
+
         let source = Observable.fromEvent(el.nativeElement, 'keyup');
         el.nativeElement.style.resize = 'none';
         el.nativeElement.style.overflow = 'hidden';
