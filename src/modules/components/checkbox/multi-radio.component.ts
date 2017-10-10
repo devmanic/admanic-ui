@@ -21,10 +21,11 @@ export interface option {
     styleUrls: ['./multi-selector.style.scss'],
     template: `
         <div [formGroup]="_form" *ngIf="_options.length" class="adm-multi-ctrl-wrap">
+            
             <adm-radio
                     formControlName="model"
                     [value]="item.value"
-                    [checked]="item.value == _form.get('model').value"
+                    [checked]="item.value == _value"
                     *ngFor="let item of _options">
                 {{item.label}}
             </adm-radio>

@@ -115,6 +115,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     @Input()
     set options(options: Array<OptionModel | OptionWithGroupModel>) {
+        // console.log('set options', options);
         if (options && Array.isArray(options)) {
             this._options = this.value ?
                 options.map((el: OptionModel) => Object.assign({}, el, {selected: el.value == this.value})) :
