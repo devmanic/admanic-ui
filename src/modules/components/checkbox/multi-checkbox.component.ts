@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, forwardRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _ from 'lodash';
+import { assign } from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface option {
@@ -16,7 +16,7 @@ export interface option {
         useExisting: forwardRef(() => MultiCheckboxComponent),
         multi: true
     }],
-    styleUrls:['./multi-selector.style.scss'],
+    styleUrls: ['./multi-selector.style.scss'],
     host: {
         'class': 'adm-multi-checkbox',
         '[class.is-inline]': 'inline'
@@ -56,7 +56,7 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
 
         this._options.forEach((el: option) => {
             this._arr.push(
-                _.assign(new FormControl(''), {param: el})
+                assign(new FormControl(''), {param: el})
             );
         });
     }

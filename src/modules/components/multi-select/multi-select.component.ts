@@ -120,7 +120,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this._isHideSelected = this._params.hideSelected;
         }, 1);
 
-        if (this._selectEl) {
+        if (this._selectEl && !!$().select2) {
             this._selectEl.select2(this._params);
         }
     };

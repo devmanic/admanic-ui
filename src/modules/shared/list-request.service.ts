@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { isNil, isArray } from 'lodash';
 import { Injectable } from '@angular/core';
 import { ListRequest } from './list-request.model';
 
@@ -19,12 +19,12 @@ export class ListRequestService {
 
     private static parse(requestObj) {
         for (let keyObj in requestObj) {
-            if (!_.isNil(requestObj[keyObj]) && requestObj[keyObj] !== '') {
-                if (_.isArray(requestObj[keyObj])) {
+            if (!isNil(requestObj[keyObj]) && requestObj[keyObj] !== '') {
+                if (isArray(requestObj[keyObj])) {
                     if (requestObj[keyObj].length > 0) {
                         let pairs = [];
                         for (let key in requestObj[keyObj]) {
-                            if (requestObj[keyObj].hasOwnProperty(key) && !_.isNil(requestObj[keyObj][key])) {
+                            if (requestObj[keyObj].hasOwnProperty(key) && !isNil(requestObj[keyObj][key])) {
                                 pairs.push(keyObj + '[]' + '=' + encodeURIComponent(requestObj[keyObj][key]));
                             }
                         }

@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { merge, toNumber, isEmpty, find, isBoolean } from 'lodash';
 import { ValidatorFn, AbstractControl } from '@angular/forms';
 import { Injectable } from '@angular/core';
 
@@ -8,7 +8,7 @@ export class CustomValidators {
     private static patternIp6 = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
 
     public static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
-        let config = _.merge({
+        let config = merge({
             required: 'Required',
             minlength: `Minimum length ${validatorValue.requiredLength}`,
             maxlength: `Maximum length ${validatorValue.requiredLength}`,
@@ -36,7 +36,7 @@ export class CustomValidators {
             if (!(control.dirty || control.touched)) {
                 return null;
             } else {
-                return !_.isEmpty(control.value) ? null : {isEmptyPattern: false};
+                return !isEmpty(control.value) ? null : {isEmptyPattern: false};
             }
         };
     }
@@ -79,9 +79,9 @@ export class CustomValidators {
             if (!(control.dirty || control.touched) || !control.value) {
                 return null;
             } else {
-                if (_.toNumber(control.value)) {
+                if (toNumber(control.value)) {
                     if (isPositive) {
-                        if (_.toNumber(control.value) > 0) {
+                        if (toNumber(control.value) > 0) {
                             return null;
                         } else {
                             return {positiveNumberPattern: false};
@@ -144,7 +144,7 @@ export class CustomValidators {
             if (!(control.dirty || control.touched)) {
                 return null;
             } else {
-                if (_.find(control.controls, (item: any) => !(item.value || _.isBoolean(item.value)))) {
+                if (find(control.controls, (item: any) => !(item.value || isBoolean(item.value)))) {
                     return {allFill: false};
                 } else {
                     return null;
@@ -160,7 +160,7 @@ export class CustomValidators {
             } else {
 
                 let condition_id = control.controls['condition_id'];
-                if (!(condition_id.value || _.isBoolean(condition_id.value))) {
+                if (!(condition_id.value || isBoolean(condition_id.value))) {
                     return {nT: false};
                 }
 
@@ -168,10 +168,10 @@ export class CustomValidators {
                 let entity_type = control.controls['entity_type'];
 
                 if (control.controls['nestedTargeting'].length > 0 && control.controls['check_entity'].value) {
-                    if (!(entity_id.value || _.isBoolean(entity_id.value))) {
+                    if (!(entity_id.value || isBoolean(entity_id.value))) {
                         return {nT: false};
                     }
-                    if (!(entity_type.value || _.isBoolean(entity_type.value))) {
+                    if (!(entity_type.value || isBoolean(entity_type.value))) {
                         return {nT: false};
                     }
                 }
@@ -186,11 +186,11 @@ export class CustomValidators {
             if (!(control.dirty || control.touched)) {
                 return null;
             } else {
-                let allRequiredCond = _.find(control.controls, (item: any) => {
-                    return !(item.value || _.isBoolean(item.value));
+                let allRequiredCond = find(control.controls, (item: any) => {
+                    return !(item.value || isBoolean(item.value));
                 });
 
-                let allFieldsEmpty = _.filter(control.controls, (item: any) => {
+                let allFieldsEmpty = control.controls.filter((item: any) => {
                     return !item.value || item._skipValidation;
                 }).length === Object.keys(control.controls).length;
 
@@ -240,8 +240,8 @@ export class CustomValidators {
             if (!(control.dirty || control.touched) || !control.value) {
                 return null;
             } else {
-                if (_.toNumber(control.value)) {
-                    if (_.toNumber(control.value) <= 100) {
+                if (toNumber(control.value)) {
+                    if (toNumber(control.value) <= 100) {
                         return null;
                     } else {
                         return {max100Number: false};
@@ -258,9 +258,9 @@ export class CustomValidators {
             if (!(control.dirty || control.touched) || !control.value) {
                 return null;
             } else {
-                if (_.toNumber(control.value)) {
+                if (toNumber(control.value)) {
                     if (isPositive) {
-                        if (_.toNumber(control.value) > 0) {
+                        if (toNumber(control.value) > 0) {
                             if (/^[1-9]\d*(,\d+)?$/.test(control.value)) {
                                 return null;
                             } else {
@@ -282,7 +282,7 @@ export class CustomValidators {
     public static urlValidator(): ValidatorFn {
         let pattern = /^(http|https):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(?::\d{1,5})?(?:$|[?\/#])?(?:$|[{}]*)/i;
         return (control: AbstractControl): { [key: string]: any } => {
-            if (_.isEmpty(control.value)) {
+            if (isEmpty(control.value)) {
                 return null;
             }
             if (!(control.dirty || control.touched)) {
