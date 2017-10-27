@@ -32,13 +32,13 @@
     <!-- / toggle button -->
 
     <!-- view link -->
-    <ng-template [ngIf]="_viewPath && value">
+    <template [ngIf]="_viewPath && value">
         <div class="adm-select__view-item">
             <a class="adm-select__view-item__btn" target="_blank" href="{{_viewPath}}/{{value}}">
                 View <i class="material-icons">launch</i>
             </a>
         </div>
-    </ng-template>
+    </template>
     <!-- /view link -->
 </div>
 <!-- / search input -->
@@ -48,25 +48,25 @@
     <!-- lists results -->
     <ul class="adm-select__options__list">
         <!-- template for list without groups -->
-        <ng-template [ngIf]="!hasGroups">
+        <template [ngIf]="!hasGroups">
             <li *ngFor="let item of _options; trackBy: trackListByFn;"
                 [ngClass]="{'hidden':item.hidden, 'is-selected':item.selected}"
                 (click)="onSelect(item.value)">{{item.label}}
             </li>
-        </ng-template>
+        </template>
         <!-- / template for list without groups -->
 
 
         <!-- template for list with groups -->
-        <ng-template [ngIf]="hasGroups">
-            <ng-template ngFor let-group [ngForOf]="_options" let-i="index">
+        <template [ngIf]="hasGroups">
+            <template ngFor let-group [ngForOf]="_options" let-i="index">
                 <p [ngClass]="{'hidden':group.hidden}">{{group.name}}</p>
                 <li *ngFor="let item of group?.values; trackBy: trackListByFn;"
                     [ngClass]="{'hidden':item.hidden, 'is-selected':item.selected}"
                     (click)="onSelect(item.value)">{{item.label}}
                 </li>
-            </ng-template>
-        </ng-template>
+            </template>
+        </template>
         <!-- / template for list with groups -->
 
         <!-- results el -->

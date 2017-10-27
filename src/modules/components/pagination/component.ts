@@ -13,10 +13,10 @@ import {
     },
     styleUrls: ['./style.scss'],
     template: `
-        <ng-template [ngIf]="_totalBtns && _totalBtns > 1">
+        <template [ngIf]="_totalBtns && _totalBtns > 1">
             <table class="adm-pagination__layout">
                 <tr>
-                    <ng-template [ngIf]="!showFullPagination && showDropdown">
+                    <template [ngIf]="!showFullPagination && showDropdown">
                         <td>
                             Go to page:
                         </td>
@@ -30,37 +30,37 @@ import {
                         <!--<td style="padding-right:15px;">-->
                             <!--of {{this._totalBtns}}-->
                         <!--</td>-->
-                    </ng-template>
+                    </template>
                     <td>
                         <ul class="adm-pagination__list">
-                            <ng-template [ngIf]="showPrevDots && !showFullPagination">
+                            <template [ngIf]="showPrevDots && !showFullPagination">
                                 <li>
                                     <button (click)="setCurrent(1)" [disabled]="_current == 1">{{titles.first}}
                                     </button>
                                 </li>
                                 <li>...</li>
-                            </ng-template>
-                            <ng-template ngFor let-num [ngForOf]="_range" let-i="index" [ngForTrackBy]="trackByFn">
+                            </template>
+                            <template ngFor let-num [ngForOf]="_range" let-i="index" [ngForTrackBy]="trackByFn">
                                 <li *ngIf="isShowNum(num.value) || showFullPagination">
                                     <button [class.is__active]="num.value == _current"
                                             (click)="setCurrent(num.value)">
                                         {{num.label}}
                                     </button>
                                 </li>
-                            </ng-template>
-                            <ng-template [ngIf]="showNextDots && !showFullPagination">
+                            </template>
+                            <template [ngIf]="showNextDots && !showFullPagination">
                                 <li>...</li>
                                 <li>
                                     <button (click)="setCurrent(_totalBtns)" [disabled]="_current == _totalBtns">
                                         {{titles.last}}
                                     </button>
                                 </li>
-                            </ng-template>
+                            </template>
                         </ul>
                     </td>
                 </tr>
             </table>
-        </ng-template>
+        </template>
     `
 })
 export class PaginationComponent implements OnInit {

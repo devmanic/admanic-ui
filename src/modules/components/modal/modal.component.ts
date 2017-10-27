@@ -24,13 +24,13 @@ import { Subscription } from 'rxjs/Subscription';
         '(click)': 'onCancelClick($event)'
     },
     template: `
-        <ng-template [ngIf]="modal">
+        <template [ngIf]="modal">
             <div class="adm-modal__wrap" (click)="preventPropagation($event);">
                 <div class="adm-modal"
                      [ngClass]="{'is__success':iconTypeExist && modal.type === 'success', 'is__info':iconTypeExist && modal.type === 'info', 'is__warning':iconTypeExist && modal.type === 'warning', 'is__error':iconTypeExist && modal.type === 'error', 'without-type':!modal.type || !iconTypeExist, 'with-type':modal.type && iconTypeExist}">
-                    <ng-template [ngIf]="modal.title && modal.title.length">
+                    <template [ngIf]="modal.title && modal.title.length">
                         <div class="adm-modal__header">
-                            <ng-template [ngIf]="!!modal.type && iconTypeExist">
+                            <template [ngIf]="!!modal.type && iconTypeExist">
                                 <div class="adm-modal-icon is__success" *ngIf="modal.type === 'success'">
                                     <div class="swal2-success-circular-line-left"></div>
                                     <span class="swal2-success-line-tip swal2-animate-success-line-tip"></span> <span
@@ -47,25 +47,25 @@ import { Subscription } from 'rxjs/Subscription';
                                         <span class="swal2-x-mark-line-right"></span>
                                     </span>
                                 </div>
-                            </ng-template>
+                            </template>
                             <div class="adm-modal__header__text">
                                 {{ modal.title }}
                                 <button (click)="onCancelClick($event);" class="adm-modal__close-btn"><i
                                         class="material-icons">close</i></button>
                             </div>
                         </div>
-                    </ng-template>
-                    <ng-template [ngIf]="modal.content">
+                    </template>
+                    <template [ngIf]="modal.content">
                         <div class="adm-modal__content">
-                            <ng-template [ngIf]="modal.content.length">
+                            <template [ngIf]="modal.content.length">
                                 <div [innerHtml]="modal.content"></div>
-                            </ng-template>
-                            <ng-template [ngIf]="renderTemplate">
+                            </template>
+                            <template [ngIf]="renderTemplate">
                                 <adm-dynamic-render-component [template]="modal.content"></adm-dynamic-render-component>
-                            </ng-template>
+                            </template>
                         </div>
-                    </ng-template>
-                    <ng-template [ngIf]="!hideActionBar">
+                    </template>
+                    <template [ngIf]="!hideActionBar">
                         <div class="adm-modal__footer">
                             <button class="adm-modal__btn is__negative" *ngIf="modal.btns.negative"
                                     (click)="onCancelClick($event);">{{ modal.btns.negative }}
@@ -74,10 +74,10 @@ import { Subscription } from 'rxjs/Subscription';
                                     (click)="onApplyClick($event);">{{ modal.btns.positive }}
                             </button>
                         </div>
-                    </ng-template>
+                    </template>
                 </div>
             </div>
-        </ng-template>
+        </template>
     `
 })
 
