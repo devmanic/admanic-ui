@@ -91,6 +91,7 @@ export class TypeaheadResultsComponent implements OnInit {
 
 export class HighlightPipe implements PipeTransform {
     transform(value: string, query: string): any {
+        if (!value || !query) return '';
         return value.replace(new RegExp(query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'), 'gi'), str => `<b>${str}</b>`);
     }
 }

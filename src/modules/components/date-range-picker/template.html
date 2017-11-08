@@ -28,7 +28,7 @@
                             (mouseleave)="isHoveredDay = null;"
                             (click)="setModel(day);"
                             [ngClass]="">
-                            <template [ngIf]="day != 0">{{ day.getDate() }}</template>
+                            <ng-template [ngIf]="day != 0">{{ day.getDate() }}</ng-template>
                         </td>
                     </tr>
                 </table>

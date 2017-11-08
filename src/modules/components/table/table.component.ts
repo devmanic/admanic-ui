@@ -34,7 +34,7 @@ import { every } from 'lodash';
                 [admColumn]="item.id"
                 (click)="item.sortable ? columnClickHandler(item.id) : null">
                 <span class="table-title">{{item.name}}
-                    <template [ngIf]="item.sortable">
+                    <ng-template [ngIf]="item.sortable">
                         <i class="material-icons"
                            attr.data-arrow_downward="{{activeSortByField === item.id}}"
                            [hidden]="activeSortByField !== item.id || activeSortOrder !== 1">
@@ -44,7 +44,7 @@ import { every } from 'lodash';
                            [hidden]="activeSortByField !== item.id || activeSortOrder !== 0">
                             arrow_upward
                         </i>
-                    </template>
+                    </ng-template>
                 </span>
             </th>
         </tr>
