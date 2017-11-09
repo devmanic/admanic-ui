@@ -38,7 +38,8 @@ export interface OptionWithGroupModel {
 export interface AjaxParams {
     path: string;
     options?: ListRequest;
-    fullpath?: boolean
+    fullpath?: boolean,
+    mapperFn?
 }
 
 export const newEntityLen: number = 3;
@@ -316,11 +317,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options = res.data.map((el: any) => ({
-                        label: el.title || el.text || el.label || el.url || el.id,
-                        value: el.id,
-                        selected: el.id == this.value
-                    }));
+                    this._options = this.ajaxResponseMapper(res.data);
                     this._totalItemsInAjaxResponse = res.total_rows;
                     this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
@@ -364,6 +361,18 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             });
     }
 
+    ajaxResponseMapper(arr: any[]): OptionModel[] {
+        if (!arr || !Array.isArray(arr)) {
+            return [];
+        }
+
+        return arr.map(this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function' ? this.ajax.mapperFn : (el: any) => ({
+            label: el.title || el.text || el.label || el.url || el.id,
+            value: el.id,
+            selected: el.id == this.value
+        }));
+    }
+
     ajaxLoadMoreItems(e: Event) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -373,12 +382,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             this.sendAjax(false, this._currentAjaxPage + 1).toPromise().then((res) => {
                 this._totalItemsInAjaxResponse = res.total_rows;
 
-                this._options = [].concat(this._options, res.data.map((el: any) => ({
-                    label: el.title || el.text || el.label || el.url || el.id,
-                    value: el.id,
-                    selected: el.id == this.value
-                })));
-
+                this._options = [].concat(this._options, this.ajaxResponseMapper(res.data));
 
                 const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
                 if (selected) {
@@ -503,7 +507,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     trimNewItemString(str: string): string {
         if (str !== null) {
-            return str.split(this.newItemPostfix)[0].trim();
+            return `${str}`.split(this.newItemPostfix)[0].trim();
         }
         return '';
     }

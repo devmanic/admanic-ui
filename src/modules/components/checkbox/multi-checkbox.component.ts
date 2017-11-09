@@ -47,18 +47,22 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
 
     @Input()
     set options(opts: any[]) {
-        if (typeof opts[0] === 'string') {
-            this._options = opts.map((el: string) => ({
-                value: el,
-                label: el
-            }));
-        }
+        if (!!opts && Array.isArray(opts)) {
+            if (opts.every(el => typeof el === 'string')) {
+                this._options = opts.map((el: string) => ({
+                    value: el,
+                    label: el
+                }));
+            } else {
+                this._options = opts.map(el => ({label: `${el.label}`, value: `${el.value}`}));
+            }
 
-        this._options.forEach((el: option) => {
-            this._arr.push(
-                assign(new FormControl(''), {param: el})
-            );
-        });
+            this._options.forEach((el: option) => {
+                this._arr.push(
+                    assign(new FormControl(''), {param: el})
+                );
+            });
+        }
     }
 
     get arr(): any[] {

@@ -21,7 +21,6 @@ export interface option {
     styleUrls: ['./multi-selector.style.scss'],
     template: `
         <div [formGroup]="_form" *ngIf="_options.length" class="adm-multi-ctrl-wrap">
-            
             <adm-radio
                     formControlName="model"
                     [value]="item.value"
@@ -45,33 +44,39 @@ export class MultiRadioComponent implements OnDestroy, AfterViewInit {
 
     @Input()
     set options(opts: any[]) {
-        if (Array.isArray(opts)) {
-            if (typeof opts[0] === 'string') {
+        if (!!opts && Array.isArray(opts)) {
+            if (opts.every(el => typeof el === 'string')) {
                 this._options = opts.map((el: string) => ({
                     value: el,
                     label: el
                 }));
             } else {
-                this._options = opts;
+                this._options = opts.map(el => ({label: `${el.label}`, value: `${el.value}`}));
             }
         }
     }
 
-    ngAfterViewInit() {
-        this._model.setValue(this._value);
+    constructor() {
         this._subscribers.push(
-            this._model.valueChanges.filter(val => !!val).subscribe((value) => {
-                this.writeValue(value != this._value ? value : null);
+            this._model.valueChanges.filter(val => !!val && val != this._value).subscribe((value) => {
+                this.writeValue(value);
             })
         );
+    }
+
+    ngAfterViewInit() {
+
     }
 
     writeValue(val: any) {
         this._value = val;
         this.onChange(this._value);
         this.onTouched();
+
         if (!this._value) {
             this._form.get('model').setValue(null);
+        } else if (!this._model.value || this._model.value != this._value) {
+            this._form.get('model').setValue(this._value);
         }
     }
 
