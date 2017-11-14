@@ -39,7 +39,8 @@ export interface AjaxParams {
     path: string;
     options?: ListRequest;
     fullpath?: boolean,
-    mapperFn?
+    mapperFn?,
+    arrayFormatFn?
 }
 
 export const newEntityLen: number = 3;
@@ -317,7 +318,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options = this.ajaxResponseMapper(res.data);
+                    this._options =  this.ajaxResponseMapper(res.data);
                     this._totalItemsInAjaxResponse = res.total_rows;
                     this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
@@ -364,6 +365,13 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     ajaxResponseMapper(arr: any[]): OptionModel[] {
         if (!arr || !Array.isArray(arr)) {
             return [];
+        }
+
+        if(this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function'){
+            arr = this.ajax.arrayFormatFn(arr);
+            if (!arr || !Array.isArray(arr)) {
+                return [];
+            }
         }
 
         return arr.map(this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function' ? this.ajax.mapperFn : (el: any) => ({
