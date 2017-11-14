@@ -55,7 +55,7 @@ export class ModalManagerService {
             });
 
             this.container.instance.showModal(obj);
-        }, 300);
+        }, 0);
 
     }
 
