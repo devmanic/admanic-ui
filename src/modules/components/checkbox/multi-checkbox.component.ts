@@ -47,18 +47,22 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
 
     @Input()
     set options(opts: any[]) {
-        if (typeof opts[0] === 'string') {
-            this._options = opts.map((el: string) => ({
-                value: el,
-                label: el
-            }));
-        }
+        if (!!opts && Array.isArray(opts)) {
+            if (opts.every(el => typeof el === 'string')) {
+                this._options = opts.map((el: string) => ({
+                    value: el,
+                    label: el
+                }));
+            } else {
+                this._options = opts.map(el => ({label: `${el.label}`, value: `${el.value}`}));
+            }
 
-        this._options.forEach((el: option) => {
-            this._arr.push(
-                assign(new FormControl(''), {param: el})
-            );
-        });
+            this._options.forEach((el: option) => {
+                this._arr.push(
+                    assign(new FormControl(''), {param: el})
+                );
+            });
+        }
     }
 
     get arr(): any[] {
@@ -66,10 +70,6 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this._value.forEach((el: string) => {
-            let item: FormControl = this.arr.filter(item => item.param.value === el)[0];
-            if (!!item) item.setValue(el);
-        });
         this._subscribers.push(
             this._arr.valueChanges.subscribe((value: string[]) => {
                 this.writeValue(value.filter(el => !!el));
@@ -79,6 +79,12 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
 
     writeValue(val: any) {
         this._value = val;
+        this._value.forEach((el: string) => {
+            let item: FormControl = this.arr.find(item => item.param.value === el);
+            if (!!item && item.value !== el) {
+                item.setValue(el);
+            }
+        });
         this.onChange(this._value);
         this.onTouched();
     }
