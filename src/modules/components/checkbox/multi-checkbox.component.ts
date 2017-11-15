@@ -70,10 +70,6 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this._value.forEach((el: string) => {
-            let item: FormControl = this.arr.filter(item => item.param.value === el)[0];
-            if (!!item) item.setValue(el);
-        });
         this._subscribers.push(
             this._arr.valueChanges.subscribe((value: string[]) => {
                 this.writeValue(value.filter(el => !!el));
@@ -83,6 +79,12 @@ export class MultiCheckboxComponent implements OnDestroy, AfterViewInit {
 
     writeValue(val: any) {
         this._value = val;
+        this._value.forEach((el: string) => {
+            let item: FormControl = this.arr.find(item => item.param.value === el);
+            if (!!item && item.value !== el) {
+                item.setValue(el);
+            }
+        });
         this.onChange(this._value);
         this.onTouched();
     }
