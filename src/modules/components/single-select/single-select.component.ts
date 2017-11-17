@@ -117,13 +117,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     @Input()
     set options(options: Array<OptionModel | OptionWithGroupModel>) {
-        // console.log('set options', options);
         if (options && Array.isArray(options)) {
             this._options = this.value ?
                 options.map((el: OptionModel) => Object.assign({}, el, {selected: el.value == this.value})) :
                 options;
 
-            let selected = this._options.filter((el: OptionModel) => el.selected)[0];
+            let selected = this._options.find((el: OptionModel) => el.selected);
             if (selected)
                 this.writeValue(selected['value']);
 
@@ -242,9 +241,10 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     writeValue(value, isSelect = false) {
-        if (!this._options) {
+        if (!this._options || value === this.value) {
             return;
         }
+
         this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
             this.value = value;
@@ -318,7 +318,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options =  this.ajaxResponseMapper(res.data);
+                    this._options = this.ajaxResponseMapper(res.data);
                     this._totalItemsInAjaxResponse = res.total_rows;
                     this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
@@ -367,7 +367,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             return [];
         }
 
-        if(this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function'){
+        if (this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function') {
             arr = this.ajax.arrayFormatFn(arr);
             if (!arr || !Array.isArray(arr)) {
                 return [];
