@@ -12,6 +12,7 @@ export class CustomValidators {
             required: 'Required',
             minlength: `Minimum length ${validatorValue.requiredLength}`,
             maxlength: `Maximum length ${validatorValue.requiredLength}`,
+            max: `Maximum count is ${validatorValue.max}`,
             isEmptyPattern: 'Can`t be empty',
             stringPattern: 'Can contain only letters, numbers, spaces and `, . / * _ -` symbols.',
             numberPattern: 'Can contain only positive numbers',

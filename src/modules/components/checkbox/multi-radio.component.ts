@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, forwardRef, Input, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 export interface option {
     value: string;
@@ -24,7 +26,7 @@ export interface option {
             <adm-radio
                     formControlName="model"
                     [value]="item.value"
-                    [checked]="item.value == _value"
+                    [checked]="item.value == (_value | async)"
                     *ngFor="let item of _options">
                 {{item.label}}
             </adm-radio>
@@ -33,7 +35,7 @@ export interface option {
 })
 export class MultiRadioComponent implements OnDestroy, AfterViewInit {
     _options: option[] = [];
-    _value: string;
+    _value: BehaviorSubject<any> = new BehaviorSubject(null);
     _model: FormControl = new FormControl(null);
     _form: FormGroup = new FormGroup({
         model: this._model
@@ -58,7 +60,7 @@ export class MultiRadioComponent implements OnDestroy, AfterViewInit {
 
     constructor() {
         this._subscribers.push(
-            this._model.valueChanges.filter(val => !!val && val != this._value).subscribe((value) => {
+            this._model.valueChanges.filter(val => !!val && val != this._value.getValue()).subscribe((value) => {
                 this.writeValue(value);
             })
         );
@@ -69,14 +71,14 @@ export class MultiRadioComponent implements OnDestroy, AfterViewInit {
     }
 
     writeValue(val: any) {
-        this._value = val;
-        this.onChange(this._value);
+        this._value.next(val);
+        this.onChange(this._value.getValue());
         this.onTouched();
 
-        if (!this._value) {
+        if (!this._value.getValue()) {
             this._form.get('model').setValue(null);
-        } else if (!this._model.value || this._model.value != this._value) {
-            this._form.get('model').setValue(this._value);
+        } else if (!this._model.value || this._model.value != this._value.getValue()) {
+            this._form.get('model').setValue(this._value.getValue());
         }
     }
 
