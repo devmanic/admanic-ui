@@ -244,25 +244,26 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         if (!this._options || value === this.value) {
             return;
         }
-
         this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
-            this.value = value;
-            let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
-            let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
-            this.selectedItem = selectedOption;
+            setTimeout(() => {
+                this.value = value;
+                let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
+                let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
+                this.selectedItem = selectedOption;
 
-            if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
-                this.queryStr.setValue('');
-            } else {
-                let label = this.trimNewItemString(selectedOption.label);
-                this.queryStr.setValue(label);
+                if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
+                    this.queryStr.setValue('');
+                } else {
+                    let label = this.trimNewItemString(selectedOption.label);
+                    this.queryStr.setValue(label);
 
-                if (isSelect) {
-                    this.selected.emit(selectedOption);
+                    if (isSelect) {
+                        this.selected.emit(selectedOption);
+                    }
                 }
-            }
-            this.calculateTextareaHeight();
+                this.calculateTextareaHeight();
+            }, 0);
         } else {
             this.queryStr.setValue('');
             this.calculateTextareaHeight();
@@ -318,7 +319,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             // this._options = [];
             this.sendAjax(skipQuery).toPromise().then(
                 (res: any) => {
-                    this._options = this.ajaxResponseMapper(res.data);
+                    this._options = this.ajaxResponseMapper(res);
                     this._totalItemsInAjaxResponse = res.total_rows;
                     this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
                     const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
@@ -362,9 +363,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             });
     }
 
-    ajaxResponseMapper(arr: any[]): OptionModel[] {
-        if (!arr || !Array.isArray(arr)) {
-            return [];
+    ajaxResponseMapper(res: { data: any[] }): OptionModel[] {
+        let arr = [];
+        if (res.hasOwnProperty('data') && Array.isArray(res.data)) {
+            arr = res.data;
+        } else if (Array.isArray(res)) {
+            arr = res;
         }
 
         if (this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function') {
@@ -376,7 +380,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
         return arr.map(this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function' ? this.ajax.mapperFn : (el: any) => ({
             label: el.title || el.text || el.label || el.url || el.id,
-            value: el.id,
+            value: el.value || el.id,
             selected: el.id == this.value
         }));
     }
@@ -390,7 +394,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             this.sendAjax(false, this._currentAjaxPage + 1).toPromise().then((res) => {
                 this._totalItemsInAjaxResponse = res.total_rows;
 
-                this._options = [].concat(this._options, this.ajaxResponseMapper(res.data));
+                this._options = [].concat(this._options, this.ajaxResponseMapper(res));
 
                 const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
                 if (selected) {
