@@ -241,29 +241,27 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     writeValue(value, isSelect = false) {
-        if (!this._options || value === this.value) {
+        if (!this._options) {
             return;
         }
         this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
-            setTimeout(() => {
-                this.value = value;
-                let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
-                let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
-                this.selectedItem = selectedOption;
+            this.value = value;
+            let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
+            let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
+            this.selectedItem = selectedOption;
 
-                if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
-                    this.queryStr.setValue('');
-                } else {
-                    let label = this.trimNewItemString(selectedOption.label);
-                    this.queryStr.setValue(label);
+            if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
+                this.queryStr.setValue('');
+            } else {
+                let label = this.trimNewItemString(selectedOption.label);
+                this.queryStr.setValue(label);
 
-                    if (isSelect) {
-                        this.selected.emit(selectedOption);
-                    }
+                if (isSelect) {
+                    this.selected.emit(selectedOption);
                 }
-                this.calculateTextareaHeight();
-            }, 0);
+            }
+            this.calculateTextareaHeight();
         } else {
             this.queryStr.setValue('');
             this.calculateTextareaHeight();
