@@ -7,19 +7,18 @@ import {
     Input,
     OnDestroy,
     Output,
-    ViewEncapsulation, ElementRef, OnInit
+    ViewEncapsulation, ElementRef
 } from '@angular/core';
 import {
     ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CustomValidators } from '../validator/service';
-import { Http, Response } from '@angular/http';
 import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
-import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
+import { HttpClient } from '@angular/common/http';
 
 declare const SERVER: string;
 
@@ -177,7 +176,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     selectedItem: OptionModel = null;
 
 
-    constructor(public http: Http, public errorHandler: ErrorHandler, private el: ElementRef) {
+    constructor(public http: HttpClient, private el: ElementRef) {
         // this.subscribeToQueryStringChange();
     }
 
@@ -334,8 +333,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }, 300);
     }
 
-    sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100) {
-
+    sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100): any {
         this.pendingRequest = true;
         this._dataLoaded = false;
         this._currentAjaxPage = page;
@@ -352,9 +350,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         //     delete params.query;
         // }
 
-        return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
-            .map((res: Response) => res.json())
-            .catch((err, caught) => this.errorHandler.handle(err, caught))
+        return this.http.get(`/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
             .finally(() => {
                 this.pendingRequest = false;
                 this._dataLoaded = true;

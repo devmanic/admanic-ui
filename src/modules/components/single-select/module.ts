@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorsModule } from '../validator/module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -12,11 +13,11 @@ import { RouterModule } from '@angular/router';
         FormsModule,
         ReactiveFormsModule,
         ValidatorsModule,
-        SharedModule
+        SharedModule,
+        HttpClientModule
     ],
     exports: [SingleSelectComponent, RouterModule],
-    declarations: [SingleSelectComponent],
-    providers: []
+    declarations: [SingleSelectComponent]
 })
 export class SingleSelectModule {
 }
