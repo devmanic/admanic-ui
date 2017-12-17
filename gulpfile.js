@@ -41,10 +41,9 @@ gulp.task('copy:source', function () {
  *    We do this on the /.tmp folder to avoid editing the original /src files
  */
 gulp.task('inline-resources', function () {
-    return Promise.resolve()
-        .then(() = > inlineResources(tmpFolder)
-)
-    ;
+    return Promise.resolve().then(function () {
+        return inlineResources(tmpFolder)
+    })
 });
 
 
@@ -56,7 +55,7 @@ gulp.task('ngc', function () {
     return ngc({
         project: `${tmpFolder}/tsconfig.es5.json`
     })
-        .then((exitCode) = > {
+        .then((exitCode) => {
         if(exitCode === 1
 )
     {

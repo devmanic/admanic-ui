@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
   "name": "admanic-ui",
   "version": "0.7.1",
-=======
-  "name": "@admanic-ui/asd",
-  "version": "0.0.86",
->>>>>>> master
   "repository": {
     "type": "git",
     "url": "https://github.com/devmanic/admanic-ui"
