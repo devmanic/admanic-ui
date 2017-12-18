@@ -22,4 +22,5 @@ export * from './modules/components/modal/module';
 export * from './modules/components/modal/service';
 
 
-export * from './modules/components/typeahead/module'
+export * from './modules/components/typeahead/module';
+export * from './modules/components/button/module';

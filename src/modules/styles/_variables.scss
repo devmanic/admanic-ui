@@ -25,6 +25,31 @@ $select-options-height: 165px;
 
 $color-green: #46bb00;
 $color-blue: #00beef;
+$color-red: #d54c48;
+
+$neutral-button-bg: #fff;
+$neutral-button-color: $text-color;
+$neutral-border-color: $input-border-color;
+$neutral-button-outline: #0070D2;
+
+$primary-button-bg: $color-blue;
+$primary-button-color: #fff;
+
+$success-button-bg: $color-green;
+$success-button-color: #fff;
+
+$success-button-bg: $color-green;
+$success-button-color: #fff;
+
+$danger-button-bg: $color-red;
+$danger-button-color: #fff;
+
+$warning-button-bg: #ffdd1c;
+$warning-button-color: #444;
+
+$button-spinner-size: 18px;
+
+$button-active-outline: #0070D2;
 
 @mixin resetFont() {
   color: inherit;
@@ -39,6 +64,10 @@ $color-blue: #00beef;
   outline: none !important;
   border-radius: 0;
   background: transparent;
+  -webkit-appearance: none;
+  white-space: normal;
+  user-select: none;
+  text-decoration: none;
   @include resetFont;
 }
 
