@@ -53,7 +53,7 @@ export class DynamicTextAreaDirective implements OnDestroy, AfterViewInit {
         <div *ngIf="control && invalid">
             <adm-validator-messages [field]="control"></adm-validator-messages>
         </div>
-        <div class="adm-input__description" *ngIf="description">{{ description }}</div>
+        <div class="adm-input__description" *ngIf="description" [innerHtml]="description"></div>
     `
 })
 export class InputContainer {
