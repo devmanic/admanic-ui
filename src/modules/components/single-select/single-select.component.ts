@@ -162,7 +162,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     });
 
     originalPlaceholder;
-    id = Date.now();
+    id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     _subscribers: Subscription[] = [];
 
     isAjax: boolean = false;

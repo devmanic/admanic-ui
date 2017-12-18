@@ -86,7 +86,6 @@
     "moment": "^2.19.1",
     "select2": "^4.0.3",
     "toastr": "^2.1.2",
-    "typescript": "^2.5.3",
-    "uuid": "^3.0.1"
+    "typescript": "^2.5.3"
   }
 }
