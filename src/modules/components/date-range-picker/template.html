@@ -1,0 +1,61 @@
+<div class="adm-date-picker__calendar__wrap">
+    <div class="adm-date-picker__info">
+        <ul class="clearfix">
+            <li *ngFor="let item of ranges;">
+                <button (click)="setRange(item)">{{item.label}}</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="adm-date-picker__calendar">
+        <div *ngFor="let month of monthsArr; trackBy:trackByFn; let i = index;" class="adm-date-picker__calendar__item">
+            <div class="adm-date-picker__calendar__title">
+                <button class="adm-btn is__left" (click)="changeMonths(firstMonth, -1);" *ngIf="i === 0">
+                    <i class="material-icons">keyboard_arrow_left</i>
+                </button>
+                {{ month.name }} <b>{{month.year}}</b>
+                <button class="adm-btn is__right" (click)="changeMonths(secondMonth, 0);" *ngIf="i === 1">
+                    <i class="material-icons">keyboard_arrow_right</i>
+                </button>
+            </div>
+            <div class="adm-date-picker__calendar__table__holder">
+                <table class="adm-date-picker__calendar__table">
+                    <tr *ngFor="let week of month.weeks; trackBy:trackByFn"
+                        class="adm-date-picker__calendar__week">
+                        <td *ngFor="let day of week; trackBy:trackByFn"
+                            class="{{dayClassNames(day)}}"
+                            (mouseenter)="setHoveredDay(day);"
+                            (mouseleave)="isHoveredDay = null;"
+                            (click)="setModel(day);"
+                            [ngClass]="">
+                            <ng-template [ngIf]="day != 0">{{ day.getDate() }}</ng-template>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="adm-date-picker__calendar__range">
+                <div *ngIf="i === 0">
+                    From: <span style="float: right;">{{formatDate(startDate.value)}}</span>
+                </div>
+
+                <div *ngIf="i === 1">
+                    To: <span style="float: right;">{{formatDate(endDate.value)}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="adm-date-picker__calendar__controls">
+        <ul>
+            <li>
+                <button *ngIf="enableReset" class="adm-btn adm-btn__reset" type="button" (click)="reset();">Reset
+                </button>
+            </li>
+            <li>
+                <button class="adm-btn adm-btn__cancel" (click)="onCancel()">Cancel</button>
+                <button class="adm-btn adm-btn__apply" (click)="onApply()">Apply</button>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -14,24 +14,17 @@
     display: block;
 
     &.is-required {
-      &:after {
-        content: "*";
-        color: #f78d00;
-        display: inline-block;
-        margin-left: 3px;
-        vertical-align: top;
-        margin-top: -2px;
-      }
+      @include requiredLabel;
     }
   }
   &__addon {
     border: 1px solid $input-border-color;
+    border-right: none;
     background: $input-addon-bg;
     margin: 0;
     border-radius: $input-border-radius 0 0 $input-border-radius;
-    transition: all .3s;
     color: $input-addon-color;
-    min-width: $input-addon-width;
+    flex-basis: $input-addon-width;
     text-align: center;
     line-height: 1;
     display: flex;
@@ -43,12 +36,22 @@
   }
   &__container {
     display: block;
-    input[adm][type="text"], adm-single-select, adm-select[single], textarea[adm] {
-      width: 100%;
-      transition: border-color .3s;
+    input[adm],
+    adm-single-select,
+    adm-select[single],
+    textarea[adm],
+    adm-multi-select,
+    adm-multi-select .select2-container .select2-selection,
+    adm-date-range-picker,
+    adm-date-range-picker button[adm] {
+      flex: 1;
     }
-    input[adm][type="text"],
-    textarea[adm] {
+    adm-date-range-picker {
+      position: static;
+    }
+    input[adm],
+    textarea[adm],
+    button[adm] {
       @include resetInput;
       border: 1px solid $input-border-color;
       border-radius: $input-border-radius;
@@ -58,15 +61,25 @@
       background: $input-bg;
       position: relative;
       text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    input.adm-typeahead {
+      &.is__open {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
     &.is-invalid {
       > .wrap {
-        > input[adm][type="text"],
+        > input[adm],
         > textarea[adm],
         > .adm-input__addon,
         > adm-single-select,
         > adm-select[single],
-        > .zelect__input__addon {
+        > .zelect__input__addon,
+        > adm-multi-select .select2-container .select2-selection,
+        > adm-date-range-picker button[adm] {
           border-color: $input-border-color-invalid;
         }
       }
@@ -80,13 +93,19 @@
       .wrap {
         display: flex;
         flex-direction: row;
-        input[adm][type="text"],
+        justify-content: space-around;
+        align-content: stretch;
+        input[adm],
         adm-single-select,
         adm-select[single],
-        textarea[adm] {
-          border-left: 0;
+        textarea[adm],
+        adm-multi-select .select2-container .select2-selection,
+        button[adm] {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+        }
+        .adm-multi-select__dropdown {
+          left: -1px;
         }
       }
     }

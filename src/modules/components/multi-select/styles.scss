@@ -1,0 +1,197 @@
+@import './src/modules/styles/_variables.scss';
+
+.adm-multi-select {
+  display: block;
+  position: relative;
+  font-size: $text-size;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  &.hidden {
+    display: none;
+  }
+
+  &__dropdown {
+    z-index: 1051;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    &-wrap {
+      position: relative;
+      .select2-container {
+        position: static !important;
+      }
+    }
+  }
+  &__add-new-btn {
+    @include selectAddNewBtn;
+    border: 1px solid $input-border-color;
+    border-top: 0;
+    border-radius: 0 0 $input-border-radius $input-border-radius;
+    display: none;
+    background: #fff;
+  }
+
+  .select2-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    vertical-align: middle;
+    width: 100% !important;
+    min-width: 150px;
+
+    .select2-selection {
+      display: flex;
+      cursor: text;
+      align-items: center;
+      min-height: ( ( ($input-y-padding * 2) + $text-size ) + 4) * 1;
+      border: 1px solid $input-border-color;
+      border-radius: $input-border-radius;
+      background-color: #fff;
+    }
+
+    &.select2 {
+      &:after {
+        position: absolute;
+        right: 0;
+        @include caretIcon(#888);
+        position: absolute;
+        right: $caret-width / 2;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        transform: translateX(50%);
+        cursor: pointer;
+      }
+      &.select2-container--open {
+        &:after {
+          transform: rotate(180deg) translateX(-50%);
+        }
+      }
+    }
+    &.select2-container--focus {
+      .select2-selection--multiple {
+        outline: 0;
+      }
+    }
+
+    &.select2-container--disabled {
+      .select2-selection--multiple {
+        background-color: #eee;
+        cursor: default;
+      }
+
+      .select2-selection__choice__remove,
+      .select2-selection__choice > .select2-selection__clear {
+        display: none;
+      }
+    }
+
+  }
+
+  @import "./src/modules/components/multi-select/select2/scss/multiple.scss";
+
+  @import "./src/modules/components/multi-select/select2/scss/dropdown";
+
+  @import "./src/modules/components/multi-select/select2/scss/layout.scss";
+
+  .select2-selection__rendered {
+    > .select2-selection__clear {
+      display: none !important;
+    }
+  }
+
+  &.is-show-count {
+    .select2-selection__choice {
+      display: none;
+    }
+    .select2-search--inline {
+      .select2-selection__choice {
+        margin: -2px 3px -2px 0;
+        display: block;
+      }
+    }
+  }
+
+  &.is-hide-selected {
+    .adm-multi-select__dropdown {
+      .select2-results__option[aria-selected=true] {
+        display: none;
+      }
+    }
+  }
+
+  &.with-add-new-btn {
+
+    &.is-open {
+      .select2-dropdown {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .adm-multi-select__add-new-btn {
+        display: block;
+      }
+    }
+  }
+
+  &.is-open {
+    .select2-container {
+      .select2-selection {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
+
+  &.is-tags {
+    .adm-multi-select__dropdown-wrap {
+      display: none !important;
+    }
+    .select2-container.select2:after {
+      display: none !important;
+    }
+  }
+
+  &.is-above {
+    &.is-open {
+      .adm-multi-select__dropdown {
+        bottom: 100%;
+        top: auto;
+      }
+      .select2-container {
+        .select2-selection {
+          border-bottom-left-radius: $input-border-radius;
+          border-bottom-right-radius: $input-border-radius;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+      }
+    }
+  }
+
+  &.pending-data-load {
+    .select2-container.select2:after {
+      display: none !important;
+    }
+  }
+
+  .select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+  }
+}
+
+adm-input-container {
+  .adm-multi-select {
+
+  }
+}

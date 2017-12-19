@@ -1,0 +1,244 @@
+@import './src/modules/styles/_variables.scss';
+
+$col-size: 30px;
+$bg: $color-blue;
+$color2: $color-green;
+
+@keyframes scaleIt {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+date-range-picker,
+adm-date-range-picker {
+  display: inline-block;
+  position: relative;
+  font-size: $text-size;
+}
+
+.adm-date-picker {
+  &__label {
+    @include resetBtn;
+    white-space: nowrap;
+  }
+  &__holder {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    margin-top: 10px;
+    width: 505px;
+    z-index: 999;
+  }
+  &__calendar {
+    background: rgba($input-addon-bg, .7);
+    &__item {
+      text-align: center;
+      display: inline-block;
+      vertical-align: top;
+      border-right: 1px solid rgba($input-border-color, .5);
+      padding: 15px 20px;
+      color: #555;
+      &:last-child {
+        border-right: none;
+      }
+    }
+    &__title {
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      line-height: 22px;
+      b {
+        margin-left: 3px;
+      }
+      .adm-btn {
+        @include resetBtn;
+        cursor: pointer;
+        display: inline-block;
+        padding: 0;
+        background: transparent;
+        border: none;
+        line-height: 1;
+        //border: 1px solid;
+        //border-radius: $input-border-radius / 2;
+        color: $bg;
+        transition: transform .1s ease-in;
+        &:hover {
+          transform: scale(1.1);
+        }
+        .material-icons {
+          font-size: 20px;
+          vertical-align: middle;
+        }
+        &.is__left {
+          float: left;
+        }
+        &.is__right {
+          float: right;
+        }
+      }
+    }
+    &__wrap {
+      display: inline-block;
+      border: 1px solid $input-border-color;
+      background: #fff;
+      border-radius: $input-border-radius;
+      box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.11);
+      .adm-date-picker__info {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid $input-border-color;
+        padding: 13px 20px;
+        ul {
+          margin: 0;
+          padding: 0;
+          li {
+            display: inline-block;
+            vertical-align: middle;
+            list-style-type: none;
+            margin: 0 10px;
+            &:first-child {
+              margin-left: 0;
+            }
+            &:last-child {
+              margin-right: 0;
+            }
+            button {
+              @include resetBtn;
+              cursor: pointer;
+              //color: $color2;
+              border-bottom: 1px dashed transparent;
+              &:hover {
+                border-color: initial;
+              }
+            }
+          }
+        }
+      }
+    }
+    &__table__holder {
+      height: $col-size * 6;
+      margin-bottom: 10px;
+    }
+    &__table {
+      border-collapse: collapse;
+    }
+    &__head {
+      color: #c8c8c8;
+      width: 100%;
+      border-bottom: 1px solid;
+    }
+    &__week {
+      > * {
+        height: $col-size;
+        width: $col-size;
+        cursor: pointer;
+        user-select: none;
+        transition: background .1s ease;
+        position: relative;
+        border: 1px solid transparent;
+        border-width: 2px 0;
+        box-sizing: border-box;
+        z-index: 1;
+        vertical-align: middle;
+        &.is__today {
+          &:before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            position: absolute;
+            top: .3em;
+            right: .3em;
+            background: $bg;
+            border-radius: 50%;
+          }
+        }
+        &.is__start-date,
+        &.is__end-date {
+          color: #fff;
+          animation: scaleIt .1s 1 cubic-bezier(0.65, 0.05, 0.36, 1);
+          &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            background: $bg;
+            z-index: -1;
+          }
+        }
+        &.is__start-date,
+        &.is__end-date {
+          border: none;
+        }
+        &.is__start-date {
+          &:after {
+            border-top-left-radius: $input-border-radius;
+            border-bottom-left-radius: $input-border-radius;
+          }
+        }
+        &.is__end-date {
+          &:after {
+            border-top-right-radius: $input-border-radius;
+            border-bottom-right-radius: $input-border-radius;
+          }
+        }
+        &.is__between-range,
+        &.is__between-start-and-hover {
+          background: rgba($bg, .2);
+        }
+      }
+    }
+    &__range {
+      text-align: left;
+    }
+    &__controls {
+      display: block;
+      border-top: 1px solid $input-border-color;
+      padding: 10px 10px;
+      ul {
+        position: relative;
+        overflow: hidden;
+        clear: both;
+        margin: 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          float: right;
+          &:first-child {
+            float: left;
+          }
+          .adm-btn {
+            @include resetBtn;
+            border-radius: $input-border-radius;
+            padding: 8px 10px;
+            cursor: pointer;
+            line-height: 1;
+            &:hover {
+              color: $color2;
+            }
+            &__apply {
+              background: $color2;
+              color: #fff;
+              border: 1px solid transparent;
+              &:hover {
+                background: transparent;
+                border-color: $color2;
+                //color: $color2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

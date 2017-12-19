@@ -1,0 +1,112 @@
+@import './src/modules/styles/_variables.scss';
+
+$checkbox-size: 18px;
+$checkbox-border-color: #5a5a5a;
+$checkbox-checked: $color-green;
+
+.adm-checkbox,
+.adm-radio {
+  display: block;
+  margin: 5px 0;
+  &__wrap {
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+  }
+  &__el {
+    display: inline-block;
+    width: $checkbox-size;
+    height: $checkbox-size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    position: relative;
+  }
+  .adm-checkbox__el {
+    border-radius: 2px;
+    border: 1px solid $checkbox-border-color;
+    position: relative;
+    transition: all .07s ease-in;
+    text-align: center;
+    transition: .2s ease;
+    &:before {
+      content: "check";
+      font-family: 'Material Icons';
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      text-transform: none;
+      display: inline-block;
+      color: #fff;
+      transition: .28s ease;
+      transform: scale(0);
+    }
+  }
+
+  .adm-radio__el {
+    width: $checkbox-size;
+    height: $checkbox-size;
+    &:before, &:after {
+      content: '';
+      display: inline-block;
+      text-align: center;
+      border: 2px solid #5a5a5a;
+      border-radius: 50%;
+      width: $checkbox-size - 2;
+      height: $checkbox-size - 2;
+      vertical-align: middle;
+      position: absolute;
+    }
+    &:after {
+      border-color: $checkbox-checked;
+      background: $checkbox-checked;
+      transform: scale(0);
+      transition: .28s ease;
+    }
+  }
+
+  &__label {
+    cursor: pointer;
+    &.is-required {
+      @include requiredLabel;
+    }
+  }
+
+  &.is-rtl {
+    flex-direction: row-reverse;
+    .adm-checkbox__el {
+      margin: 0 0 0 10px;
+    }
+  }
+
+  &[checked=true] {
+    .adm-checkbox__el {
+      background: $checkbox-checked;
+      border-color: $checkbox-checked;
+      &:before {
+        transform: scale(1);
+      }
+    }
+    .adm-radio__el {
+      &:after {
+        transform: scale(1.02);
+      }
+      &:before {
+        border-color: transparent;
+      }
+    }
+  }
+
+  &[disabled=true] {
+    pointer-evets: none;
+    .adm-checkbox__el {
+      cursor: not-allowed;
+      background: rgba($checkbox-border-color, .3);
+      border-color: rgba($checkbox-border-color, .3);
+    }
+  }
+
+}

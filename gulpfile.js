@@ -41,8 +41,9 @@ gulp.task('copy:source', function () {
  *    We do this on the /.tmp folder to avoid editing the original /src files
  */
 gulp.task('inline-resources', function () {
-    return Promise.resolve()
-            .then(() => inlineResources(tmpFolder));
+    return Promise.resolve().then(function () {
+        return inlineResources(tmpFolder)
+    })
 });
 
 
@@ -52,15 +53,18 @@ gulp.task('inline-resources', function () {
  */
 gulp.task('ngc', function () {
     return ngc({
-            project: `${tmpFolder}/tsconfig.es5.json`
-        })
-            .then((exitCode) => {
-            if (exitCode === 1) {
+        project: `${tmpFolder}/tsconfig.es5.json`
+    })
+        .then((exitCode) => {
+        if(exitCode === 1
+)
+    {
         // This error is caught in the 'compile' task by the runSequence method callback
         // so that when ngc fails to compile, the whole compile process stops running
         throw new Error('ngc compilation failed');
     }
-});
+})
+    ;
 });
 
 /**
@@ -74,7 +78,7 @@ gulp.task('rollup:fesm', function () {
 
             // Bundle's entry point
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#entry
-            entry: `${buildFolder}/index.js`,
+            input: `${buildFolder}/index.js`,
 
             // A list of IDs of modules that should remain external to the bundle
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#external
@@ -101,7 +105,7 @@ gulp.task('rollup:umd', function () {
 
             // Bundle's entry point
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#entry
-            entry: `${buildFolder}/index.js`,
+            input: `${buildFolder}/index.js`,
 
             // A list of IDs of modules that should remain external to the bundle
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#external
@@ -121,8 +125,7 @@ gulp.task('rollup:umd', function () {
             // The name to use for the module for UMD/IIFE bundles
             // (required for bundles with exports)
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#modulename
-            moduleName: 'maks-lib2',
-
+            name: 'admanic-ui',
             // See https://github.com/rollup/rollup/wiki/JavaScript-API#globals
             globals: {
                 typescript: 'ts'
@@ -206,7 +209,7 @@ gulp.task('watch', function () {
     gulp.watch(`${srcFolder}/**/*`, ['compile']);
 });
 
-gulp.task('clean', ['clean:dist', 'clean:tmp', 'clean:build','clean:aot']);
+gulp.task('clean', ['clean:dist', 'clean:tmp', 'clean:build', 'clean:aot']);
 
 gulp.task('build', ['clean', 'compile']);
 gulp.task('build:watch', ['build', 'watch']);
