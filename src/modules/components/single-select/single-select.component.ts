@@ -15,13 +15,12 @@ import {
 import { Subscription } from 'rxjs';
 import { CustomValidators } from '../validator/service';
 import { Http, Response } from '@angular/http';
-import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
 import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
+import { SingleSelectOptions } from './options.service';
 
-declare const SERVER: string;
 
 export interface OptionModel {
     value: string | number;
@@ -37,7 +36,7 @@ export interface OptionWithGroupModel {
 
 export interface AjaxParams {
     path: string;
-    options?: ListRequest;
+    options?: any;
     fullpath?: boolean,
     mapperFn?,
     arrayFormatFn?
@@ -71,7 +70,7 @@ export const newEntityLen: number = 3;
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
     isOpen: boolean = false;
     newItemPostfix: string;
-    server = SERVER || '';
+    server = this.config.server;
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
     showToTop: boolean = false;
@@ -168,16 +167,12 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     isAjax: boolean = false;
     pendingRequest: boolean = false;
     ajaxTimeout: any = null;
-
-    baseAjaxOptions: ListRequest = {
-        filter: 'active',
-        is_select: 1
-    };
-
     selectedItem: OptionModel = null;
 
-
-    constructor(public http: Http, public errorHandler: ErrorHandler, private el: ElementRef) {
+    constructor(public http: Http,
+                public errorHandler: ErrorHandler,
+                private config: SingleSelectOptions,
+                private el: ElementRef) {
         // this.subscribeToQueryStringChange();
     }
 
@@ -334,25 +329,27 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }, 300);
     }
 
-    sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100) {
-
+    sendAjax(skipQuery: boolean = false, page: number = 1) {
         this.pendingRequest = true;
         this._dataLoaded = false;
         this._currentAjaxPage = page;
 
         let params = {
             query: skipQuery ? this.latestQuery : this.queryStr.value,
-            limit,
-            page: this._currentAjaxPage,
-            ...this.baseAjaxOptions,
+            ...this.config.baseAjaxQuery,
             ...this.ajax.options
         };
+
+        if (this.config.pagination) {
+            params.page = this._currentAjaxPage;
+            params.limit = 100;
+        }
 
         // if (skipQuery) {
         //     delete params.query;
         // }
 
-        return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
+        return this.http.get(this.server + `/${this.ajax.path}` + ListRequestService.parseRequestObject(params))
             .map((res: Response) => res.json())
             .catch((err, caught) => this.errorHandler.handle(err, caught))
             .finally(() => {

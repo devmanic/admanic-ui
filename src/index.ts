@@ -1,4 +1,5 @@
 export * from './modules/components/single-select/module';
+export * from './modules/components/single-select/options.service';
 
 export * from './modules/components/text-input/module';
 
@@ -17,7 +18,7 @@ export * from './modules/components/menu/menu.module';
 
 export * from './modules/components/table/table.module';
 
-export * from './modules/shared/clipboard.service'
+export * from './modules/shared/clipboard.service';
 export * from './modules/components/modal/module';
 export * from './modules/components/modal/service';
 
