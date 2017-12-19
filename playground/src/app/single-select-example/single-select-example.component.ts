@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-single-select-example',
@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SingleSelectExampleComponent implements OnInit {
   ajaxParams = {
-    path: 'library/browsers'
+    path: 'campaign/list'
   };
 
   constructor() {

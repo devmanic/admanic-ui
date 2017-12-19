@@ -1,11 +1,12 @@
-<!--<pre>{{value|json:2}}</pre>-->
 <!-- search input -->
 <div class="adm-select__input" [formGroup]="form">
     <textarea
             spellcheck="false"
             rows="1"
+            [readonly]="disableSearch"
             [placeholder]="placeholder"
             (click)="inputClick($event)"
+            (keyup)="onQueryStringChange.next($event)"
             (keyup.enter)="onEnterClick($event)"
             (keydown.enter)="onEnterKeydown($event)"
             (focus)="startSearch($event)"
@@ -44,7 +45,7 @@
 <!-- / search input -->
 
 <!-- options list wrapper -->
-<div class="adm-select__options">
+<div class="adm-select__options" (click)="stopEventPropagation($event)">
     <!-- lists results -->
     <ul class="adm-select__options__list">
         <!-- template for list without groups -->
@@ -100,8 +101,10 @@
             class="adm-select__add-new-btn"
             (click)="ajaxLoadMoreItems($event);"
             type="button">
-        <i class="material-icons">cached</i> Load more items <small>({{_options.length}} from {{_totalItemsInAjaxResponse}}
-        shown)</small>
+        <i class="material-icons">cached</i> Load more items
+        <small>({{_options.length}} from {{_totalItemsInAjaxResponse}}
+            shown)
+        </small>
     </button>
     <!-- /load more button -->
 

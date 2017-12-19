@@ -1,14 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
 import * as admUI from 'admanic-ui';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
-import { ButtonExampleComponent } from './button-example/button-example.component';
-import { SingleSelectExampleComponent } from './single-select-example/single-select-example.component';
+import {HttpModule} from '@angular/http';
+import {RouterModule} from '@angular/router';
+import {ButtonExampleComponent} from './button-example/button-example.component';
+import {SingleSelectExampleComponent} from './single-select-example/single-select-example.component';
 
 export class customSingleSelectOptions extends admUI.SingleSelectOptions {
-  server = 'http://api.partner.sellpops.com';
+  server = 'http://some-server.net';
+  pagination = true;
+  requestHeaders = {
+    Authorization: 'Bearer sadasdsad'
+  };
+
+  requestResponseMapFn: Function = (el: any) => ({
+    label: `item: ${el.title}`,
+    value: el.id
+  })
 }
 
 @NgModule({
@@ -18,7 +27,6 @@ export class customSingleSelectOptions extends admUI.SingleSelectOptions {
     SingleSelectExampleComponent
   ],
   imports: [
-    HttpModule,
     RouterModule.forRoot([
       {path: 'buttons', component: ButtonExampleComponent},
       {path: 'single-select', component: SingleSelectExampleComponent}
