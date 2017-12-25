@@ -2,22 +2,25 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import * as admUI from 'admanic-ui';
-import {HttpModule} from '@angular/http';
 import {RouterModule} from '@angular/router';
 import {ButtonExampleComponent} from './button-example/button-example.component';
 import {SingleSelectExampleComponent} from './single-select-example/single-select-example.component';
+import {FormsModule} from '@angular/forms';
 
-export class customSingleSelectOptions extends admUI.SingleSelectOptions {
-  server = 'http://some-server.net';
-  pagination = true;
-  requestHeaders = {
-    Authorization: 'Bearer sadasdsad'
-  };
+export class customSingleSelectOptions extends admUI.SingleSelectConfig {
+  server = 'https://restcountries.eu/rest/v2';
+  enablePagination = false;
 
-  requestResponseMapFn: Function = (el: any) => ({
-    label: `item: ${el.title}`,
-    value: el.id
-  })
+  // requestHeaders = {
+  //   Authorization: ''
+  // };
+
+  responseMapFn(el) {
+    return {
+      label: el.title || el.name,
+      value: `${ el.id || el.alpha2Code}`
+    }
+  }
 }
 
 @NgModule({
@@ -34,10 +37,11 @@ export class customSingleSelectOptions extends admUI.SingleSelectOptions {
     admUI.SingleSelectModule.forRoot(),
     admUI.InputModule,
     admUI.ButtonsModule,
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [
-    {provide: admUI.SingleSelectOptions, useClass: customSingleSelectOptions}
+    {provide: admUI.SingleSelectConfig, useClass: customSingleSelectOptions}
   ],
   bootstrap: [AppComponent]
 })

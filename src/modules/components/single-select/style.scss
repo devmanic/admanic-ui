@@ -80,6 +80,9 @@ $spinner-item-background-color: #666;
       resize: none;
       min-width: 150px;
       overflow-x: hidden;
+      &[readonly] {
+        cursor: pointer;
+      }
     }
   }
 
@@ -194,8 +197,8 @@ $spinner-item-background-color: #666;
 
   &__add-new-btn {
     @include selectAddNewBtn;
-    small{
-      font-size:.75em;
+    small {
+      font-size: .75em;
     }
   }
 
