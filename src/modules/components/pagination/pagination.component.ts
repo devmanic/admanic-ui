@@ -14,7 +14,7 @@ import {
     styleUrls: ['./style.scss'],
     template: `
         <ng-template [ngIf]="_totalBtns && _totalBtns > 1">
-            <table class="adm-pagination__layout">
+            <table *ngIf="_totalBtns< 500;else paginationForAlotEls" class="adm-pagination__layout">
                 <tr>
                     <ng-template [ngIf]="!showFullPagination && showDropdown">
                         <td>
@@ -28,7 +28,7 @@ import {
                             </adm-select>
                         </td>
                         <!--<td style="padding-right:15px;">-->
-                            <!--of {{this._totalBtns}}-->
+                        <!--of {{this._totalBtns}}-->
                         <!--</td>-->
                     </ng-template>
                     <td>
@@ -61,10 +61,43 @@ import {
                 </tr>
             </table>
         </ng-template>
+        <ng-template #paginationForAlotEls>
+            <table class="adm-pagination__layout simple">
+                <tr>
+                    <td>
+                        Page:
+                    </td>
+                    <td>
+                        <ul class="adm-pagination__list" *ngIf="_current > 1">
+                            <li>
+                                <button (click)="setCurrent(_current + -1)" [disabled]="_current == _totalBtns">
+                                    {{titles.prev}}
+                                </button>
+                            </li>
+                        </ul>
+                        <adm-input-container>
+                            <input type="number" (keyup.enter)="setCurrent($event.target.value)" adm
+                                   [ngModel]="_current" placeholder="Page">
+                        </adm-input-container>
+                        <ul class="adm-pagination__list" *ngIf="_current < _totalBtns">
+                            <li>
+                                <button (click)="setCurrent(_current + 1)" [disabled]="_current == _totalBtns">
+                                    {{titles.next}}
+                                </button>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        of {{this._totalBtns}}
+                    </td>
+                </tr>
+            </table>
+        </ng-template>
     `
 })
 export class PaginationComponent implements OnInit {
     _range: { label, value }[];
+    _rangeLen: number = 0;
     _total: number;
     _current: number;
     _itemsPerPage: number;
@@ -127,6 +160,7 @@ export class PaginationComponent implements OnInit {
             label: (el + 1).toString(),
             value: el + 1
         }));
+        this._rangeLen = this._range.length;
     }
 
     isShowNum(n: number) {
@@ -158,6 +192,11 @@ export class PaginationComponent implements OnInit {
     }
 
     setCurrent(n: number) {
+        if (n < 1) {
+            n = 1;
+        } else if (n > this._totalBtns) {
+            n = this._totalBtns;
+        }
         this.current = n;
         this.currentChange.emit(this._current);
         this.onPageChanged.emit(this._current);
