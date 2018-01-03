@@ -194,8 +194,8 @@ $spinner-item-background-color: #666;
 
   &__add-new-btn {
     @include selectAddNewBtn;
-    small{
-      font-size:.75em;
+    small {
+      font-size: .75em;
     }
   }
 

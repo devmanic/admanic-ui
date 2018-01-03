@@ -17,9 +17,9 @@ import { CustomValidators } from '../validator/service';
 import { Http, Response } from '@angular/http';
 import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
-import { ErrorHandler } from '../../shared/error-handler.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
+import { ToastService } from '../toastr/service';
 
 declare const SERVER: string;
 
@@ -69,6 +69,7 @@ export const newEntityLen: number = 3;
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
+    serverError: boolean | string = false;
     isOpen: boolean = false;
     newItemPostfix: string;
     server = SERVER || '';
@@ -96,6 +97,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     @Input()
     set ajax(params: AjaxParams) {
+        this.serverError = false;
         this._ajax = params;
         this.queryStr.setValue('');
         this._options = [];
@@ -117,6 +119,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     @Input()
     set options(options: Array<OptionModel | OptionWithGroupModel>) {
+        this.serverError = false;
         if (options && Array.isArray(options)) {
             this._options = this.value ?
                 options.map((el: OptionModel) => Object.assign({}, el, {selected: el.value == this.value})) :
@@ -177,7 +180,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     selectedItem: OptionModel = null;
 
 
-    constructor(public http: Http, public errorHandler: ErrorHandler, private el: ElementRef) {
+    constructor(public http: Http, public toastManager: ToastService, private el: ElementRef) {
         // this.subscribeToQueryStringChange();
     }
 
@@ -335,7 +338,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100) {
-
+        this.serverError = false;
         this.pendingRequest = true;
         this._dataLoaded = false;
         this._currentAjaxPage = page;
@@ -354,7 +357,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
         return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
             .map((res: Response) => res.json())
-            .catch((err, caught) => this.errorHandler.handle(err, caught))
+            .catch((err) => {
+                this.serverError = `${ err.status ? `${err.status} ${err.statusText}` : 'Web Server error' }`;
+                this.toastManager.error('', this.serverError);
+                return Observable.throw(err);
+            })
             .finally(() => {
                 this.pendingRequest = false;
                 this._dataLoaded = true;

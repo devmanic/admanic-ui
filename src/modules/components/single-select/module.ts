@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorsModule } from '../validator/module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { ToastModule } from '../toastr/module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { RouterModule } from '@angular/router';
         FormsModule,
         ReactiveFormsModule,
         ValidatorsModule,
-        SharedModule
+        SharedModule,
+        ToastModule
     ],
     exports: [SingleSelectComponent, RouterModule],
     declarations: [SingleSelectComponent],

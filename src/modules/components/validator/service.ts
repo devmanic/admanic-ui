@@ -20,6 +20,7 @@ export class CustomValidators {
             passwordPattern: 'Password must have at least one digit, lower and upper case letter',
             nospacePattern: 'No whitespace allowed',
             passwordEqualPattern: 'Confirm password and password fields must be equal',
+            positiveNumberPattern: 'Can contain only positive numbers',
             ipPattern: 'Ip incorrect',
             ipArrayPattern: 'Ip list incorrect',
             allFill: 'All fields must be filled',
