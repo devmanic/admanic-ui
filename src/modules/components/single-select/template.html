@@ -8,10 +8,11 @@
             (keyup.enter)="onEnterClick($event)"
             (keydown.enter)="onEnterKeydown($event)"
             (focus)="startSearch($event)"
+            (blur)="inputBlurHandler($event)"
             formControlName="queryStr"></textarea>
 
     <!-- toggle button -->
-    <button class="adm-select__caret" type="button" (click)="toggleOpen($event)">
+    <button class="adm-select__caret" tabindex="-1" type="button" (click)="toggleOpen($event)">
         toggle
         <div class="adm-spinner-container" *ngIf="!_dataLoaded">
             <div class="spinner spinner-1"></div>
@@ -70,8 +71,9 @@
 
         <!-- results el -->
         <li
-            *ngIf="(!allowCreateEntity && nothingNotFound) || (allowCreateEntity && nothingNotFound && !queryStr.value)">
-            {{pendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results found'}}
+                *ngIf="(!allowCreateEntity && nothingNotFound) || (allowCreateEntity && nothingNotFound && !queryStr.value)">
+            {{pendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results
+            found'}}
         </li>
 
         <!--<li *ngIf="!options || (!options.length && queryStr?.value?.length==0)">-->

@@ -184,6 +184,15 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         // this.subscribeToQueryStringChange();
     }
 
+    inputBlurHandler(e: Event) {
+        setTimeout(() => {
+            if (this.isOpen) {
+                this.isOpen = false;
+                this.hide.emit();
+            }
+        }, 300);
+    }
+
     ngAfterViewInit() {
         this.newItemPostfix = ` (New ${this.entityName} will be created)`;
         this.originalPlaceholder = this.placeholder;
