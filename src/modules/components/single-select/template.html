@@ -3,6 +3,7 @@
     <textarea
             spellcheck="false"
             rows="1"
+            [tabindex]="disabled ? -1 : 0"
             [placeholder]="placeholder"
             (click)="inputClick($event)"
             (keyup.enter)="onEnterClick($event)"
