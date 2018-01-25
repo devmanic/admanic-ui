@@ -7,19 +7,17 @@ import {
     Input,
     OnDestroy,
     Output,
-    ViewEncapsulation, ElementRef, OnInit
+    ViewEncapsulation, ElementRef
 } from '@angular/core';
 import {
     ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { SingleSelectOptions } from './options.service';
+import { Subscription, Subject } from 'rxjs';
 import { CustomValidators } from '../validator/service';
-import { Http, Response } from '@angular/http';
-import { ListRequest } from '../../shared/list-request.model';
-import { ListRequestService } from '../../shared/list-request.service';
+import { Http, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
-import { ToastService } from '../toastr/service';
 
 declare const SERVER: string;
 
@@ -37,10 +35,10 @@ export interface OptionWithGroupModel {
 
 export interface AjaxParams {
     path: string;
-    options?: ListRequest;
-    fullpath?: boolean,
-    mapperFn?,
-    arrayFormatFn?
+    options?: any;
+    fullpath?: boolean;
+    mapperFn?;
+    arrayFormatFn?;
 }
 
 export const newEntityLen: number = 3;
@@ -69,10 +67,11 @@ export const newEntityLen: number = 3;
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
+    onQueryStringChange = new Subject<KeyboardEvent>();
     serverError: boolean | string = false;
     isOpen: boolean = false;
     newItemPostfix: string;
-    server = SERVER || '';
+    server = this.config.server;
     hasGroups: boolean = false;
     invalidQueryString: boolean = false;
     showToTop: boolean = false;
@@ -86,7 +85,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     _currentAjaxPage: number = 1;
     _ajax: AjaxParams = null;
 
-
     @Input('value') _value: any = false;
     @Input() placeholder: string = 'Select option';
     @Input() allowClear: boolean = false;
@@ -94,19 +92,25 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Input() disabled: boolean = false;
     @Input() entityName: string = 'item';
     @Input() showAddNewBtn: boolean = false;
+    @Input() disableSearch: boolean = false;
 
     @Input()
     set ajax(params: AjaxParams) {
-        this.serverError = false;
-        this._ajax = params;
-        this.queryStr.setValue('');
-        this._options = [];
+        setTimeout(() => {
+            this.serverError = false;
+            if (params) {
+                this._dataLoaded = true;
+                this._ajax = params;
+                this.queryStr.setValue('');
+                this._options = [];
+            }
+            this.isAjax = !!params;
+        }, 0);
     }
 
     get ajax(): AjaxParams {
         return this._ajax;
     }
-
 
     @Input()
     set viewPath(path) {
@@ -170,18 +174,23 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     isAjax: boolean = false;
     pendingRequest: boolean = false;
-    ajaxTimeout: any = null;
-
-    baseAjaxOptions: ListRequest = {
-        filter: 'active',
-        is_select: 1
-    };
-
     selectedItem: OptionModel = null;
 
+    constructor(public http: Http,
+                private config: SingleSelectOptions,
+                private el: ElementRef) {
+    }
 
-    constructor(public http: Http, public toastManager: ToastService, private el: ElementRef) {
-        // this.subscribeToQueryStringChange();
+    subscribeToQueryStringChange() {
+        this._subscribers.push(
+            this.onQueryStringChange.debounceTime(300).subscribe(($event: KeyboardEvent) => {
+                const isBackspaceOrDelete = ($event.keyCode === 8 || $event.keyCode === 46);
+                if (!!String.fromCharCode($event.keyCode).match(/\w/) || isBackspaceOrDelete) {
+                    this.calculateTextareaHeight();
+                    this.isAjax ? this.onAjaxFindOptions() : this.filter();
+                }
+            })
+        );
     }
 
     inputBlurHandler(e: Event) {
@@ -196,8 +205,7 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     ngAfterViewInit() {
         this.newItemPostfix = ` (New ${this.entityName} will be created)`;
         this.originalPlaceholder = this.placeholder;
-
-        this.initAjax(this.ajax);
+        this.subscribeToQueryStringChange();
 
         if (this.allowCreateEntity) {
             this.queryStr.statusChanges.subscribe((status: string) => {
@@ -218,34 +226,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }, 100);
     }
 
-    initAjax(params: AjaxParams) {
-        if (params) {
-            this.isAjax = true;
-            this._dataLoaded = true;
-            // if (this.value) {
-            //     this.onAjaxFindOptions();
-            // }
-        }
-    }
-
-    ngOnDestroy() {
-        this._subscribers.forEach(s => s.unsubscribe());
-    }
-
-    onChange: any = () => {
-    };
-
-    onTouched: any = () => {
-    };
-
-    registerOnChange(fn) {
-        this.onChange = fn;
-    }
-
-    registerOnTouched(fn) {
-        this.onTouched = fn;
-    }
-
     clearSelection(e: Event = new Event('')) {
         e.preventDefault();
         this.writeValue('');
@@ -256,7 +236,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         if (!this._options) {
             return;
         }
-        this.unsubscribeFromQueryStringChange();
         if (value || value === null || value == '0') {
             this.value = value;
             let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
@@ -283,7 +262,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 return Object.assign(option, {selected: false, hidden: false});
             });
         }
-        this.subscribeToQueryStringChange();
     }
 
     @HostListener('document: click', ['$event'])
@@ -306,16 +284,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }
     }
 
-    subscribeToQueryStringChange() {
-        this.unsubscribeFromQueryStringChange();
-        setTimeout(() => {
-            this.queryChangeSubscription = this.queryStr.valueChanges.filter(value => !!value || value === '').debounceTime(100).subscribe((value) => {
-                this.calculateTextareaHeight();
-                this.isAjax ? this.onAjaxFindOptions() : this.filter();
-            });
-        }, 300);
-    }
-
     unsubscribeFromQueryStringChange() {
         if (this.queryChangeSubscription) {
             this.queryChangeSubscription.unsubscribe();
@@ -324,51 +292,64 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     onAjaxFindOptions(skipQuery: boolean = false) {
-        clearTimeout(this.ajaxTimeout);
-        this.ajaxTimeout = setTimeout(() => {
-            // this._options = [];
-            this.sendAjax(skipQuery).toPromise().then(
-                (res: any) => {
-                    this._options = this.ajaxResponseMapper(res);
-                    this._totalItemsInAjaxResponse = res.total_rows;
-                    this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
-                    const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
-                    if (selected) {
-                        this.selectedItem = selected;
+        // this._options = [];
+        this.sendAjax(skipQuery).toPromise().then(
+            (res: any) => {
+                this._options = this.ajaxResponseMapper(res);
+                this._totalItemsInAjaxResponse = res.total_rows;
+                this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
+                const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
+                if (selected) {
+                    this.selectedItem = selected;
 
-                        // if (!this.isOpen && this.value) {
-                        //     this.writeValue(this.selectedItem.value);
-                        // }
-                    }
-                },
-                (err: any) => this._options = []
-            );
-        }, 300);
+                    // if (!this.isOpen && this.value) {
+                    //     this.writeValue(this.selectedItem.value);
+                    // }
+                }
+            },
+            (err: any) => this._options = []
+        );
     }
 
-    sendAjax(skipQuery: boolean = false, page: number = 1, limit: number = 100) {
+    getRequestOptions(params: any = {}): RequestOptions {
+        if (this.config.pagination) {
+            params.page = this._currentAjaxPage;
+            params[this.config.requestParamLimitKey] = 100;
+        }
+
+        for (const key of Object.keys(params)) {
+            const value = params[key];
+            if (typeof value === 'string') {
+                value.trim();
+            }
+            if (value === null || value === '' || value === undefined) {
+                delete params[key];
+            }
+        }
+        const requestOptions = new RequestOptions();
+        requestOptions.params = params;
+
+        if (this.config.requestHeaders) {
+            requestOptions.headers = this.config.requestHeaders;
+        }
+        return requestOptions;
+    }
+
+    sendAjax(skipQuery: boolean = false, page: number = 1) {
         this.serverError = false;
         this.pendingRequest = true;
         this._dataLoaded = false;
         this._currentAjaxPage = page;
-
-        let params = {
-            query: skipQuery ? this.latestQuery : this.queryStr.value,
-            limit,
-            page: this._currentAjaxPage,
-            ...this.baseAjaxOptions,
+        const params = {
+            [this.config.requestParamSearchKey]: skipQuery ? this.latestQuery : this.queryStr.value,
+            ...this.config.requestParams,
             ...this.ajax.options
         };
 
-        // if (skipQuery) {
-        //     delete params.query;
-        // }
-
-        return this.http.get(this.server + `/${this.ajax.path + (!this.ajax.fullpath ? '/list' : '')}` + ListRequestService.parseRequestObject(params))
+        return this.http.get(this.server + `/${this.ajax.path}`, this.getRequestOptions(params))
             .map((res: Response) => res.json())
             .catch((err) => {
                 this.serverError = `${ err.status ? `${err.status} ${err.statusText}` : 'Web Server error' }`;
-                this.toastManager.error('', this.serverError);
                 return Observable.throw(err);
             })
             .finally(() => {
@@ -378,12 +359,8 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     ajaxResponseMapper(res: { data: any[] }): OptionModel[] {
-        let arr = [];
-        if (res.hasOwnProperty('data') && Array.isArray(res.data)) {
-            arr = res.data;
-        } else if (Array.isArray(res)) {
-            arr = res;
-        }
+        const arrayInField = this.config.requestResponseArrayKey && res.hasOwnProperty(this.config.requestResponseArrayKey) && Array.isArray(res[this.config.requestResponseArrayKey]);
+        let arr = arrayInField ? res[this.config.requestResponseArrayKey] : Array.isArray(res) ? res : [];
 
         if (this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function') {
             arr = this.ajax.arrayFormatFn(arr);
@@ -392,31 +369,19 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
             }
         }
 
-        return arr.map(this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function' ? this.ajax.mapperFn : (el: any) => ({
-            label: el.title || el.text || el.label || el.url || el.id,
-            value: el.value || el.id,
-            selected: el.id == this.value
-        }));
+        const hasCustomResponseMapper = this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function';
+        return arr.map(hasCustomResponseMapper ? this.ajax.mapperFn : this.config.requestResponseMapFn.bind(this));
     }
 
     ajaxLoadMoreItems(e: Event) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        clearTimeout(this.ajaxTimeout);
-        this.ajaxTimeout = setTimeout(() => {
-            this.sendAjax(false, this._currentAjaxPage + 1).toPromise().then((res) => {
-                this._totalItemsInAjaxResponse = res.total_rows;
-
-                this._options = [].concat(this._options, this.ajaxResponseMapper(res));
-
-                const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
-                if (selected) {
-                    this.selectedItem = selected;
-                }
-            });
-        }, 100);
-
+        this.sendAjax(true, this._currentAjaxPage + 1).toPromise().then((res) => {
+            this._totalItemsInAjaxResponse = res.total_rows;
+            this._options = [].concat(this._options, this.ajaxResponseMapper(res));
+            const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
+            if (selected) {
+                this.selectedItem = selected;
+            }
+        });
     }
 
     isElSelected(item: OptionModel): boolean {
@@ -457,6 +422,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         e.inputId = this.id;
     }
 
+    stopEventPropagation($event: Event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+    }
+
     onEnterClick(e: Event) {
         const value = (<HTMLInputElement>e.target).value;
         if (this.hasGroups || !value) return;
@@ -475,9 +445,14 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     }
 
     startSearch(e: Event) {
+        if (this.isOpen) {
+            return false;
+        }
         e.preventDefault();
         e.stopPropagation();
-        (<HTMLInputElement>e.target).select();
+        if (!this.disableSearch) {
+            (<HTMLInputElement>e.target).select();
+        }
         this.filter('');
         this.calculatePosition();
         this.isOpen = true;
@@ -524,10 +499,8 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     showValueLabelOnEmptyQuery() {
         if (this.selectedItem && this.trimNewItemString(this.queryStr.value) !== this.trimNewItemString(this.selectedItem.label)) {
-            this.unsubscribeFromQueryStringChange();
             this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
             this.calculateTextareaHeight();
-            this.subscribeToQueryStringChange();
         }
     }
 
@@ -550,5 +523,23 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         const el = this.el.nativeElement.querySelector('textarea');
         el.style.cssText = `height:auto`;
         el.style.cssText = `height:${el.scrollHeight}px`;
+    }
+
+    ngOnDestroy() {
+        this._subscribers.forEach(s => s.unsubscribe());
+    }
+
+    onChange: any = () => {
+    };
+
+    onTouched: any = () => {
+    };
+
+    registerOnChange(fn) {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn) {
+        this.onTouched = fn;
     }
 }

@@ -3,9 +3,11 @@
     <textarea
             spellcheck="false"
             rows="1"
+            [readonly]="disableSearch"
             [tabindex]="disabled ? -1 : 0"
             [placeholder]="placeholder"
             (click)="inputClick($event)"
+            (keyup)="onQueryStringChange.next($event)"
             (keyup.enter)="onEnterClick($event)"
             (keydown.enter)="onEnterKeydown($event)"
             (focus)="startSearch($event)"
@@ -45,7 +47,7 @@
 <!-- / search input -->
 
 <!-- options list wrapper -->
-<div class="adm-select__options">
+<div class="adm-select__options" (click)="stopEventPropagation($event)">
     <!-- lists results -->
     <ul class="adm-select__options__list">
         <!-- template for list without groups -->

@@ -26,6 +26,7 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   menu: { title, path }[] = [
-    {title: 'Buttons', path: ['buttons']}
+    {title: 'Buttons', path: ['buttons']},
+    {title: 'Single Select', path: ['single-select']},
   ]
 }
