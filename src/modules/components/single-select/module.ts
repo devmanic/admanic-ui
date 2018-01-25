@@ -1,13 +1,12 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {SingleSelectOptions} from './options.service';
-import {HttpModule} from "@angular/http";
-import { SingleSelectComponent } from './single-select.component';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { SingleSelectComponent } from './component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidatorsModule } from '../validator/module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { ToastModule } from '../toastr/module';
+import { HttpModule } from '@angular/http';
+import { SingleSelectConfig } from './config.service';
 
 @NgModule({
     imports: [
@@ -16,8 +15,7 @@ import { ToastModule } from '../toastr/module';
         FormsModule,
         ReactiveFormsModule,
         ValidatorsModule,
-        SharedModule,
-        ToastModule
+        SharedModule
     ],
     exports: [SingleSelectComponent, RouterModule],
     declarations: [SingleSelectComponent]
@@ -26,7 +24,7 @@ export class SingleSelectModule {
     public static forRoot(): ModuleWithProviders {
         return {
             ngModule: SingleSelectModule,
-            providers: [SingleSelectOptions]
+            providers: [SingleSelectConfig]
         };
     }
 }

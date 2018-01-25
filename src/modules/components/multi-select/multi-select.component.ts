@@ -24,7 +24,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
         '[class.is-open]': '_isOpen && !_isTags',
         '[class.is-tags]': '_isTags',
         '[class.is-above]': '_isAbove',
-        '[class.pending-data-load]': '!_dataLoaded'
+        '[class.pending-data-load]': '!isDataLoaded'
     },
     styleUrls: ['styles.scss'],
     providers: [MULTISELECT_VALUE_ACCESSOR],

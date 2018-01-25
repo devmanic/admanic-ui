@@ -21,11 +21,11 @@ import {
                             Go to page:
                         </td>
                         <td>
-                            <adm-select single [options]="_range" (selected)="setCurrent($event.value)"
+                            <adm-single-select [options]="_range" (selected)="setCurrent($event.value)"
                                         [ngModel]="_current"
                                         class="adm-pagination__dropdown"
                                         placeholder="Page">
-                            </adm-select>
+                            </adm-single-select>
                         </td>
                         <!--<td style="padding-right:15px;">-->
                         <!--of {{this._totalBtns}}-->

@@ -113,7 +113,7 @@ export class DateRangePickerComponent {
 
     formatDate(date: Date) {
         if (!this._calendar.isDate(date)) {
-            return 'not selected';
+            return 'not onSelected';
         }
         return moment(date).format(this.format);
     }
