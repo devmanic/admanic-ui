@@ -19,8 +19,6 @@ import { Http, RequestOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
 
-declare const SERVER: string;
-
 export interface OptionModel {
     value: string | number;
     label: string;
@@ -36,7 +34,6 @@ export interface OptionWithGroupModel {
 export interface AjaxParams {
     path: string;
     options?: any;
-    fullpath?: boolean;
     mapperFn?;
     arrayFormatFn?;
 }
