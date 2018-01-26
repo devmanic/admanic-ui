@@ -10,35 +10,19 @@ import {
     ViewEncapsulation, ElementRef
 } from '@angular/core';
 import {
-    ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators
+    AbstractControl,
+    ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, ValidatorFn, Validators
 } from '@angular/forms';
-import { SingleSelectOptions } from './options.service';
-import { Subscription, Subject } from 'rxjs';
-import { CustomValidators } from '../validator/service';
-import { Http, RequestOptions, Response } from '@angular/http';
+import { Subscription } from 'rxjs';
+import { Http, RequestOptions, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
+import { Subject } from 'rxjs/Subject';
+import { SingleSelectConfig } from './config.service';
+import { OptionModel, OptionWithGroupModel, AjaxSettings } from './model';
+import { isObject } from 'rxjs/util/isObject';
 
-export interface OptionModel {
-    value: string | number;
-    label: string;
-    hidden?: boolean;
-    selected?: boolean;
-}
-
-export interface OptionWithGroupModel {
-    name: string;
-    values: OptionModel[];
-}
-
-export interface AjaxParams {
-    path: string;
-    options?: any;
-    mapperFn?;
-    arrayFormatFn?;
-}
-
-export const newEntityLen: number = 3;
+export const newEntityLen = 3;
 
 @Component({
     providers: [
@@ -48,269 +32,271 @@ export const newEntityLen: number = 3;
             multi: true
         }
     ],
-    selector: 'adm-single-select, adm-select[single]',
+    selector: 'adm-single-select',
     styleUrls: ['./style.scss'],
     templateUrl: './template.html',
     encapsulation: ViewEncapsulation.None,
     host: {
         '[class.adm-select]': 'true',
         '[class.disabled]': 'disabled',
-        '[class.invalid]': 'invalidQueryString',
-        '[class.is-active]': 'isOpen',
-        '[class.is-drop-up]': 'showToTop',
-        '[class.pending-data-load]': '!_dataLoaded',
+        '[class.invalid]': '!isQueryStringValid',
+        '[class.is-active]': 'isResultsShown',
+        '[class.is-drop-up]': 'isShowResultsOnTop',
+        '[class.pending-data-load]': '!isDataLoaded',
         '[class.has_value]': '!!value',
         '[class.without_value]': '!value'
     }
 })
 export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, AfterViewInit {
-    onQueryStringChange = new Subject<KeyboardEvent>();
+    _isResultsShown: boolean = false;
+    get isResultsShown(): boolean {
+        return this._isResultsShown;
+    }
+
+    set isResultsShown(value: boolean) {
+        this._isResultsShown = !!value;
+        if (this._isResultsShown) {
+            setTimeout(() => {
+                if (this.selectedItem && this.selectedItem.value) {
+                    const fi = this.options.findIndex((el: OptionModel) => el.value === this.selectedItem.value);
+                    this.focusedResultIndex = fi !== -1 ? fi : 0;
+                }
+                this.optionsListContainer = this.el.nativeElement.querySelector('.adm-select__options__list');
+                this.setScrollForList();
+            }, 100);
+        }
+        this.isResultsShown ? this.onShown.emit() : this.onHidden.emit();
+    }
+
+    isWithGroups: boolean = false;
+    isShowResultsOnTop: boolean = false;
+    isDataLoaded: boolean;
+    isQueryStringValid: boolean = false;
+    isAjax: boolean = false;
+    isPendingRequest: boolean = false;
+    isSkipQuery: boolean = false;
     serverError: boolean | string = false;
-    isOpen: boolean = false;
+
+    id: string = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    server: string = this.config.server;
+    latestQuery: string;
     newItemPostfix: string;
-    server = this.config.server;
-    hasGroups: boolean = false;
-    invalidQueryString: boolean = false;
-    showToTop: boolean = false;
-    _options: Array<OptionModel | OptionWithGroupModel> = [];
-    _dataLoaded: boolean;
-    queryChangeSubscription: Subscription;
-    latestQuery: string = '';
-    _viewPath: string;
+    originalPlaceholder: string;
 
-    _totalItemsInAjaxResponse: number;
-    _currentAjaxPage: number = 1;
-    _ajax: AjaxParams = null;
+    totalItemsInAjaxResponse: number;
+    currentAjaxPage: number = 1;
+    focusedResultIndex: number = 0;
 
-    @Input('value') _value: any = false;
-    @Input() placeholder: string = 'Select option';
-    @Input() allowClear: boolean = false;
+    onSearchModelChange: Subject<KeyboardEvent> = new Subject<KeyboardEvent>();
+    searchModel: FormControl = new FormControl(null, [
+        Validators.minLength(newEntityLen),
+        Validators.maxLength(100),
+        this.searchModelValidator()
+    ]);
+    form: FormGroup = new FormGroup({
+        search: this.searchModel
+    });
+
+    selectedItem: OptionModel = null;
+    subscribers: Subscription[] = [];
+
+    @Input() placeholder: string = this.config.placeholder;
+    @Input() allowClear: boolean = this.config.allowClear;
+    @Input() entityName: string = this.config.entityName;
+    @Input() showAddNewBtn: boolean = this.config.showAddNewBtn;
+    @Input() disableSearch: boolean = this.config.disableSearch;
     @Input() allowCreateEntity: boolean = false;
     @Input() disabled: boolean = false;
-    @Input() entityName: string = 'item';
-    @Input() showAddNewBtn: boolean = false;
-    @Input() disableSearch: boolean = false;
+
+    _ajax: AjaxSettings;
+    optionsListContainer: Element;
 
     @Input()
-    set ajax(params: AjaxParams) {
+    set ajax(params: AjaxSettings) {
         setTimeout(() => {
-            this.serverError = false;
             if (params) {
-                this._dataLoaded = true;
+                this.isDataLoaded = true;
                 this._ajax = params;
-                this.queryStr.setValue('');
+                this.searchModel.setValue('');
                 this._options = [];
             }
             this.isAjax = !!params;
         }, 0);
     }
 
-    get ajax(): AjaxParams {
+    get ajax(): AjaxSettings {
         return this._ajax;
     }
 
+    _viewPath: string;
     @Input()
-    set viewPath(path) {
+    set viewPath(path: string) {
         this._viewPath = `${location.origin}/${path}`;
     }
 
-    get options() {
+    _options: Array<OptionModel | OptionWithGroupModel> = [];
+    @Input()
+    set options(options: Array<OptionModel | OptionWithGroupModel>) {
+        setTimeout(() => {
+            this._options = Array.isArray(options) ? options : [];
+            this.isDataLoaded = options === null ? false : true;
+            this.isWithGroups = Array.isArray(options) && options.length && options.every((el: OptionModel | OptionWithGroupModel) => {
+                return isObject(el) && el.hasOwnProperty('name') && el.hasOwnProperty('values');
+            });
+            const selected: any = this.isWithGroups ? ArrayUtils.flatMap(this.options, (item: any) => item.values).find((item: any) => item.selected) : this.options.find((item: any) => item.selected);
+            if (selected) {
+                this.writeValue(selected.value);
+            }
+        }, 0);
+    }
+
+    get options(): Array<OptionModel | OptionWithGroupModel> {
         return this._options;
     }
 
-    @Input()
-    set options(options: Array<OptionModel | OptionWithGroupModel>) {
-        this.serverError = false;
-        if (options && Array.isArray(options)) {
-            this._options = this.value ?
-                options.map((el: OptionModel) => Object.assign({}, el, {selected: el.value == this.value})) :
-                options;
-
-            let selected = this._options.find((el: OptionModel) => el.selected);
-            if (selected)
-                this.writeValue(selected['value']);
-
-            this._dataLoaded = true;
-            this.hasGroups = this._options.length && this._options.every((el: any) => el.hasOwnProperty('name'));
-        } else if (options === null) {
-            this._dataLoaded = false;
-            this._options = [];
-            this.hasGroups = false;
-        }
+    get isOptionsNotFound(): boolean {
+        return Array.isArray(this.options) && this.options.length ? this.options.every((option: OptionModel) => option.hidden) : true;
     }
 
-    get value() {
+    _value: string | number;
+    get value(): string | number {
         return this._value;
     }
 
-    set value(val) {
+    set value(val: string | number) {
         this._value = val;
         this.onChange(val);
         this.onTouched();
     }
 
-    @Output() newEntityAdd = new EventEmitter();
-    @Output() show = new EventEmitter();
-    @Output() hide = new EventEmitter();
-    @Output() selected = new EventEmitter();
-    @Output() onAddClick = new EventEmitter();
-    @Output() onAjaxResponceRecive = new EventEmitter<{ total_rows: number }>();
-
-    queryStr: FormControl = new FormControl(null, [
-        Validators.minLength(newEntityLen),
-        Validators.maxLength(100),
-        CustomValidators.ZelectQueryValidator()
-    ]);
-    form: FormGroup = new FormGroup({
-        queryStr: this.queryStr
-    });
-
-    originalPlaceholder;
-    id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    _subscribers: Subscription[] = [];
-
-    isAjax: boolean = false;
-    pendingRequest: boolean = false;
-    selectedItem: OptionModel = null;
+    @Output() onNewEntityCreated: EventEmitter<string> = new EventEmitter();
+    @Output() onShown: EventEmitter<void> = new EventEmitter();
+    @Output() onHidden: EventEmitter<void> = new EventEmitter();
+    @Output() onSelected: EventEmitter<OptionModel> = new EventEmitter();
+    @Output() onAddClicked: EventEmitter<Event> = new EventEmitter();
+    @Output() onAjaxResponseReceived: EventEmitter<{ total_rows: number }> = new EventEmitter();
 
     constructor(public http: Http,
-                private config: SingleSelectOptions,
+                private config: SingleSelectConfig,
                 private el: ElementRef) {
     }
 
-    subscribeToQueryStringChange() {
-        this._subscribers.push(
-            this.onQueryStringChange.debounceTime(300).subscribe(($event: KeyboardEvent) => {
-                const isBackspaceOrDelete = ($event.keyCode === 8 || $event.keyCode === 46);
-                if (!!String.fromCharCode($event.keyCode).match(/\w/) || isBackspaceOrDelete) {
-                    this.calculateTextareaHeight();
-                    this.isAjax ? this.onAjaxFindOptions() : this.filter();
-                }
-            })
+    subscribeToSearchModelChange() {
+        this.subscribers.push(
+            this.onSearchModelChange
+                .debounceTime(300)
+                .subscribe(($event: KeyboardEvent) => {
+                    const isBackspaceOrDelete = ($event.keyCode === 8 || $event.keyCode === 46);
+                    if (!!String.fromCharCode($event.keyCode).match(/\w/) || isBackspaceOrDelete) {
+                        this.calculateTextAreaHeight();
+                        this.isSkipQuery = false;
+                        this.isAjax && this.config.requestParamSearchKey ? this.getOptionsFromServer() : this.filterOptions();
+                    }
+                })
         );
-    }
-
-    inputBlurHandler(e: Event) {
-        setTimeout(() => {
-            if (this.isOpen) {
-                this.isOpen = false;
-                this.hide.emit();
-            }
-        }, 300);
     }
 
     ngAfterViewInit() {
         this.newItemPostfix = ` (New ${this.entityName} will be created)`;
         this.originalPlaceholder = this.placeholder;
-        this.subscribeToQueryStringChange();
+        this.subscribeToSearchModelChange();
 
         if (this.allowCreateEntity) {
-            this.queryStr.statusChanges.subscribe((status: string) => {
-                if (this.queryStr.value.length + 1 > newEntityLen) {
-                    this.invalidQueryString = (status === 'INVALID');
-                } else {
-                    this.invalidQueryString = false;
-                }
-            });
+            this.subscribers.push(
+                this.searchModel.statusChanges
+                    .subscribe((status: string) => {
+                        this.isQueryStringValid = this.searchModel.value.length + 1 > newEntityLen ? status === 'VALID' : true;
+                    })
+            );
+        }
+        Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(() => this.calculateTextAreaHeight.bind(this));
+        this.calculateTextAreaHeight();
+    }
+
+    writeValue(value: string | number, isSelect = false) {
+        if (!this.options) {
+            return;
         }
 
-        Observable.fromEvent(window, 'resize').subscribe(() => {
-            this.calculateTextareaHeight();
-        });
+        if (typeof value === 'string' || typeof value === 'number' && `${value}` !== '') {
+            setTimeout(() => {
+                let array = this.isWithGroups ? ArrayUtils.flatMap(this.options, (item: any) => item.values) : this.options;
+                let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => `${value}` === `${option.value}`);
+                this.selectedItem = selectedOption;
+                if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
+                    this.searchModel.setValue('');
+                } else {
+                    this.value = value;
+                    let label = this.trimLabel(selectedOption.label);
+                    this.searchModel.setValue(label);
+                    if (isSelect) {
+                        this.onSelected.emit(selectedOption);
+                    }
 
-        setTimeout(() => {
-            this.calculateTextareaHeight();
-        }, 100);
+                }
+            }, 100);
+        } else {
+            this.resetValue();
+        }
+        this.calculateTextAreaHeight();
+    }
+
+    resetValue() {
+        this.searchModel.setValue('');
+        this.value = null;
+        this.selectedItem = null;
     }
 
     clearSelection(e: Event = new Event('')) {
         e.preventDefault();
-        this.writeValue('');
-        this.selected.emit(this.selectedItem);
+        this.resetValue();
+        this.onSelected.emit(this.selectedItem);
     }
 
-    writeValue(value, isSelect = false) {
-        if (!this._options) {
-            return;
-        }
-        if (value || value === null || value == '0') {
-            this.value = value;
-            let array = this.hasGroups ? ArrayUtils.flatMap(this._options, (item: any) => item.values) : this._options;
-            let selectedOption: OptionModel = <OptionModel>array.find((option: OptionModel) => value == option.value);
-            this.selectedItem = selectedOption;
-
-            if (!selectedOption || !selectedOption.hasOwnProperty('label') || !selectedOption.hasOwnProperty('value')) {
-                this.queryStr.setValue('');
-            } else {
-                let label = this.trimNewItemString(selectedOption.label);
-                this.queryStr.setValue(label);
-
-                if (isSelect) {
-                    this.selected.emit(selectedOption);
-                }
-            }
-            this.calculateTextareaHeight();
-        } else {
-            this.queryStr.setValue('');
-            this.calculateTextareaHeight();
-            this.value = null;
-            this.selectedItem = null;
-            this._options = this._options.map((option: OptionModel) => {
-                return Object.assign(option, {selected: false, hidden: false});
-            });
+    setSelectedItem(arr: Array<OptionModel | OptionWithGroupModel>) {
+        const selected: OptionModel = <OptionModel>arr.find((el: OptionModel) => `${el.value}` === `${this.value}`);
+        if (selected) {
+            this.selectedItem = selected;
         }
     }
 
-    @HostListener('document: click', ['$event'])
-    onClickOnDocument(e: Event | any) {
-        if (!e.isInputClick || (e.isInputClick && e.inputId != this.id)) {
-            this.showValueLabelOnEmptyQuery();
-            this.isOpen = false;
-            this.hide.emit();
+    selectItemHandler(value: string | number, index) {
+        if (!this.selectedItem || this.selectedItem.label !== this.searchModel.value) {
+            this.latestQuery = this.searchModel.value;
         }
-    }
-
-    onSelect(value: any) {
-        if (!this.selectedItem || this.selectedItem.label != this.queryStr.value) {
-            this.latestQuery = this.queryStr.value;
-        }
+        this.focusedResultIndex = index;
         this.writeValue(value, true);
-        if (this.isOpen) {
-            this.isOpen = false;
-            this.hide.emit();
+        if (this.isResultsShown) {
+            this.isResultsShown = false;
+            this.el.nativeElement.querySelector('textarea').blur();
         }
     }
 
-    unsubscribeFromQueryStringChange() {
-        if (this.queryChangeSubscription) {
-            this.queryChangeSubscription.unsubscribe();
-            this.queryChangeSubscription = null;
-        }
+    loadMoreOptionsFromServer() {
+        this.sendRequest(this.currentAjaxPage + 1).toPromise()
+            .then((res) => {
+                this.el.nativeElement.querySelector('textarea').focus();
+                this.totalItemsInAjaxResponse = res.total_rows;
+                this._options = [].concat(this.options, this.responseMapper(res));
+                this.setSelectedItem(this.options);
+            });
     }
 
-    onAjaxFindOptions(skipQuery: boolean = false) {
-        // this._options = [];
-        this.sendAjax(skipQuery).toPromise().then(
+    getOptionsFromServer() {
+        this.sendRequest().toPromise().then(
             (res: any) => {
-                this._options = this.ajaxResponseMapper(res);
-                this._totalItemsInAjaxResponse = res.total_rows;
-                this.onAjaxResponceRecive.emit({total_rows: this._totalItemsInAjaxResponse});
-                const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
-                if (selected) {
-                    this.selectedItem = selected;
-
-                    // if (!this.isOpen && this.value) {
-                    //     this.writeValue(this.selectedItem.value);
-                    // }
-                }
+                this._options = this.responseMapper(res);
+                this.totalItemsInAjaxResponse = res.total_rows;
+                this.onAjaxResponseReceived.emit({total_rows: this.totalItemsInAjaxResponse});
+                this.setSelectedItem(this._options);
             },
-            (err: any) => this._options = []
+            () => this._options = []
         );
     }
 
-    getRequestOptions(params: any = {}): RequestOptions {
-        if (this.config.pagination) {
-            params.page = this._currentAjaxPage;
+    getRequestParams(params: any = {}): RequestOptions {
+        if (this.config.enablePagination) {
+            params.page = this.currentAjaxPage;
             params[this.config.requestParamLimitKey] = 100;
         }
 
@@ -323,8 +309,20 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                 delete params[key];
             }
         }
-        const requestOptions = new RequestOptions();
-        requestOptions.params = params;
+
+        const searchParams = new URLSearchParams();
+        for (const key of Object.keys(params)) {
+            const val = params[key];
+            if (Array.isArray(val)) {
+                val.forEach((item, i) => {
+                    searchParams.set(`${key}[${i}]`, item);
+                });
+            } else {
+                searchParams.set(key, params[key]);
+            }
+        }
+
+        const requestOptions = new RequestOptions({search: searchParams});
 
         if (this.config.requestHeaders) {
             requestOptions.headers = this.config.requestHeaders;
@@ -332,32 +330,36 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         return requestOptions;
     }
 
-    sendAjax(skipQuery: boolean = false, page: number = 1) {
-        this.serverError = false;
-        this.pendingRequest = true;
-        this._dataLoaded = false;
-        this._currentAjaxPage = page;
+    sendRequest(page = 1) {
+        this.isPendingRequest = true;
+        this.isDataLoaded = false;
+        this.currentAjaxPage = page;
         const params = {
-            [this.config.requestParamSearchKey]: skipQuery ? this.latestQuery : this.queryStr.value,
             ...this.config.requestParams,
-            ...this.ajax.options
+            ...this.ajax.requestParams
         };
 
-        return this.http.get(this.server + `/${this.ajax.path}`, this.getRequestOptions(params))
+        if (this.config.requestParamSearchKey) {
+            params[this.config.requestParamSearchKey] = this.isSkipQuery ? this.latestQuery : this.searchModel.value;
+        }
+        return this.http.get(`${this.server}/${this.ajax.path}`, this.getRequestParams(params))
             .map((res: Response) => res.json())
             .catch((err) => {
                 this.serverError = `${ err.status ? `${err.status} ${err.statusText}` : 'Web Server error' }`;
                 return Observable.throw(err);
             })
             .finally(() => {
-                this.pendingRequest = false;
-                this._dataLoaded = true;
+                this.isPendingRequest = false;
+                this.isDataLoaded = true;
             });
     }
 
-    ajaxResponseMapper(res: { data: any[] }): OptionModel[] {
-        const arrayInField = this.config.requestResponseArrayKey && res.hasOwnProperty(this.config.requestResponseArrayKey) && Array.isArray(res[this.config.requestResponseArrayKey]);
-        let arr = arrayInField ? res[this.config.requestResponseArrayKey] : Array.isArray(res) ? res : [];
+    responseMapper(res: { data: any[] }): OptionModel[] {
+        const arrayInField = this.config.responseArrayKey &&
+            res.hasOwnProperty(this.config.responseArrayKey) &&
+            Array.isArray(res[this.config.responseArrayKey]);
+
+        let arr = arrayInField ? res[this.config.responseArrayKey] : Array.isArray(res) ? res : [];
 
         if (this.ajax.hasOwnProperty('arrayFormatFn') && typeof this.ajax.arrayFormatFn === 'function') {
             arr = this.ajax.arrayFormatFn(arr);
@@ -367,163 +369,184 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
         }
 
         const hasCustomResponseMapper = this.ajax.hasOwnProperty('mapperFn') && typeof this.ajax.mapperFn === 'function';
-        return arr.map(hasCustomResponseMapper ? this.ajax.mapperFn : this.config.requestResponseMapFn.bind(this));
+        return arr.map(hasCustomResponseMapper ? this.ajax.mapperFn : this.config.responseMapFn.bind(this));
     }
 
-    ajaxLoadMoreItems(e: Event) {
-        this.sendAjax(true, this._currentAjaxPage + 1).toPromise().then((res) => {
-            this._totalItemsInAjaxResponse = res.total_rows;
-            this._options = [].concat(this._options, this.ajaxResponseMapper(res));
-            const selected: OptionModel = <OptionModel>this._options.filter((el: OptionModel) => el.selected)[0];
-            if (selected) {
-                this.selectedItem = selected;
-            }
-        });
-    }
-
-    isElSelected(item: OptionModel): boolean {
-        if (this.selectedItem) {
-            return item.value == this.selectedItem.value;
-        }
-        return false;
-    }
-
-    filter(value: string = this.queryStr.value) {
-        if (value === null || !this._options) {
-            return;
-        }
-        if (!this.hasGroups) {
-            this._options = this._options.map((item: OptionModel) => ({
-                ...item,
-                hidden: (item.label !== null ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false),
-                selected: this.isElSelected(item)
-            }));
-        } else {
-            this._options = this._options.map((option: any) => (
-                option.values ? {
-                    name: option.name,
-                    hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
-                    values: option.values.map((item: OptionModel) =>
-                        Object.assign(item, {
-                            hidden: (item.label !== null ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false),
-                            selected: this.isElSelected(item)
-                        })
-                    )
-                } : option
-            ));
+    filterOptions(value: string = this.searchModel.value) {
+        if (value !== null || Array.isArray(this.options)) {
+            this.isWithGroups ? this.filterOptionsWithGroup(value) : this.filterFlatOptions(value);
         }
     }
 
-    inputClick(e: Event | any) {
-        e.isInputClick = true;
-        e.inputId = this.id;
+    filterFlatOptions(value: string) {
+        this._options = this.options.map((item: OptionModel) => ({
+            ...item,
+            hidden: (item.label ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false)
+        }));
     }
 
-    stopEventPropagation($event: Event) {
-        $event.stopPropagation();
-        $event.preventDefault();
+    filterOptionsWithGroup(value: string) {
+        this._options = this.options.map((option: any) => (
+            option.values ? {
+                name: option.name,
+                hidden: option.values.every((item: OptionModel) => item.label.toLowerCase().indexOf(value.toLowerCase()) === -1),
+                values: option.values.map((item: OptionModel) =>
+                    Object.assign(item, {
+                        hidden: (item.label ? item.label.toLowerCase().indexOf(value.toLowerCase()) === -1 : false)
+                    })
+                )
+            } : option
+        ));
     }
 
-    onEnterClick(e: Event) {
-        const value = (<HTMLInputElement>e.target).value;
-        if (this.hasGroups || !value) return;
-        const filtered = this._options.filter((el: OptionModel) => el.value == value);
-        if (filtered && filtered[0]) {
-            this.onSelect(filtered[0]['value']);
-        }
-    }
-
-    onEnterKeydown(e: Event) {
-        e.preventDefault();
-    }
-
-    calculatePosition() {
-        this.showToTop = this.el.nativeElement.getBoundingClientRect().top + 165 > window.innerHeight;
-    }
-
-    startSearch(e: Event) {
-        if (this.isOpen) {
-            return false;
-        }
+    showResults(e: Event) {
         e.preventDefault();
         e.stopPropagation();
-        if (!this.disableSearch) {
-            (<HTMLInputElement>e.target).select();
-        }
-        this.filter('');
-        this.calculatePosition();
-        this.isOpen = true;
-        this.show.emit();
-        if (this.isAjax) {
-            this.onAjaxFindOptions(true);
+        if (!this.isResultsShown) {
+            if (!this.disableSearch) {
+                (<HTMLInputElement>e.target).select();
+            }
+            this.filterOptions('');
+            this.calculateResultsPosition();
+            this.isResultsShown = true;
+            if (this.isAjax) {
+                this.isSkipQuery = true;
+                this.getOptionsFromServer();
+            }
         }
     }
 
-    toggleOpen(e: Event = new Event('')) {
+    toggleResults(e: Event = new Event('')) {
         e.preventDefault();
-        this.inputClick(e);
-        this.isOpen = !this.isOpen;
-        if (this.isOpen) {
-            this.filter('');
-            this.calculatePosition();
-            this.show.emit();
+        this.inputClickHandler(e);
+        this.isResultsShown = !this.isResultsShown;
+        if (this.isResultsShown) {
+            this.filterOptions('');
+            this.calculateResultsPosition();
         } else {
-            this.showValueLabelOnEmptyQuery();
-            this.hide.emit();
+            this.setSelectedItemToSearchModel();
         }
     }
 
-    addNewOption() {
-        if (this.queryStr.valid) {
+    addNewEntityToOptions() {
+        if (this.searchModel.valid) {
             let newOption: OptionModel = {
                 value: '-2',
-                label: this.trimNewItemString(this.queryStr.value) + this.newItemPostfix,
-                selected: true
+                label: this.trimLabel(this.searchModel.value) + this.newItemPostfix
             };
             this._options = [].concat(
-                this._options.filter((option: OptionModel) => option.value != newOption.value),
+                this.options.filter((option: OptionModel) => option.value !== newOption.value),
                 [newOption]
             );
             this.writeValue(newOption.value);
-            this.newEntityAdd.emit(this.trimNewItemString(newOption.label));
-            this._dataLoaded = true;
+            this.onNewEntityCreated.emit(this.trimLabel(newOption.label));
+            this.isDataLoaded = true;
         }
     }
 
-    get nothingNotFound(): boolean {
-        return this._options && this._options.length ? this._options.every((option: OptionModel) => option.hidden) : true;
-    }
-
-    showValueLabelOnEmptyQuery() {
-        if (this.selectedItem && this.trimNewItemString(this.queryStr.value) !== this.trimNewItemString(this.selectedItem.label)) {
-            this.queryStr.setValue(this.trimNewItemString(this.selectedItem.label));
-            this.calculateTextareaHeight();
+    setSelectedItemToSearchModel() {
+        if (this.selectedItem && this.trimLabel(this.searchModel.value) !== this.trimLabel(this.selectedItem.label)) {
+            this.searchModel.setValue(this.trimLabel(this.selectedItem.label));
+            this.calculateTextAreaHeight();
         }
     }
 
-    trimNewItemString(str: string): string {
+    trimLabel(str: string): string {
         if (str !== null) {
             return `${str}`.split(this.newItemPostfix)[0].trim();
         }
         return '';
     }
 
-    onAddNewBtnClick(e: Event = new Event('')) {
-        this.onAddClick.emit(e);
+    calculateResultsPosition() {
+        this.isShowResultsOnTop = this.el.nativeElement.getBoundingClientRect().top + 165 > window.innerHeight;
     }
 
-    trackListByFn(index: number, item: OptionModel) {
-        return index;
-    }
-
-    calculateTextareaHeight() {
+    calculateTextAreaHeight() {
         const el = this.el.nativeElement.querySelector('textarea');
         el.style.cssText = `height:auto`;
         el.style.cssText = `height:${el.scrollHeight}px`;
     }
 
+    enterClickHandler(e: Event) {
+        const value = (<HTMLInputElement>e.target).value;
+        if (!this.isWithGroups && value) {
+            const foundedItem: OptionModel = <OptionModel>this.options.find((el: OptionModel) => el.value === value);
+            if (foundedItem) {
+                const foundedIndex = this._options.find((el: OptionModel) => el.value === foundedItem.value);
+                this.selectItemHandler(foundedItem.value, foundedIndex);
+            }
+        }
+    }
+
+    inputKeyUpHandler($event: KeyboardEvent) {
+        const keyCode = $event.keyCode;
+        if (keyCode === 13) {
+            const foundedItem: OptionModel = <OptionModel>this.options[this.focusedResultIndex];
+            if (foundedItem) {
+                this.selectItemHandler(foundedItem.value, this.focusedResultIndex);
+            }
+        } else if (keyCode === 38) {
+            $event.preventDefault();
+            if (this.focusedResultIndex > 0) {
+                this.focusedResultIndex--;
+                this.setScrollForList();
+            }
+        } else if (keyCode === 40) {
+            $event.preventDefault();
+            if (this.focusedResultIndex !== this.options.length - 1) {
+                this.focusedResultIndex++;
+                this.setScrollForList();
+            }
+        } else if ((keyCode > 47 && keyCode < 58) || (keyCode > 64 && keyCode < 91) || (keyCode > 95 && keyCode < 112) || keyCode == 32) {
+            this.onSearchModelChange.next($event);
+        }
+    }
+
+    setScrollForList() {
+        if (this.optionsListContainer) {
+            if (this.focusedResultIndex > this.options.length) {
+                this.focusedResultIndex = 0;
+            }
+            const arr = Array.from(this.optionsListContainer.querySelectorAll('li')).map(el => el.clientHeight);
+            arr.length = this.focusedResultIndex;
+            const size = arr.length ? arr.reduce((p, c) => p + c) : 0;
+            this.optionsListContainer.scrollTop = size;
+        }
+    }
+
+    inputBlurHandler(e: Event) {
+        setTimeout(() => {
+            if (this.isResultsShown && !this.isPendingRequest) {
+                this.isResultsShown = false;
+            }
+        }, 300);
+    }
+
+    enterKeydownHandler(e: Event) {
+        e.preventDefault();
+    }
+
+    inputClickHandler(e: Event | any) {
+        e.isInputClick = true;
+        e.inputId = this.id;
+    }
+
+    resultsClickHandler($event: Event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+    }
+
+    @HostListener('document: click', ['$event'])
+    documentClickHandler(e: Event | any) {
+        if (!e.isInputClick || (e.isInputClick && e.inputId !== this.id)) {
+            this.setSelectedItemToSearchModel();
+            this._isResultsShown = false;
+        }
+    }
+
     ngOnDestroy() {
-        this._subscribers.forEach(s => s.unsubscribe());
+        this.subscribers.forEach(s => s.unsubscribe());
     }
 
     onChange: any = () => {
@@ -538,5 +561,20 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
 
     registerOnTouched(fn) {
         this.onTouched = fn;
+    }
+
+    trackListByFn(index: number) {
+        return index;
+    }
+
+    searchModelValidator(): ValidatorFn {
+        let pattern = /^[\w\s-,._\/*]+$/;
+        return (control: AbstractControl): { [key: string]: any } => {
+            if (!(control.dirty || control.touched) || !control.value) {
+                return null;
+            } else {
+                return pattern.test(control.value) ? null : {stringPattern: false};
+            }
+        };
     }
 }

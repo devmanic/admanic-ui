@@ -3,12 +3,11 @@
     <textarea
             spellcheck="false"
             rows="1"
-            [readonly]="disableSearch"
+            [readonly]="disableSearch || isPendingRequest"
             [tabindex]="disabled ? -1 : 0"
             [placeholder]="placeholder"
             (click)="inputClickHandler($event)"
-            (keyup)="onSearchModelChange.next($event)"
-            (keyup.enter)="enterClickHandler($event)"
+            (keyup)="inputKeyUpHandler($event)"
             (keydown.enter)="enterKeydownHandler($event)"
             (focus)="showResults($event)"
             (blur)="inputBlurHandler($event)"
@@ -47,14 +46,15 @@
 <!-- / search input -->
 
 <!-- options list wrapper -->
-<div class="adm-select__options" (click)="resultsClickHandler($event)">
+<div class="adm-select__options" *ngIf="isResultsShown" (click)="resultsClickHandler($event)">
     <!-- lists results -->
     <ul class="adm-select__options__list">
         <!-- template for list without groups -->
         <ng-template [ngIf]="!isWithGroups">
-            <li *ngFor="let item of _options; trackBy: trackListByFn;"
-                [ngClass]="{'hidden':item.hidden, 'is-selected':item.value === this.value && item.value !== null}"
-                (click)="selectItemHandler(item.value)">{{item.label}}
+            <li *ngFor="let item of _options; let i = index; trackBy: trackListByFn;"
+                (mouseover)="focusedResultIndex = i;"
+                [ngClass]="{'hidden':item.hidden, 'is-selected':item.value === this.value && item.value !== null, 'focused':focusedResultIndex === i}"
+                (click)="selectItemHandler(item.value, i)">{{item.label}}
             </li>
         </ng-template>
         <!-- / template for list without groups -->
@@ -73,10 +73,8 @@
         <!-- / template for list with groups -->
 
         <!-- results el -->
-        <li
-                *ngIf="(!allowCreateEntity && isOptionsNotFound) || (allowCreateEntity && isOptionsNotFound && !searchModel.value)">
-            {{isPendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results
-            found'}}
+        <li *ngIf="(!allowCreateEntity && isOptionsNotFound) || (allowCreateEntity && isOptionsNotFound && !searchModel.value)">
+            {{isPendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results found'}}
         </li>
 
         <!-- add new entity btn -->

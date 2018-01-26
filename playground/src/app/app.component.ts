@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -13,20 +13,22 @@ import {Component} from '@angular/core';
     }
   `],
   template: `
-    <h1>Admanic UI playground</h1>
-    <hr>
-    <ul class="pg-navigation">
-      <li *ngFor="let item of menu">
-        <a [routerLink]="item.path">{{item.title}}</a>
-      </li>
-    </ul>
-    <hr>
-    <router-outlet></router-outlet>
+    <div class="container-fluid">
+      <h1>Admanic UI playground</h1>
+      <hr>
+      <ul class="pg-navigation">
+        <li *ngFor="let item of menu">
+          <a [routerLink]="item.path">{{item.title}}</a>
+        </li>
+      </ul>
+      <hr>
+      <router-outlet></router-outlet>
+    </div>
   `
 })
 export class AppComponent {
   menu: { title, path }[] = [
     {title: 'Buttons', path: ['buttons']},
-    {title: 'Single Select', path: ['single-select']},
-  ]
+    {title: 'Single Select', path: ['single-select']}
+  ];
 }

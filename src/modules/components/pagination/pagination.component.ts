@@ -21,7 +21,7 @@ import {
                             Go to page:
                         </td>
                         <td>
-                            <adm-single-select [options]="_range" (selected)="setCurrent($event.value)"
+                            <adm-single-select [options]="_range" (onSelected)="setCurrent($event.value)"
                                         [ngModel]="_current"
                                         class="adm-pagination__dropdown"
                                         placeholder="Page">

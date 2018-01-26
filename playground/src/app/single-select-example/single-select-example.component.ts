@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {OptionModel} from '../../../../src/modules/components/single-select/model';
+import { Component, OnInit } from '@angular/core';
+import { OptionModel } from '../../../../src/modules/components/single-select/model';
 
 @Component({
   selector: 'app-single-select-example',
@@ -32,7 +32,8 @@ import {OptionModel} from '../../../../src/modules/components/single-select/mode
     <div class="row">
       <div class="col-md-4">
         <adm-input-container>
-          <adm-single-select [allowCreateEntity]="true" [showAddNewBtn]="true" (onAddClicked)="onAddClicked();" [(ngModel)]="model2"
+          <adm-single-select [allowCreateEntity]="true" [showAddNewBtn]="true" (onAddClicked)="onAddClicked();"
+                             [(ngModel)]="model2"
                              [options]="options"></adm-single-select>
         </adm-input-container>
       </div>
@@ -44,7 +45,10 @@ export class SingleSelectExampleComponent implements OnInit {
   defaultOptions: OptionModel[] = [];
   model: any;
   ajaxParams = {
-    path: 'all'
+    path: 'all',
+    requestParams: {
+      account_id: [1, 2]
+    }
   };
   options: OptionModel[] = [];
 
@@ -53,12 +57,12 @@ export class SingleSelectExampleComponent implements OnInit {
   }
 
   onAddClicked() {
-    alert('Add new button clicked')
+    alert('Add new button clicked');
   }
 
   setCustomValue() {
     this.defaultOptions = [{value: 'custom_item', label: 'Custom Item'}];
-    this.model = 'custom_item'
+    this.model = 'custom_item';
   }
 
   initDefaultOptions() {
@@ -68,8 +72,8 @@ export class SingleSelectExampleComponent implements OnInit {
       const m = Math.round(Math.random() * 1000);
       arr.push({
         value: `${m}`,
-        label: `item: ${m}`
-      })
+        label: `item- ${i} ${m}`
+      });
     }
     this.options = arr;
   }

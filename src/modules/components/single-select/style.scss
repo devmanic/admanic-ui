@@ -173,7 +173,8 @@ $spinner-item-background-color: #666;
           display: none;
         }
         &:hover,
-        &.is-selected {
+        &.is-selected,
+        &.focused {
           background-color: $select-item-bg;
         }
       }

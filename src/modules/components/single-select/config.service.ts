@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {OptionModel} from './model';
+import { Injectable } from '@angular/core';
+import { OptionModel } from './model';
 
 @Injectable()
 export class SingleSelectConfig {
@@ -7,7 +7,7 @@ export class SingleSelectConfig {
      * @type {string}
      * request params key in which be send value, that user entered in search string
      */
-    requestParamSearchKey: string;
+    requestParamSearchKey: string = 'query';
 
     /**
      * request params key that used for pagination, limit response items
@@ -39,8 +39,8 @@ export class SingleSelectConfig {
      */
     responseMapFn(el: any): OptionModel {
         return {
-            label: el.title,
-            value: el.id
+            label: el.title || el.text || el.label || el.url,
+            value: el.id || el.value
         };
     };
 
