@@ -20,6 +20,8 @@ import { ListRequestService } from '../../shared/list-request.service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
 import { ToastService } from '../toastr/service';
+import { Observable } from 'rxjs/Observable';
+import { ArrayUtils } from '../../shared/array.utlis';
 
 declare const SERVER: string;
 
@@ -178,7 +180,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     };
 
     selectedItem: OptionModel = null;
-
 
     constructor(public http: Http, public toastManager: ToastService, private el: ElementRef) {
         // this.subscribeToQueryStringChange();
