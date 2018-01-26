@@ -1,3 +1,4 @@
+<!--<pre>{{value|json:2}}</pre>-->
 <!-- search input -->
 <div class="adm-select__input" [formGroup]="form">
     <textarea
@@ -73,8 +74,10 @@
         <!-- / template for list with groups -->
 
         <!-- results el -->
-        <li *ngIf="(!allowCreateEntity && isOptionsNotFound) || (allowCreateEntity && isOptionsNotFound && !searchModel.value)">
-            {{isPendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results found'}}
+        <li
+                *ngIf="(!allowCreateEntity && isOptionsNotFound) || (allowCreateEntity && isOptionsNotFound && !searchModel.value)">
+            {{isPendingRequest ? 'Searching...' : !!serverError ? 'The results could not be loaded.' : 'No results
+            found'}}
         </li>
 
         <!-- add new entity btn -->

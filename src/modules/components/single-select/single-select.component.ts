@@ -176,9 +176,11 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Output() onAddClicked: EventEmitter<Event> = new EventEmitter();
     @Output() onAjaxResponseReceived: EventEmitter<{ total_rows: number }> = new EventEmitter();
 
-    constructor(public http: Http,
-                private config: SingleSelectConfig,
-                private el: ElementRef) {
+
+
+
+    constructor(public http: Http, private config: SingleSelectConfig, private el: ElementRef) {
+
     }
 
     subscribeToSearchModelChange() {
