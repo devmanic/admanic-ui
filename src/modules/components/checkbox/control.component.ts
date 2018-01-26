@@ -57,7 +57,9 @@ export class CheckboxControlComponent {
 
     @Input()
     set checked(val: boolean | string) {
-        this._checked = !!val;
+        setTimeout(() => {
+            this._checked = !!val;
+        }, 0);
     }
 
     get checked(): boolean | string {

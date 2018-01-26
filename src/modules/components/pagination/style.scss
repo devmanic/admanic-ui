@@ -12,6 +12,31 @@
         vertical-align: middle;
       }
     }
+    &.simple {
+      tr {
+        td {
+          padding: 0 5px;
+        }
+      }
+      .adm-pagination__list {
+        padding: 0 !important;
+        li {
+          button {
+            font-size: 20px;
+            padding: 5px 12px 8px;
+            display: inline-block;
+          }
+        }
+      }
+      .adm-input__container {
+        margin: 0 !important;
+        display: inline-block;
+        vertical-align: middle;
+        input {
+          width: 100px;
+        }
+      }
+    }
   }
   &__list {
     background: #fff;

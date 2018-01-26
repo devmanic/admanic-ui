@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { PaginationComponent } from './component';
+import { PaginationComponent } from './pagination.component';
+
 import { CommonModule } from '@angular/common';
 import { SingleSelectModule } from '../single-select/module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
