@@ -177,8 +177,6 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
     @Output() onAjaxResponseReceived: EventEmitter<{ total_rows: number }> = new EventEmitter();
 
 
-
-
     constructor(public http: Http, private config: SingleSelectConfig, private el: ElementRef) {
 
     }
@@ -211,7 +209,9 @@ export class SingleSelectComponent implements ControlValueAccessor, OnDestroy, A
                     })
             );
         }
-        Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(() => this.calculateTextAreaHeight.bind(this));
+        this.subscribers.push(
+            Observable.fromEvent(window, 'resize').debounceTime(300).subscribe(() => this.calculateTextAreaHeight.bind(this))
+        );
         this.calculateTextAreaHeight();
     }
 

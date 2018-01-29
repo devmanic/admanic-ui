@@ -2,6 +2,7 @@ export interface OptionModel {
     value: string | number;
     label: string;
     hidden?: boolean;
+    selected?: boolean;
 }
 
 export interface OptionWithGroupModel {
