@@ -2,15 +2,16 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MultiselectParams } from './model';
-import * as $ from 'jquery';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {MultiselectParams} from './model';
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => MultiSelectComponent),
     multi: true
 };
+
+// todo: fix clear selection
 
 @Component({
     selector: 'adm-multi-select, adm-select[multi]',
@@ -55,9 +56,16 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
     `
 })
 export class MultiSelectComponent implements AfterViewInit, OnDestroy {
+    writeValueTimeout: any;
+    onChangeTimeout: any;
+
+    get jQuery() {
+        return window['$'] || window['jQuery'];
+    }
+
     get $select() {
         const el = this.el.nativeElement.querySelector('select');
-        return !!window['$'] && !!el ? window['$'](el) : null;
+        return !!this.jQuery && !!el ? window['$'](el) : null;
     }
 
     _defaultParams: MultiselectParams = {width: '100%'};
@@ -130,18 +138,31 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         if (this.$select) {
             try {
                 this.$select.select2(this._params);
-                const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
-                $sortableContainer.sortable({
-                    containment: 'parent',
-                    appendTo: 'body',
-                    items: '.select2-selection__choice',
-                    update: () => {
-                        const $arr = $sortableContainer.find('.select2-selection__choice');
-                        const d = this.$select.select2('data');
-                        const newVal = Array.from($arr.map((i, el) => d.find(item => item.text === $(el).attr('title')).id));
-                        this.writeValue(newVal, false);
-                    }
-                });
+                try {
+                    const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
+                    $sortableContainer.sortable({
+                        containment: 'parent',
+                        appendTo: 'body',
+                        items: '.select2-selection__choice',
+                        forcePlaceholderSize: true,
+                        cursor: 'move',
+                        distance: 5,
+                        update: () => {
+                            const arr = Array.from($sortableContainer.find('.select2-selection__choice').map((i, el) => this.jQuery(el).attr('title')));
+                            const d = this.$select.select2('data');
+                            arr.forEach((title) => {
+                                const item = d.find(e => e.text === title);
+                                const element = this.jQuery(item.element);
+                                const parent = element.parent();
+                                element.detach();
+                                parent.append(element);
+                            });
+                            this.writeValue(this.$select.val());
+                        }
+                    });
+                } catch (e) {
+                    throw new Error('sortable not found');
+                }
             } catch (e) {
                 throw new Error('select2 not found');
             }
@@ -183,7 +204,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     init() {
         this._defaultParams = Object.assign({}, {
             multiple: true,
-            dropdownParent: $(this.el.nativeElement).find('.adm-multi-select__dropdown-wrap'),
+            dropdownParent: this.jQuery(this.el.nativeElement).find('.adm-multi-select__dropdown-wrap'),
             placeholder: 'Select'
         }, this._params);
         this.params = this._defaultParams;
@@ -192,17 +213,19 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     bindEvents() {
         this.$select
             .on('change', (event) => {
-                this.writeValue($(event.currentTarget).val(), false).then(() => {
+                clearTimeout(this.onChangeTimeout);
+                this.onChangeTimeout = setTimeout(() => {
+                    console.log('select change');
                     if (!!this._params.showSelectedCount) {
                         this.showSelectedCountFn(event);
                     }
                     this.change.emit(event);
-                });
+                }, 100);
             })
             .on('select2:open', (event) => {
                 this.open.emit(event);
                 this._isOpen = true;
-                this._isAbove = $(event.target).next().hasClass('select2-container--above');
+                this._isAbove = this.jQuery(event.target).next().hasClass('select2-container--above');
             })
             .on('select2:opening', (event) => {
                 this.opening.emit(event);
@@ -216,11 +239,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             })
             .on('select2:select', (event) => {
                 if (this._params.orderByInput) {
-                    let $element = $(event.params.data.element);
+                    let $element = this.jQuery(event.params.data.element);
                     $element.detach();
-                    $(event.currentTarget).append($element);
-                    $(event.currentTarget).trigger('change');
-                    this.writeValue($(event.currentTarget).val(), false);
+                    this.jQuery(event.currentTarget).append($element);
+                    this.writeValue(this.jQuery(event.currentTarget).val());
                 }
                 setTimeout(() => {
                     this.select.emit([event, this.value, event.params.data]);
@@ -242,10 +264,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     showSelectedCountFn(e: Event) {
-        $(e.currentTarget).parent().find('.select2-search.select2-search--inline .select2-selection__choice').remove();
-        if (this.value && this.value.length > this._params.showSelectedCount) {
+        this.jQuery(e.currentTarget).parent().find('.select2-search.select2-search--inline .select2-selection__choice').remove();
+        if (Array.isArray(this.value) && this.value.length > this._params.showSelectedCount) {
             this._isShowSelectedCount = true;
-            $(e.currentTarget)
+            this.jQuery(e.currentTarget)
                 .parent()
                 .find('.select2-search.select2-search--inline')
                 .prepend(`<span class='select2-selection__choice'><span class='select2-selection__clear'>×</span> ${this.value.length} items selected </span>`);
@@ -254,13 +276,12 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    writeValue(val: any, trigger = true): Promise<any> {
+    writeValue(val: any): Promise<any> {
         return new Promise((resolve) => {
-            setTimeout(() => {
+            clearTimeout(this.writeValueTimeout)
+            this.writeValueTimeout = setTimeout(() => {
                 this.value = val;
-                if (this.value !== undefined && !!this.$select && trigger) {
-                    this.$select.val(this.value).trigger('change');
-                }
+                this.$select.val(this.value).trigger('change');
                 resolve();
             }, 2);
         });
