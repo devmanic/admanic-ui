@@ -2,8 +2,8 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MultiselectParams} from './model';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MultiselectParams } from './model';
 import * as $ from 'jquery';
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
@@ -129,11 +129,11 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                 containment: 'parent',
                 appendTo: 'body',
                 items: '.select2-selection__choice',
-                start: () => {
-                    console.log('start');
-                },
                 update: () => {
-                    // todo: update model
+                    const $arr = $sortableContainer.find('.select2-selection__choice');
+                    const d = $selectEl.select2('data');
+                    const newVal = Array.from($arr.map((i, el) => d.find(item => item.text === $(el).attr('title')).id));
+                    this.writeValue(newVal, true);
                 }
             });
 
@@ -183,7 +183,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     bindEvents() {
         window['$'](this._selectEl)
             .on('change', (event) => {
-                this.writeValue(this._selectEl.val(), false).then(() => {
+                this.writeValue($(event.currentTarget).val(), false).then(() => {
                     if (!!this._params.showSelectedCount) {
                         this.showSelectedCountFn(event);
                     }
@@ -211,6 +211,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                     $element.detach();
                     $(event.currentTarget).append($element);
                     $(event.currentTarget).trigger('change');
+                    this.writeValue($(event.currentTarget).val(), false);
                 }
                 setTimeout(() => {
                     this.select.emit([event, this.value, event.params.data]);

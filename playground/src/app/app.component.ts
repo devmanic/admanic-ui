@@ -13,7 +13,7 @@ import {Component} from '@angular/core';
     }
   `],
   template: `
-    <h1>Admanic UI playground</h1>
+    <h1>playground</h1>
     <hr>
     <ul class="pg-navigation">
       <li *ngFor="let item of menu">
