@@ -3,7 +3,8 @@
 .select2-selection--multiple {
   padding: 0 $input-x-padding;
   .select2-selection__rendered {
-    display: inline-block;
+    display: block;
+    position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -21,6 +22,7 @@
   .select2-selection__placeholder {
     color: $text-color;
     float: left;
+    position: relative;
   }
 
   .select2-selection__choice {
@@ -28,12 +30,15 @@
     border-radius: $input-border-radius / 2;
     cursor: default;
     float: left;
+    position: relative;
+    //display: inline-block;
     margin: 1px 3px 1px 0;
     padding: 5px 9px;
     width: auto;
     color: lighten($text-color, 20%);
     font-size: $text-size - 2px;
     line-height: 1;
+    box-sizing: border-box;
   }
 
   .select2-selection__choice__remove,
@@ -55,6 +60,8 @@
 
 .select2-search--inline {
   float: left;
+  position: relative;
+  //display: inline-block;
   padding: 3px 0 4px;
   .select2-search__field {
     box-sizing: border-box;

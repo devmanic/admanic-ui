@@ -1,0 +1,9 @@
+<div [style.width]="'400px'" [formGroup]="form">
+  <adm-input-container label="Draggable multi select">
+    <adm-multi-select formControlName="test" [params]="params" [options]="options">
+
+    </adm-multi-select>
+  </adm-input-container>
+  <hr>
+  <pre>{{form.value|json:2}}</pre>
+</div>

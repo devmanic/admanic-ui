@@ -2,23 +2,27 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import * as admUI from 'admanic-ui';
-import {HttpModule} from "@angular/http";
-import {RouterModule} from "@angular/router";
-import {ButtonExampleComponent} from './button-example/button-example.component';
+import {HttpModule} from '@angular/http';
+import {RouterModule} from '@angular/router';
+import {MultiselectExampleComponent} from './multiselect/multiselect-component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonExampleComponent,
+    MultiselectExampleComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
     HttpModule,
     RouterModule.forRoot([
-      {path: 'buttons', component: ButtonExampleComponent}
+      {path: 'multi-select', component: MultiselectExampleComponent}
     ]),
-    admUI.SingleSelectModule,
+    admUI.MultiSelectModule,
     admUI.InputModule,
-    admUI.ButtonsModule,
     BrowserModule
   ],
   providers: [],

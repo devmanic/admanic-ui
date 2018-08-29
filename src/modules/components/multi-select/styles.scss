@@ -44,6 +44,7 @@
     min-width: 150px;
 
     .select2-selection {
+      position: relative;
       display: flex;
       cursor: text;
       align-items: center;

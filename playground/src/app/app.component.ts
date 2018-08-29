@@ -26,6 +26,6 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   menu: { title, path }[] = [
-    {title: 'Buttons', path: ['buttons']}
+    {title: 'multi-select', path: ['multi-select']}
   ]
 }

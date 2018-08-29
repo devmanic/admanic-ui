@@ -2,10 +2,9 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MultiselectParams } from './model';
-
-declare const $: any;
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {MultiselectParams} from './model';
+import * as $ from 'jquery';
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -64,7 +63,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     _isHideSelected: boolean;
     _showAddNewBtn: boolean;
     _isOpen: boolean;
-    _modelChangedI: number = 0;
+    _modelChangedI = 0;
     _hasGroups: boolean;
     _isTags: boolean;
     _isAbove: boolean;
@@ -84,8 +83,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     @Input()
     set params(params: MultiselectParams) {
+        // todo: refactor _selectEl
         if (this._selectEl && this._selectEl.hasClass('select2-hidden-accessible')) {
-            this._selectEl.select2('destroy');
+            window['$'](this._selectEl[0]).select2('destroy');
+            // window['$'](this._selectEl[0]).sortable('destroy');
             this._selectEl[0].innerHTML = '';
         }
 
@@ -94,7 +95,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             if (this._hasGroups) {
                 data = params.data.map((opt: any) => ({
                     text: opt.name,
-                    children: opt.values.map((el: any) => ( {
+                    children: opt.values.map((el: any) => ({
                         id: el.value || el.id,
                         text: el.label || el.text
                     }))
@@ -120,8 +121,22 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this._isHideSelected = this._params.hideSelected;
         }, 1);
 
-        if (this._selectEl && !!$().select2) {
-            this._selectEl.select2(this._params);
+        if (this._selectEl && !!window['$']().select2) {
+            const $selectEl = window['$'](this._selectEl[0]);
+            $selectEl.select2(this._params);
+            const $sortableContainer = $selectEl.parent().find('.select2-selection__rendered');
+            $sortableContainer.sortable({
+                containment: 'parent',
+                appendTo: 'body',
+                items: '.select2-selection__choice',
+                start: () => {
+                    console.log('start');
+                },
+                update: () => {
+                    // todo: update model
+                }
+            });
+
         }
     };
 
@@ -166,7 +181,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     bindEvents() {
-        this._selectEl
+        window['$'](this._selectEl)
             .on('change', (event) => {
                 this.writeValue(this._selectEl.val(), false).then(() => {
                     if (!!this._params.showSelectedCount) {
@@ -229,7 +244,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    writeValue(val: any, trigger: boolean = true): Promise<any> {
+    writeValue(val: any, trigger = true): Promise<any> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.value = val;
@@ -253,9 +268,9 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     onChange: Function = (_: any) => {
-    };
+    }
     onTouched: Function = () => {
-    };
+    }
 
     registerOnChange(fn: Function): void {
         this.onChange = fn;

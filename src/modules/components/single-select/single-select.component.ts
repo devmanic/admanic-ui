@@ -17,8 +17,6 @@ import { CustomValidators } from '../validator/service';
 import { Http, Response } from '@angular/http';
 import { ListRequest } from '../../shared/list-request.model';
 import { ListRequestService } from '../../shared/list-request.service';
-import { Observable } from 'rxjs/Observable';
-import { ArrayUtils } from '../../shared/array.utlis';
 import { ToastService } from '../toastr/service';
 import { Observable } from 'rxjs/Observable';
 import { ArrayUtils } from '../../shared/array.utlis';
