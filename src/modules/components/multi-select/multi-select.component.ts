@@ -55,7 +55,11 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
     `
 })
 export class MultiSelectComponent implements AfterViewInit, OnDestroy {
-    _selectEl: any;
+    get $select() {
+        const el = this.el.nativeElement.querySelector('select');
+        return !!window['$'] && !!el ? window['$'](el) : null;
+    }
+
     _defaultParams: MultiselectParams = {width: '100%'};
     _params: MultiselectParams = this._defaultParams;
     _value: string[] = [];
@@ -83,11 +87,13 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     @Input()
     set params(params: MultiselectParams) {
-        // todo: refactor _selectEl
-        if (this._selectEl && this._selectEl.hasClass('select2-hidden-accessible')) {
-            window['$'](this._selectEl[0]).select2('destroy');
-            // window['$'](this._selectEl[0]).sortable('destroy');
-            this._selectEl[0].innerHTML = '';
+        if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
+            this.$select.select2('destroy');
+            this.$select.html(null);
+        }
+        try {
+            this.$select.sortable('destroy');
+        } catch (e) {
         }
 
         let data = [];
@@ -121,22 +127,26 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this._isHideSelected = this._params.hideSelected;
         }, 1);
 
-        if (this._selectEl && !!window['$']().select2) {
-            const $selectEl = window['$'](this._selectEl[0]);
-            $selectEl.select2(this._params);
-            const $sortableContainer = $selectEl.parent().find('.select2-selection__rendered');
-            $sortableContainer.sortable({
-                containment: 'parent',
-                appendTo: 'body',
-                items: '.select2-selection__choice',
-                update: () => {
-                    const $arr = $sortableContainer.find('.select2-selection__choice');
-                    const d = $selectEl.select2('data');
-                    const newVal = Array.from($arr.map((i, el) => d.find(item => item.text === $(el).attr('title')).id));
-                    this.writeValue(newVal, true);
-                }
-            });
-
+        if (this.$select) {
+            try {
+                this.$select.select2(this._params);
+                const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
+                $sortableContainer.sortable({
+                    containment: 'parent',
+                    appendTo: 'body',
+                    items: '.select2-selection__choice',
+                    update: () => {
+                        const $arr = $sortableContainer.find('.select2-selection__choice');
+                        const d = this.$select.select2('data');
+                        const newVal = Array.from($arr.map((i, el) => d.find(item => item.text === $(el).attr('title')).id));
+                        this.writeValue(newVal, false);
+                    }
+                });
+            } catch (e) {
+                throw new Error('select2 not found');
+            }
+        } else {
+            throw new Error(`can't find jquery or select tag`);
         }
     };
 
@@ -171,7 +181,6 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     init() {
-        this._selectEl = $(this.el.nativeElement.querySelector('select'));
         this._defaultParams = Object.assign({}, {
             multiple: true,
             dropdownParent: $(this.el.nativeElement).find('.adm-multi-select__dropdown-wrap'),
@@ -181,7 +190,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     bindEvents() {
-        window['$'](this._selectEl)
+        this.$select
             .on('change', (event) => {
                 this.writeValue($(event.currentTarget).val(), false).then(() => {
                     if (!!this._params.showSelectedCount) {
@@ -249,8 +258,8 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         return new Promise((resolve) => {
             setTimeout(() => {
                 this.value = val;
-                if (this.value !== undefined && this._selectEl !== undefined && trigger) {
-                    this._selectEl.val(this.value).trigger('change');
+                if (this.value !== undefined && !!this.$select && trigger) {
+                    this.$select.val(this.value).trigger('change');
                 }
                 resolve();
             }, 2);
@@ -263,8 +272,9 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this._selectEl) {
-            this._selectEl.select2('destroy');
+        if (this.$select) {
+            this.$select.select2('destroy');
+            this.$select.sortable('destroy');
         }
     }
 
