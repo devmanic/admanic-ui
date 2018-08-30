@@ -2,8 +2,8 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
-import {MultiselectParams} from './model';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MultiselectParams } from './model';
 
 const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -58,6 +58,7 @@ const MULTISELECT_VALUE_ACCESSOR: any = {
 export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     writeValueTimeout: any;
     onChangeTimeout: any;
+    selectHandlerTimeout: any;
 
     get jQuery() {
         return window['$'] || window['jQuery'];
@@ -65,7 +66,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     get $select() {
         const el = this.el.nativeElement.querySelector('select');
-        return !!this.jQuery && !!el ? window['$'](el) : null;
+        return !!this.jQuery && !!el ? this.jQuery(el) : null;
     }
 
     _defaultParams: MultiselectParams = {width: '100%'};
@@ -99,10 +100,6 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this.$select.select2('destroy');
             this.$select.html(null);
         }
-        try {
-            this.$select.sortable('destroy');
-        } catch (e) {
-        }
 
         let data = [];
         if (params.data) {
@@ -135,40 +132,13 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this._isHideSelected = this._params.hideSelected;
         }, 1);
 
-        if (this.$select) {
-            try {
-                this.$select.select2(this._params);
-                try {
-                    const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
-                    $sortableContainer.sortable({
-                        containment: 'parent',
-                        appendTo: 'body',
-                        items: '.select2-selection__choice',
-                        forcePlaceholderSize: true,
-                        cursor: 'move',
-                        distance: 5,
-                        update: () => {
-                            const arr = Array.from($sortableContainer.find('.select2-selection__choice').map((i, el) => this.jQuery(el).attr('title')));
-                            const d = this.$select.select2('data');
-                            arr.forEach((title) => {
-                                const item = d.find(e => e.text === title);
-                                const element = this.jQuery(item.element);
-                                const parent = element.parent();
-                                element.detach();
-                                parent.append(element);
-                            });
-                            this.writeValue(this.$select.val());
-                        }
-                    });
-                } catch (e) {
-                    throw new Error('sortable not found');
-                }
-            } catch (e) {
-                throw new Error('select2 not found');
-            }
-        } else {
-            throw new Error(`can't find jquery or select tag`);
+        try {
+            this.$select.select2(this._params);
+            this.makeDraggable();
+        } catch (e) {
+            console.error('select2 not found');
         }
+
     };
 
     @Input()
@@ -199,6 +169,39 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     }
 
     constructor(private el: ElementRef) {
+    }
+
+    makeDraggable() {
+        try {
+                try {
+                    this.$select.sortable('destroy');
+                } catch (e) {
+                }
+
+                const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
+                $sortableContainer.sortable({
+                    containment: 'parent',
+                    appendTo: 'body',
+                    items: '.select2-selection__choice',
+                    forcePlaceholderSize: true,
+                    cursor: 'move',
+                    distance: 5,
+                    update: () => {
+                        const arr = Array.from($sortableContainer.find('.select2-selection__choice').map((i, el) => this.jQuery(el).attr('title')));
+                        const d = this.$select.select2('data');
+                        arr.forEach((title) => {
+                            const item = d.find(e => e.text === title);
+                            const element = this.jQuery(item.element);
+                            const parent = element.parent();
+                            element.detach();
+                            parent.append(element);
+                        });
+                        this.writeValue(this.$select.val());
+                    }
+                });
+        } catch (e) {
+            console.error(`can't make sortable because jQuery UI not loaded`);
+        }
     }
 
     init() {
@@ -238,12 +241,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                 this.closing.emit(event);
             })
             .on('select2:select', (event) => {
-                if (this._params.orderByInput) {
-                    let $element = this.jQuery(event.params.data.element);
-                    $element.detach();
-                    this.jQuery(event.currentTarget).append($element);
-                    this.writeValue(this.jQuery(event.currentTarget).val());
-                }
+                this.selectHandler(event);
                 setTimeout(() => {
                     this.select.emit([event, this.value, event.params.data]);
                 }, 3);
@@ -252,11 +250,24 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                 this.selecting.emit(event);
             })
             .on('select2:unselect', (event) => {
-                this.unselect.emit([event, this.value]);
+                this.selectHandler(event);
+                setTimeout(() => {
+                    this.unselect.emit([event, this.value]);
+                }, 3);
             })
             .on('select2:unselecting', (event) => {
                 this.unselecting.emit(event);
             });
+    }
+
+    selectHandler(event) {
+        clearTimeout(this.selectHandlerTimeout);
+        this.selectHandlerTimeout = setTimeout(() => {
+            let $element = this.jQuery(event.params.data.element);
+            $element.detach();
+            this.jQuery(event.currentTarget).append($element);
+            this.writeValue(this.jQuery(event.currentTarget).val());
+        }, 1);
     }
 
     onAddNewBtnClick(e) {

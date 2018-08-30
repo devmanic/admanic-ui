@@ -9,8 +9,8 @@ import {FormControl, FormGroup} from '@angular/forms';
 
 export class MultiselectExampleComponent implements OnInit {
   params: MultiselectParams = {
-    orderByInput: true,
-    showSelectedCount: 2
+    // orderByInput: true,
+    // showSelectedCount: 2
   };
   options = [
     {value: '1', label: 'Label 1'},
