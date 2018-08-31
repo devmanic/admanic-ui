@@ -5,13 +5,13 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiselectParams } from './model';
 
+declare const $: any;
+
 const MULTISELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => MultiSelectComponent),
     multi: true
 };
-
-// todo: fix clear selection
 
 @Component({
     selector: 'adm-multi-select, adm-select[multi]',
@@ -61,7 +61,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     selectHandlerTimeout: any;
 
     get jQuery() {
-        return window['$'] || window['jQuery'];
+        return $;
     }
 
     get $select() {
@@ -136,7 +136,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             this.$select.select2(this._params);
             this.makeDraggable();
         } catch (e) {
-            console.error('select2 not found');
+            console.warn('select2 not found');
         }
 
     };
@@ -162,10 +162,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     set value(val) {
         this._value = val;
-        if (++this._modelChangedI > 2) {
-            this.onChange(val);
-            this.onTouched();
-        }
+        // if (++this._modelChangedI > 1) {
+        this.onChange(this._value);
+        this.onTouched();
+        // }
     }
 
     constructor(private el: ElementRef) {
@@ -173,34 +173,34 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     makeDraggable() {
         try {
-                try {
-                    this.$select.sortable('destroy');
-                } catch (e) {
-                }
+            try {
+                this.$select.sortable('destroy');
+            } catch (e) {
+            }
 
-                const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
-                $sortableContainer.sortable({
-                    containment: 'parent',
-                    appendTo: 'body',
-                    items: '.select2-selection__choice',
-                    forcePlaceholderSize: true,
-                    cursor: 'move',
-                    distance: 5,
-                    update: () => {
-                        const arr = Array.from($sortableContainer.find('.select2-selection__choice').map((i, el) => this.jQuery(el).attr('title')));
-                        const d = this.$select.select2('data');
-                        arr.forEach((title) => {
-                            const item = d.find(e => e.text === title);
-                            const element = this.jQuery(item.element);
-                            const parent = element.parent();
-                            element.detach();
-                            parent.append(element);
-                        });
-                        this.writeValue(this.$select.val());
-                    }
-                });
+            const $sortableContainer = this.$select.parent().find('.select2-selection__rendered');
+            $sortableContainer.sortable({
+                containment: 'parent',
+                appendTo: 'body',
+                items: '.select2-selection__choice',
+                forcePlaceholderSize: true,
+                cursor: 'move',
+                distance: 5,
+                update: () => {
+                    const arr = Array.from($sortableContainer.find('.select2-selection__choice').map((i, el) => this.jQuery(el).attr('title')));
+                    const d = this.$select.select2('data');
+                    arr.forEach((title) => {
+                        const item = d.find(e => e.text === title);
+                        const element = this.jQuery(item.element);
+                        const parent = element.parent();
+                        element.detach();
+                        parent.append(element);
+                    });
+                    this.writeValue(this.$select.val());
+                }
+            });
         } catch (e) {
-            console.error(`can't make sortable because jQuery UI not loaded`);
+            console.warn(`can't make sortable because jQuery UI not loaded`);
         }
     }
 
@@ -222,7 +222,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                     if (!!this._params.showSelectedCount) {
                         this.showSelectedCountFn(event);
                     }
-                    this.change.emit(event);
+                    this.change.emit([event, this.value]);
                 }, 100);
             })
             .on('select2:open', (event) => {
@@ -244,7 +244,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                 this.selectHandler(event);
                 setTimeout(() => {
                     this.select.emit([event, this.value, event.params.data]);
-                }, 3);
+                }, 200);
             })
             .on('select2:selecting', (event) => {
                 this.selecting.emit(event);
@@ -253,7 +253,7 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
                 this.selectHandler(event);
                 setTimeout(() => {
                     this.unselect.emit([event, this.value]);
-                }, 3);
+                }, 200);
             })
             .on('select2:unselecting', (event) => {
                 this.unselecting.emit(event);
@@ -291,8 +291,11 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         return new Promise((resolve) => {
             clearTimeout(this.writeValueTimeout)
             this.writeValueTimeout = setTimeout(() => {
-                this.value = val;
-                this.$select.val(this.value).trigger('change');
+                //todo: check
+                // if (JSON.stringify(this.value) !== JSON.stringify(val)) {
+                    this.value = val;
+                    this.$select.val(this.value).trigger('change');
+                // }
                 resolve();
             }, 2);
         });
@@ -305,8 +308,12 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.$select) {
-            this.$select.select2('destroy');
-            this.$select.sortable('destroy');
+            try {
+                this.$select.select2('destroy');
+                this.$select.sortable('destroy');
+            } catch (e) {
+
+            }
         }
     }
 

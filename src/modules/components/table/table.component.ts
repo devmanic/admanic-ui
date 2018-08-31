@@ -68,6 +68,8 @@ export class TableComponent {
     @Input() activeSortOrder: number;
     @Input() listData: any[] = [];
     @Input() all_check: boolean = true;
+    @Input() ownIsCheckAllItem: any;
+    @Input() ownOnCheckAllHandler: any;
 
     @Input()
     set columns(items) {
