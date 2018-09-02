@@ -2,8 +2,8 @@ import {
     AfterViewInit, Component, ElementRef, EventEmitter, Input, Output,
     ViewEncapsulation, forwardRef, OnDestroy
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MultiselectParams } from './model';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {MultiselectParams} from './model';
 
 declare const $: any;
 
@@ -218,7 +218,6 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
             .on('change', (event) => {
                 clearTimeout(this.onChangeTimeout);
                 this.onChangeTimeout = setTimeout(() => {
-                    console.log('select change');
                     if (!!this._params.showSelectedCount) {
                         this.showSelectedCountFn(event);
                     }
@@ -263,11 +262,24 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
     selectHandler(event) {
         clearTimeout(this.selectHandlerTimeout);
         this.selectHandlerTimeout = setTimeout(() => {
-            let $element = this.jQuery(event.params.data.element);
-            $element.detach();
-            this.jQuery(event.currentTarget).append($element);
-            this.writeValue(this.jQuery(event.currentTarget).val());
-        }, 1);
+            const $element = $(event.params.data.element);
+            switch (event.type) {
+                case 'select2:select':
+                    if (this.$select.find(':selected').length > 1) {
+                        const $second = this.$select.find(':selected').eq(-2);
+                        $element.detach();
+                        $second.after($element);
+                    } else {
+                        $element.detach();
+                        this.$select.prepend($element);
+                    }
+                    break;
+                case 'select2:unselect':
+                    this.$select.find(':selected').after($element);
+                    break;
+            }
+            this.writeValue(this.$select.val());
+        }, 10);
     }
 
     onAddNewBtnClick(e) {
@@ -289,12 +301,12 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     writeValue(val: any): Promise<any> {
         return new Promise((resolve) => {
-            clearTimeout(this.writeValueTimeout)
+            clearTimeout(this.writeValueTimeout);
             this.writeValueTimeout = setTimeout(() => {
                 //todo: check
                 // if (JSON.stringify(this.value) !== JSON.stringify(val)) {
-                    this.value = val;
-                    this.$select.val(this.value).trigger('change');
+                this.value = val;
+                this.$select.val(this.value).trigger('change');
                 // }
                 resolve();
             }, 2);
