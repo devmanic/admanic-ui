@@ -162,10 +162,10 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
 
     set value(val) {
         this._value = val;
-        // if (++this._modelChangedI > 1) {
-        this.onChange(this._value);
-        this.onTouched();
-        // }
+        if (++this._modelChangedI > 1) {
+            this.onChange(this._value);
+            this.onTouched();
+        }
     }
 
     constructor(private el: ElementRef) {

@@ -2,7 +2,7 @@ import {
     Component, EventEmitter, Input, OnInit, Output,
     ViewEncapsulation
 } from '@angular/core';
-import { every } from 'lodash';
+import {every} from 'lodash';
 
 @Component({
     selector: 'table[adm-table]',
@@ -128,7 +128,11 @@ export class TableComponent {
 
     onCheckAllHandler(e: Event) {
         e.preventDefault();
-        this.listData = this.listData.map(el => Object.assign(el, {checked: this.all_check}));
+        if (typeof this.ownOnCheckAllHandler === 'function') {
+            this.ownOnCheckAllHandler.bind(this)();
+        } else {
+            this.listData = this.listData.map(el => Object.assign(el, {checked: this.all_check}));
+        }
         this.onCheckedAllItem.emit(e);
     }
 
@@ -137,6 +141,9 @@ export class TableComponent {
     }
 
     get isCheckedAllItem(): boolean {
+        if (typeof this.ownIsCheckAllItem === 'function') {
+            return this.ownIsCheckAllItem.bind(this)();
+        }
         if (this.listData.length) {
             if (every(this.listData, ['access.can_trash', true]) || every(this.listData, ['access.can_delete', true])) {
                 return false;
