@@ -263,22 +263,19 @@ export class MultiSelectComponent implements AfterViewInit, OnDestroy {
         clearTimeout(this.selectHandlerTimeout);
         this.selectHandlerTimeout = setTimeout(() => {
             const $element = $(event.params.data.element);
+            const $select = this.jQuery(event.currentTarget);
             switch (event.type) {
                 case 'select2:select':
-                    if (this.$select.find(':selected').length > 1) {
-                        const $second = this.$select.find(':selected').eq(-2);
+                    if ($select.find(':selected').length > 1) {
                         $element.detach();
-                        $second.after($element);
+                        $element.insertAfter($select.find(':selected').last());
                     } else {
                         $element.detach();
-                        this.$select.prepend($element);
+                        $select.prepend($element);
                     }
                     break;
-                case 'select2:unselect':
-                    this.$select.find(':selected').after($element);
-                    break;
             }
-            this.writeValue(this.$select.val());
+            this.writeValue(this.jQuery(event.currentTarget).val());
         }, 10);
     }
 
